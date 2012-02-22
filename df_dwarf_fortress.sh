@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Dwarf Fortress
+
 # Install dependencies
 sudo puppet apply depends_df.pp
 
@@ -11,7 +13,7 @@ cd dwarffortress
 
 # Grab a copy of Dwarf Fortress with the Phoebus tileset and extract it.
 if [ ! -f DF_Phoebus.tar.gz ]; then
-    wget 'http://dffd.wimbli.com/download.php?id=2944&f=DF_Phoebus_34_02v01_Linux.tar.gz' -O DF_Phoebus.tar.gz
+    wget $1 -O DF_Phoebus.tar.gz
 fi
 tar -xf DF_Phoebus.tar.gz
 

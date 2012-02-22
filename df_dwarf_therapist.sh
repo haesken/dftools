@@ -31,5 +31,5 @@ else
 fi
 
 # Copy the Dwarf Therapist binary and the 'etc' folder to the new dirs.
-cp dwarffortress/dwarftherapist_build/bin/release/DwarfTherapist dwarffortress/dwarftherapist/
-cp -r dwarffortress/dwarftherapist_build/etc/ dwarffortress/dwarftherapist/
+cp dwarftherapist_build/bin/release/DwarfTherapist dwarftherapist/
+cp -r dwarftherapist_build/etc/ dwarftherapist/
