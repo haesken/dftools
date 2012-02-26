@@ -1,4 +1,5 @@
 $basics = [
+    "mercurial",
     "build-essential",
     "libglib2.0-dev",
     "libSM-dev",
@@ -8,8 +9,8 @@ $basics = [
 ]
 package { $basics: ensure => "latest" }
 
-$qt = [
+$qt_tools = [
     "qt4-qmake",
     "qt4-dev-tools",
 ]
-package { $qt: ensure => "latest" }
+package { $qt_tools: ensure => "latest" }

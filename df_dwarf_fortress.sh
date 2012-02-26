@@ -17,5 +17,7 @@ if [ ! -f DF_Phoebus.tar.gz ]; then
 fi
 tar -xf DF_Phoebus.tar.gz
 
-# Copy the libgl library to the Dwarf Fortress dir.
-cp $(find /usr/lib -iname libgl.so.1 | grep i386) df_linux/libs/
+# Copy the libgl library to the Dwarf Fortress libs dir.
+libgl_path=$(find /usr/{lib,lib32} -iname libgl.so.1 | egrep -v "64|nvidia" | grep mesa)
+cp $libgl_path df_linux/libs/
+echo "Copied: $libgl_path to df_linux/libs"
