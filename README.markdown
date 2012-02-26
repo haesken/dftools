@@ -29,3 +29,7 @@ Remove aquifers from Dwarf Fortress.
 You will need to create a new world for this to take effect.
 
     ./df_dwarf_fortress_remove_aquifers.sh
+
+Add custom memory layouts to Dwarf Therapist
+
+    ./df_dwarf_therapist_add_memory_layouts.sh
