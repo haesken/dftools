@@ -17,7 +17,4 @@ cd dwarffortress
 # fi
 # tar -xf DF_Phoebus.tar.gz
 
-# Copy the libgl library to the Dwarf Fortress libs dir.
-libgl_path=$(find /usr/{lib,lib32} -iname libgl.so.1 | egrep -v "64|nvidia" | grep mesa)
-cp $libgl_path df_linux/libs/
-echo "Copied: $libgl_path to df_linux/libs"
+bash add_libgl.sh
