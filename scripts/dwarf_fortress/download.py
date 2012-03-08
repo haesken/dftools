@@ -85,7 +85,7 @@ def download_link(link, filename): #{{{
 
 def main(args): #{{{
     if args.download_dwarf_fortress == True:
-        download_link(get_dwarf_fortress_link(), 'Dwarf Fortress.tar.bz2')
+        download_link(get_dwarf_fortress_link(), 'Dwarf_Fortress.tar.bz2')
 
     if args.download_phoebus == True:
         download_link(get_phoebus_download_link(

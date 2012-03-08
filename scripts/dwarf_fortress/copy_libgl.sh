@@ -7,5 +7,6 @@ if [ ! -d df_linux/libs ]; then
     mkdir df_linux/libs
 fi
 
-cp $libgl_path df_linux/libs/
-echo "Copied: $libgl_path to df_linux/libs"
+df_libs_path='df_linux/libs'
+cp $libgl_path $df_libs_path
+echo "Copied: $libgl_path to $df_libs_path/libgl.so.1"
