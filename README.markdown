@@ -7,29 +7,23 @@ Dwarf Fortress and Dwarf Therapist.
 ### Requirements
 
 [Puppet](http://puppetlabs.com/)
+[Python 2.7](http://www.python.org/)
+
+Other dependencies will be handled by puppet.
 
 ### Usage
-Download/install both Dwarf Fortress and Dwarf Therapist.
 
-    ./df_install.sh
+Install dependencies:
 
-Download/install Dwarf Fortress only.
+    sudo puppet apply scripts/scripts_depends.pp
 
-    ./df_dwarf_fortress.sh
+Run df_install.py
 
-Download Dwarf Therapist and build it from source.
+    python df_install.py [options]
 
-    ./df_dwarf_therapist.sh
+#### df\_install.py Options
 
-Add Lazy Newb Pack embark profiles to Dwarf Fortress.
-
-    ./df_dwarf_fortress_add_embark_profiles.sh
-
-Remove aquifers from Dwarf Fortress.
-You will need to create a new world for this to take effect.
-
-    ./df_dwarf_fortress_remove_aquifers.sh
-
-Add custom memory layouts to Dwarf Therapist
-
-    ./df_dwarf_therapist_add_memory_layouts.sh
+* -df / --dwarf\_fortress : Install Dwarf Fortress
+* -ph / --phoebus : Install Phoebus tileset
+* -lze / --lazy\_newb\_embark : Install embark profiles from Lazy Newb Pack
+* -dt / --dwarf\_therapist : Install Dwarf Therapist

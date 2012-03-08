@@ -20,7 +20,7 @@ def get_args(): #{{{
 
     parser.add_argument("-ph", "--phoebus",
             action="store_true",
-            help="Install Phoebus tileset.")
+            help="Install Phoebus tileset")
 
     parser.add_argument("-lze", "--lazy_newb_embark",
             action="store_true",
