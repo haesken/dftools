@@ -2,8 +2,10 @@
 
 # Dwarf Therapist
 
+DF_WORK_DIR=$1
+
 # Install dependencies
-sudo puppet apply depends_dt.pp
+sudo puppet apply $DF_WORK_DIR/scripts/dwarf_therapist/depends.pp
 
 # Grab a copy of the Dwarf Therapist source,
 # if it already exists then update it.
