@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# DF_WORK_DIR=$PWD
+DF_WORK_DIR=$PWD
+
+sudo puppet apply scripts/scripts_depends.pp
 
 bash scripts/dwarf_fortress/install_dwarf_fortress.sh $DF_WORK_DIR
 

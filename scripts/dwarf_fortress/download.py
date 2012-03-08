@@ -55,7 +55,7 @@ def get_phoebus_host_link(): #{{{
     tree = etree.parse(phoebus_post_link, etree.HTMLParser())
 
     download_links_xpath = ('/html/body/div/div[3]/div[4]/form/div/' +
-        'div/div[2]/div[2]/div/a[4]')
+        'div/div[2]/div[2]/div/a[3]')
     download_link = tree.xpath(download_links_xpath)[0].items()[0][1]
 
     return download_link #}}}
@@ -71,7 +71,6 @@ def get_phoebus_download_link(host_link): #{{{
             domain=host_link.split('/')[2])
     download_link_suffix = tree.xpath(download_links_xpath)[0].items()[0][1]
     download_link = download_link_base + download_link_suffix
-    # import ipdb; ipdb.set_trace()
 
     return download_link #}}}
 
@@ -79,8 +78,11 @@ def get_phoebus_download_link(host_link): #{{{
 def download_link(link, filename): #{{{
     """ Download a given url with wget. """
 
-    subprocess.call('wget "{link}" -O "{filename}"'.format(
-        link=link, filename=filename), shell=True) #}}}
+    wget_cmd = 'wget "{link}" -O "{filename}"'
+    subprocess.call(wget_cmd.format(
+        link=link,
+        filename=filename),
+        shell=True) #}}}
 
 
 def main(args): #{{{
@@ -88,8 +90,9 @@ def main(args): #{{{
         download_link(get_dwarf_fortress_link(), 'Dwarf_Fortress.tar.bz2')
 
     if args.download_phoebus == True:
+        phoebus_host_link = get_phoebus_host_link()
         download_link(
-                get_phoebus_download_link(get_phoebus_host_link()),
+                get_phoebus_download_link(phoebus_host_link),
                 'Phoebus.zip') #}}}
 
 
