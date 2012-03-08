@@ -1,7 +1,7 @@
 Use these to control the automatic saving behavior in the dwarf fortress mode of game.  AUTOSAVE can be set to NONE, SEASONAL or YEARLY.  This updates your save at these intervals, so that some of your progress will be saved in case of system instability.  You can set AUTOBACKUP to YES if you want the updated save to be copied to another folder so that you'll have several copies of your world at different times.  Set AUTOSAVE_PAUSE to YES if you want the game to pause every time it autosaves.
 
-[AUTOSAVE:SEASONAL]
-[AUTOBACKUP:YES]
+[AUTOSAVE:NONE]
+[AUTOBACKUP:NO]
 [AUTOSAVE_PAUSE:NO]
 
 Set this to YES if you want it to save the game when you start a new fortress.  If AUTOBACKUP above is set to YES, it will also create a copy of this new save.
@@ -18,7 +18,7 @@ Set this to YES if you want Dwarf Fortress to show the warning window on embark 
 
 You can change these to ALWAYS and NO.  More restrictive world parameter settings override these.  ALWAYS lets you see the features in the Local view during embark, and NO stops you from looking for features in the site finder (though if you really want to stop the finder, it might be better for you to generate worlds that restrict the use of this feature completely, in which case you don't need to change the settings here).
 
-[SHOW_EMBARK_TUNNEL:FINDER]
+[SHOW_EMBARK_TUNNEL:ALWAYS]
 
 Use these options to remove features from the game.  Permitted values are YES and NO.  Removal might speed the game up in the case of temperature and weather.
 
@@ -69,15 +69,15 @@ Use these to set the color of wounded body parts.  The format is <foreground col
 
 This controls the display of areas that are far below outside.  The format is SKY:<character>:<foreground color>:<background color>:<brightness>.  The <character> can be either an ASCII tile number or a character in quotes, like '#'.
 
-[SKY:178:3:0:0]
+[SKY:32:8:9:0]
 
 As above, for inside/subterranean areas.
 
-[CHASM:250:0:0:1]
+[CHASM:0:0:0:1]
 
 Pillar tile, <character> as above.
 
-[PILLAR_TILE:'O']
+[PILLAR_TILE:199]
 
 This controls the "IDLERS: <number>" that is displayed in dwarf mode.  You can set it to TOP, BOTTOM or OFF.
 
@@ -89,11 +89,11 @@ You can have your dwarves start/arrive without any labor types enabled here by s
 
 You can set the maximum population of your fortress here.  Keep in mind that your population must be at least 80 to get a king and 100 to obtain the current game features.
 
-[POPULATION_CAP:60]
+[POPULATION_CAP:80]
 
 This allows you to control the number of babies+children in your fortress.  The first number is an absolute cap on the number of babies+children.  The second is a percentage of the current number of adults in your fortress (the default is the essentially meaningless 1000% here).  The lower number is used as the cap.  The cap only prevents further pregancies, so migrant children, multiple births and existing pregnancies from old saves can still push you over the cap.  Setting either number to zero will disallow pregnancies in the fortress.
 
-[BABY_CHILD_CAP:10:10]
+[BABY_CHILD_CAP:10:1000]
 
 If you don't like the ,.`' ground, try setting this to NO.  The ground will turn into periods only.
 
@@ -101,7 +101,7 @@ If you don't like the ,.`' ground, try setting this to NO.  The ground will turn
 
 If you'd like your engravings to start off looking the same (you can toggle them on individual later), set this to YES.
 
-[ENGRAVINGS_START_OBSCURED:NO]
+[ENGRAVINGS_START_OBSCURED:YES]
 
 If you get annoyed by seeing items like *<*sword*>* you can
 get rid of the outside ** by setting this to NO.
