@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-bash df_g
-bash df_dwarf_fortress.sh 'D'
-bash df_dwarf_therapist.sh
+python scripts/dwarf_fortress/download.sh -ddf -dph # Download
+bash scripts/dwarf_fortress/install_dwarf_fortress.sh
+bash scripts/dwarf_therapist/install_dwarf_therapist.sh
