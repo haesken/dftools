@@ -88,8 +88,9 @@ def main(args): #{{{
         download_link(get_dwarf_fortress_link(), 'Dwarf_Fortress.tar.bz2')
 
     if args.download_phoebus == True:
-        download_link(get_phoebus_download_link(
-            get_phoebus_host_link(), 'Phoebus.zip')) #}}}
+        download_link(
+                get_phoebus_download_link(get_phoebus_host_link()),
+                'Phoebus.zip') #}}}
 
 
 try:

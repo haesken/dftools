@@ -5,6 +5,7 @@ echo -n 'DF_WORK_DIR: '
 echo $DF_WORK_DIR
 
 # Install dependencies
+echo "Installing dependencies..."
 sudo puppet apply $DF_WORK_DIR/scripts/dwarf_fortress/depends.pp
 
 if [ ! -d dwarffortress ]; then
