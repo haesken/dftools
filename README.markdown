@@ -2,16 +2,17 @@ Dwarf Fortress Auto
 ===================
 
 A set of scripts to download/build
-Dwarf Fortress and Dwarf Therapist.
+Dwarf Fortress, Dwarf Therapist, and other utilities.
 
-### Requirements
+## Requirements
 
 [Puppet](http://puppetlabs.com/)
+
 [Python 2.7](http://www.python.org/)
 
 Other dependencies will be handled by puppet.
 
-### Usage
+## Usage
 
 Install dependencies:
 
