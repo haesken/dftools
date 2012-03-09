@@ -6,7 +6,7 @@ import envoy
 import shutil
 
 
-def main(): #{{{
+def copy_libgl(): #{{{
     libgl_canidates_lib = envoy.run('find /usr/lib -iname libgl.so.1')
     libgl_canidates_lib32 = envoy.run('find /usr/lib32 -iname libgl.so.1')
 
@@ -29,7 +29,3 @@ def main(): #{{{
 
     print "Copied: {libgl_path} to {df_libs_path}".format(
             libgl_path=libgl_path, df_libs_path=df_libs_path) #}}}
-
-
-if __name__ == '__main__':
-    main()

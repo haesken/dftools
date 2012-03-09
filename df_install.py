@@ -9,6 +9,7 @@ import subprocess
 sys.path.append('scripts/dwarf_fortress/')
 import download
 import disable_aquifers
+import copy_libgl
 
 
 def get_args(): #{{{
@@ -79,6 +80,9 @@ def main(args): #{{{
                 tar_file=tar_path, folder=df_dir_df))
         else:
             print 'df_linux dir present, not extracting'
+
+        print 'Installing libgl library'
+        copy_libgl.copy_libgl()
 
         print 'Dwarf Fortress installed!', '\n', bar #}}}
 
