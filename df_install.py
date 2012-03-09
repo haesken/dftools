@@ -2,9 +2,9 @@
 # encoding: utf-8
 
 import argparse
-import subprocess
 import os
 import sys
+import scripts.dwarf_fortress.copy_libgl.py
 
 
 def get_args(): #{{{
@@ -46,36 +46,26 @@ def get_args(): #{{{
     return args #}}}
 
 
-def run(cmd): #{{{
-    subprocess.call(cmd, shell=True) #}}}
-
-
 def main(args): #{{{
     DF_WORK_DIR = os.getcwd()
 
-    if args.dwarf_fortress == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_fortress/install.sh {workdir}'.format(
-            workdir=DF_WORK_DIR))
+    if args.dwarf_fortress or args.install_all:
+        print 'scripts/dwarf_fortress/install.sh'
 
-    if args.phoebus == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_fortress/phoebus.sh {workdir}'.format(
-            workdir=DF_WORK_DIR))
+    if args.phoebus or args.install_all:
+        print 'scripts/dwarf_fortress/phoebus.sh'
 
-    if args.lazy_newb_embark == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_fortress/lazy_newb_embark.sh {workdir}'.format(
-            workdir=DF_WORK_DIR))
+    if args.lazy_newb_embark or args.install_all:
+        print 'scripts/dwarf_fortress/lazy_newb_embark.sh'
 
-    if args.custom_init == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_fortress/custom_init.sh {workdir}'.format(
-            workdir=DF_WORK_DIR))
+    if args.custom_init or args.install_all:
+        print 'scripts/dwarf_fortress/custom_init.sh'
 
-    if args.disable_aquifers == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_fortress/disable_aquifers.sh {workdir}'.format(
-            workdir=DF_WORK_DIR))
+    if args.disable_aquifers or args.install_all:
+        print 'scripts/dwarf_fortress/disable_aquifers.sh'
 
-    if args.dwarf_therapist == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_therapist/install.sh {workdir}'.format(
-            workdir=DF_WORK_DIR)) #}}}
+    if args.dwarf_therapist or args.install_all:
+        print 'scripts/dwarf_therapist/install.sh' #}}}
 
 
 try:
