@@ -74,7 +74,7 @@ def main(args): #{{{
             workdir=DF_WORK_DIR))
 
     if args.dwarf_therapist == True or args.install_all == True:
-        run('bash {workdir}/scripts/dwarf_therapist/install_dwarf_therapist.sh {workdir}'.format(
+        run('bash {workdir}/scripts/dwarf_therapist/install.sh {workdir}'.format(
             workdir=DF_WORK_DIR)) #}}}
 
 
