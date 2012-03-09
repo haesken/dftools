@@ -45,7 +45,7 @@ def main(args): #{{{
         workdir=DF_WORK_DIR))
 
     if args.dwarf_fortress == True:
-        run('bash {workdir}/scripts/dwarf_fortress/install_dwarf_fortress.sh {workdir}'.format(
+        run('bash {workdir}/scripts/dwarf_fortress/install.sh {workdir}'.format(
             workdir=DF_WORK_DIR))
 
     if args.phoebus == True:

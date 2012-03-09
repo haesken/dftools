@@ -31,48 +31,57 @@ def get_args(): #{{{
     return args #}}}
 
 
+def extract_links_from_xpath(url, link_xpath): #{{{
+    """ Parse the html of a given url and extract the links of an xpath. """
+
+    tree = etree.parse(url, etree.HTMLParser())
+    elems = tree.xpath(link_xpath)
+
+    links = [(elem.text, str(elem.values()[0])) for elem in elems]
+    return links #}}}
+
+
 def get_dwarf_fortress_link(): #{{{
-    """ Scrape the Bay12 site for the linux Dwarf Fortress download link. """
+    """ Get the download link to the linux version of Dwarf Fortress. """
 
     bay12_link = 'http://www.bay12games.com/dwarves/'
-    tree = etree.parse(bay12_link, etree.HTMLParser())
+    links = extract_links_from_xpath(bay12_link, "//p/a[@href]"),
 
-    download_links_xpath = "/html/body/table[2]//table/tr/td/p/a"
-    download_links = tree.xpath(download_links_xpath)
+    linux_link = [link[1] for link in links[0]
+            if "linux.tar" in link[1].lower()]
 
-    links = [elem.items()[0][1] for elem in download_links]
-    linux_base_link = [link for link in links if "linux" in link.lower()]
-    linux_full_link = bay12_link + linux_base_link[0]
+    linux_link_absolute = bay12_link + linux_link[0]
 
-    return linux_full_link #}}}
+    return linux_link_absolute #}}}
 
 
 def get_phoebus_host_link(): #{{{
     """ Scrape the Bay12 forums for the Phoebus tileset download link. """
 
     phoebus_post_link = ('http://www.bay12forums.com/' +
-        'smf/index.php?topic=57557.0')
-    tree = etree.parse(phoebus_post_link, etree.HTMLParser())
+            'smf/index.php?topic=57557.0')
+    links_xpath = '//a[@href]'
+    links = extract_links_from_xpath(phoebus_post_link, links_xpath)
 
-    download_links_xpath = ('/html/body/div/div[3]/div[4]/form/div/' +
-        'div/div[2]/div[2]/div/a[3]')
-    download_link = tree.xpath(download_links_xpath)[0].items()[0][1]
+    phoebus_host_link = [link[1] for link in links
+            if "Graphic Set Package @DFFD" == link[0]][0]
 
-    return download_link #}}}
+    return phoebus_host_link #}}}
 
 
 def get_phoebus_download_link(host_link): #{{{
     """ Scrape the given link for the actual download link. """
 
-    tree = etree.parse(host_link, etree.HTMLParser())
+    links_xpath = '//a[@href]'
+    links = extract_links_from_xpath(host_link, links_xpath)
 
-    download_links_xpath = ('/html/body/div[4]/table/tr[2]/td/div/a')
-    download_link_base = 'http://{domain}/'.format(
-            domain=host_link.split('/')[2])
-    download_link_suffix = tree.xpath(download_links_xpath)[0].items()[0][1]
-    download_link = download_link_base + download_link_suffix
+    host = 'http://{host}/'.format(host=host_link.split("/")[2])
+    download_suffix = [link[1] for link in links
+            if "download.php?id=" in link[1]][0]
 
-    return download_link #}}}
+    phoebus_download_link = host + download_suffix
+
+    return phoebus_download_link #}}}
 
 
 def download_link(link, filename): #{{{
@@ -86,13 +95,16 @@ def download_link(link, filename): #{{{
 
 
 def main(args): #{{{
+    """ Main """
+
     if args.download_dwarf_fortress == True:
-        download_link(get_dwarf_fortress_link(), 'Dwarf_Fortress.tar.bz2')
+        download_link(
+                get_dwarf_fortress_link(),
+                'Dwarf_Fortress.tar.bz2')
 
     if args.download_phoebus == True:
-        phoebus_host_link = get_phoebus_host_link()
         download_link(
-                get_phoebus_download_link(phoebus_host_link),
+                get_phoebus_download_link(get_phoebus_host_link()),
                 'Phoebus.zip') #}}}
 
 
