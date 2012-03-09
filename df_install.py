@@ -30,6 +30,10 @@ def get_args(): #{{{
             action="store_true",
             help="Install custom init configs (requires Phoebus)")
 
+    parser.add_argument("-daq", "--disable_aquifers",
+            action="store_true",
+            help="Disable aquifers")
+
     parser.add_argument("-dt", "--dwarf_therapist",
             action="store_true",
             help="Build & Install Dwarf Therapist")
@@ -49,9 +53,6 @@ def run(cmd): #{{{
 def main(args): #{{{
     DF_WORK_DIR = os.getcwd()
 
-    run('sudo puppet apply {workdir}/scripts/scripts_depends.pp'.format(
-        workdir=DF_WORK_DIR))
-
     if args.dwarf_fortress == True or args.install_all == True:
         run('bash {workdir}/scripts/dwarf_fortress/install.sh {workdir}'.format(
             workdir=DF_WORK_DIR))
@@ -62,6 +63,14 @@ def main(args): #{{{
 
     if args.lazy_newb_embark == True or args.install_all == True:
         run('bash {workdir}/scripts/dwarf_fortress/lazy_newb_embark.sh {workdir}'.format(
+            workdir=DF_WORK_DIR))
+
+    if args.custom_init == True or args.install_all == True:
+        run('bash {workdir}/scripts/dwarf_fortress/custom_init.sh {workdir}'.format(
+            workdir=DF_WORK_DIR))
+
+    if args.disable_aquifers == True or args.install_all == True:
+        run('bash {workdir}/scripts/dwarf_fortress/disable_aquifers.sh {workdir}'.format(
             workdir=DF_WORK_DIR))
 
     if args.dwarf_therapist == True or args.install_all == True:
