@@ -46,8 +46,8 @@ def get_args(): #{{{
     return args #}}}
 
 
-def run_cmd(cmd):
-    subprocess.call(cmd, shell=True)
+def run_cmd(cmd): #{{{
+    subprocess.call(cmd, shell=True) #}}}
 
 
 def main(args): #{{{
@@ -64,7 +64,9 @@ def main(args): #{{{
         tar_path = os.path.join(df_dir_df, 'Dwarf_Fortress.tar.bz2')
 
         if not os.path.exists(tar_path):
-            print 'Dwarf_Fortress.tar.bz2 not present, downloading Dwarf Fortress...'
+            print ('Dwarf_Fortress.tar.bz2 not present,' +
+                    'downloading Dwarf Fortress...')
+
             download.download_link(
                     download.get_dwarf_fortress_link(),
                     tar_path)
@@ -80,11 +82,49 @@ def main(args): #{{{
 
         print 'Dwarf Fortress installed!', '\n', bar #}}}
 
-    if args.phoebus == True:
-        download.download_link(
-                download.get_phoebus_download_link(
-                download.get_phoebus_host_link()),
-                os.path.join(df_dir_df, 'Phoebus.zip'))
+    if args.phoebus: #{{{
+        print bar, '\n', 'Installing Phoebus tileset'
+
+        phoebus_dir = os.path.join(df_dir_df, 'phoebus/')
+        zip_path = os.path.join(df_dir_df, 'Phoebus.zip')
+
+        if not os.path.exists(df_dir_df):
+            os.mkdir(df_dir_df)
+
+        if not os.path.exists(phoebus_dir):
+            os.mkdir(phoebus_dir)
+
+        if not os.path.exists(zip_path):
+            print 'Phoebus.zip not present, downloading'
+            download.download_link(
+                    download.get_phoebus_download_link(
+                    download.get_phoebus_host_link()),
+                    zip_path)
+
+        phoebus_data_dir = os.path.join(phoebus_dir, 'data/')
+        df_dir_data = os.path.join(df_dir_df, 'df_linux/data/')
+
+        if not os.path.exists(phoebus_data_dir):
+            print 'Extracting Phoebux tileset'
+            run_cmd('unzip -q {zip_file} -d {folder}'.format(
+                zip_file=zip_path, folder=phoebus_dir))
+
+        # Copy phoebus data dir to df_linux/data
+        if os.path.exists(os.path.join(phoebus_dir, 'data/')):
+            print 'Copying Phoebus data dir to {dest}'.format(dest=df_dir_data)
+            run_cmd('cp -r {src}/* {dest}'.format(
+                src=phoebus_data_dir,
+                dest=df_dir_data))
+
+        if os.path.exists(os.path.join(
+            df_dir_df, 'df_linux/data/init/phoebus')):
+            print 'Installing Phoebus init files'
+            run_cmd('cp -r {src}/* {dest}'.format(
+                src=os.path.join(df_dir_data, 'init/phoebus'),
+                dest=os.path.join(df_dir_data, 'init/')))
+
+        print 'Phoebus tileset installed!', '\n', bar
+        #}}}
 
     # if args.lazy_newb_embark:
 
