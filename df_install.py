@@ -10,6 +10,8 @@ sys.path.append('scripts/dwarf_fortress/')
 import download
 import disable_aquifers
 import copy_libgl
+# import lazy_newb_embark
+import init_options
 
 
 def get_args(): #{{{
@@ -31,7 +33,7 @@ def get_args(): #{{{
             action="store_true",
             help="Install embark profiles from Lazy Newb Pack")
 
-    parser.add_argument("-ci", "--custom_init",
+    parser.add_argument("-ino", "--init_options",
             action="store_true",
             help="Install custom init configs (requires Phoebus)")
 
@@ -41,7 +43,7 @@ def get_args(): #{{{
 
     parser.add_argument("-dt", "--dwarf_therapist",
             action="store_true",
-            help="Build & Install Dwarf Therapist")
+            help="Install Dwarf Therapist")
 
     args = parser.parse_args()
     return args #}}}
@@ -131,10 +133,11 @@ def main(args): #{{{
         #}}}
 
     # TODO
-    # if args.lazy_newb_embark:
+    if args.init_options:
+        init_options.set_opts()
 
     # TODO
-    # if args.custom_init:
+    # if args.lazy_newb_embark:
 
     if args.disable_aquifers:
         disable_aquifers.disable_aquifers(df_dir_df)
@@ -145,7 +148,8 @@ def main(args): #{{{
     #}}}
 
 
-try:
-    main(get_args())
-except KeyboardInterrupt:
-    sys.exit()
+if __name__ == '__main__':
+    try:
+        main(get_args())
+    except KeyboardInterrupt:
+        sys.exit()
