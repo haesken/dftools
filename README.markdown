@@ -34,18 +34,14 @@ Install embark profiles from Lazy Newb Pack
 
     -lze, --lazy_newb_embark
 
-Install Dwarf Therapist
+Set init.txt/d\_init.txt options
 
-    -dt, --dwarf_therapist
-
-Install custom init.txt/d\_init.txt
-
-    -ci, --custom_init
+    -ino, --init_options
 
 Disable aquifers
 
     -daq, --disable_aquifers
 
-Install everything
+Install Dwarf Therapist
 
-    -a, --install_all
+    -dt, --dwarf_therapist

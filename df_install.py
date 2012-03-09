@@ -10,8 +10,10 @@ sys.path.append('scripts/dwarf_fortress/')
 import download
 import disable_aquifers
 import copy_libgl
+# TODO
 # import lazy_newb_embark
-import init_options
+# TODO
+# import init_options
 
 
 def get_args(): #{{{
@@ -133,8 +135,8 @@ def main(args): #{{{
         #}}}
 
     # TODO
-    if args.init_options:
-        init_options.set_opts()
+    # if args.init_options:
+        # init_options.set_opts()
 
     # TODO
     # if args.lazy_newb_embark:
@@ -143,8 +145,11 @@ def main(args): #{{{
         disable_aquifers.disable_aquifers(df_dir_df)
 
     # TODO
-    # if args.dwarf_therapist:
-
+    if args.dwarf_therapist:
+        run_cmd("sudo apt-add-repository " +
+                "'deb http://dwarftherapist.com/apt oneiric universe'")
+        run_cmd("sudo apt-get update")
+        run_cmd("sudo apt-get install dwarftherapist")
     #}}}
 
 
