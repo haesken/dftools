@@ -126,13 +126,16 @@ def main(args): #{{{
         print 'Phoebus tileset installed!', '\n', bar
         #}}}
 
+    # TODO
     # if args.lazy_newb_embark:
 
+    # TODO
     # if args.custom_init:
 
     if args.disable_aquifers:
         disable_aquifers.disable_aquifers(df_dir_df)
 
+    # TODO
     # if args.dwarf_therapist:
 
     #}}}
