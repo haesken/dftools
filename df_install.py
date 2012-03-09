@@ -26,9 +26,17 @@ def get_args(): #{{{
             action="store_true",
             help="Install embark profiles from Lazy Newb Pack")
 
+    parser.add_argument("-ci", "--custom_init",
+            action="store_true",
+            help="Install custom init configs (requires Phoebus)")
+
     parser.add_argument("-dt", "--dwarf_therapist",
             action="store_true",
             help="Build & Install Dwarf Therapist")
+
+    parser.add_argument("-a", "--install_all",
+            action="store_true",
+            help="Install everything")
 
     args = parser.parse_args()
     return args #}}}
@@ -44,15 +52,19 @@ def main(args): #{{{
     run('sudo puppet apply {workdir}/scripts/scripts_depends.pp'.format(
         workdir=DF_WORK_DIR))
 
-    if args.dwarf_fortress == True:
+    if args.dwarf_fortress == True or args.install_all == True:
         run('bash {workdir}/scripts/dwarf_fortress/install.sh {workdir}'.format(
             workdir=DF_WORK_DIR))
 
-    if args.phoebus == True:
+    if args.phoebus == True or args.install_all == True:
         run('bash {workdir}/scripts/dwarf_fortress/phoebus.sh {workdir}'.format(
             workdir=DF_WORK_DIR))
 
-    if args.dwarf_therapist == True:
+    if args.lazy_newb_embark == True or args.install_all == True:
+        run('bash {workdir}/scripts/dwarf_fortress/lazy_newb_embark.sh {workdir}'.format(
+            workdir=DF_WORK_DIR))
+
+    if args.dwarf_therapist == True or args.install_all == True:
         run('bash {workdir}/scripts/dwarf_therapist/install_dwarf_therapist.sh {workdir}'.format(
             workdir=DF_WORK_DIR)) #}}}
 
