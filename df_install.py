@@ -4,14 +4,18 @@
 import argparse
 import os
 import sys
-import scripts.dwarf_fortress.copy_libgl.py
+import subprocess
+
+sys.path.append('scripts/dwarf_fortress/')
+import download
+import disable_aquifers
 
 
 def get_args(): #{{{
     """ Get arguments from the command line. """
 
     parser = argparse.ArgumentParser(
-            description="Install Dwarf Fortress",
+            description="Install Dwarf Fortress and utilities.",
             formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument("-df", "--dwarf_fortress",
@@ -38,34 +42,60 @@ def get_args(): #{{{
             action="store_true",
             help="Build & Install Dwarf Therapist")
 
-    parser.add_argument("-a", "--install_all",
-            action="store_true",
-            help="Install everything")
-
     args = parser.parse_args()
     return args #}}}
 
 
+def run_cmd(cmd):
+    subprocess.call(cmd, shell=True)
+
+
 def main(args): #{{{
-    DF_WORK_DIR = os.getcwd()
+    df_dir_root = os.getcwd()
+    df_dir_df = os.path.join(df_dir_root, 'dwarffortress/')
+    bar = 40 * '='
 
-    if args.dwarf_fortress or args.install_all:
-        print 'scripts/dwarf_fortress/install.sh'
+    if args.dwarf_fortress: #{{{
+        print bar, '\n', 'Installing Dwarf Fortress'
 
-    if args.phoebus or args.install_all:
-        print 'scripts/dwarf_fortress/phoebus.sh'
+        if not os.path.exists(df_dir_df):
+            os.mkdir(df_dir_df)
 
-    if args.lazy_newb_embark or args.install_all:
-        print 'scripts/dwarf_fortress/lazy_newb_embark.sh'
+        tar_path = os.path.join(df_dir_df, 'Dwarf_Fortress.tar.bz2')
 
-    if args.custom_init or args.install_all:
-        print 'scripts/dwarf_fortress/custom_init.sh'
+        if not os.path.exists(tar_path):
+            print 'Dwarf_Fortress.tar.bz2 not present, downloading Dwarf Fortress...'
+            download.download_link(
+                    download.get_dwarf_fortress_link(),
+                    tar_path)
+        else:
+            print 'Dwarf_Fortress.tar.bz2 present, not downloading.'
 
-    if args.disable_aquifers or args.install_all:
-        print 'scripts/dwarf_fortress/disable_aquifers.sh'
+        if not os.path.exists(os.path.join(df_dir_df, 'df_linux/')):
+            print 'Extracting Dwarf_Fortress.tar.bz2'
+            run_cmd('tar -xf {tar_file} -C {folder}'.format(
+                tar_file=tar_path, folder=df_dir_df))
+        else:
+            print 'df_linux dir present, not extracting'
 
-    if args.dwarf_therapist or args.install_all:
-        print 'scripts/dwarf_therapist/install.sh' #}}}
+        print 'Dwarf Fortress installed!', '\n', bar #}}}
+
+    if args.phoebus == True:
+        download.download_link(
+                download.get_phoebus_download_link(
+                download.get_phoebus_host_link()),
+                os.path.join(df_dir_df, 'Phoebus.zip'))
+
+    # if args.lazy_newb_embark:
+
+    # if args.custom_init:
+
+    if args.disable_aquifers:
+        disable_aquifers.disable_aquifers(df_dir_df)
+
+    # if args.dwarf_therapist:
+
+    #}}}
 
 
 try:

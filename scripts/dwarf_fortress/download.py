@@ -6,29 +6,8 @@
     Then download them.
 """
 
-import argparse
 from lxml import etree
-import sys
 import subprocess
-
-
-def get_args(): #{{{
-    """ Get arguments from the command line. """
-
-    parser = argparse.ArgumentParser(
-            description="Download & install Dwarf Fortress + Phoebus tileset.",
-            formatter_class=argparse.RawTextHelpFormatter)
-
-    parser.add_argument("-ddf", "--download_dwarf_fortress",
-            action="store_true",
-            help="Download Dwarf Fortress")
-
-    parser.add_argument("-dph", "--download_phoebus",
-            action="store_true",
-            help="Download Phoebus")
-
-    args = parser.parse_args()
-    return args #}}}
 
 
 def extract_links_from_xpath(url, link_xpath): #{{{
@@ -92,23 +71,3 @@ def download_link(link, filename): #{{{
         link=link,
         filename=filename),
         shell=True) #}}}
-
-
-def main(args): #{{{
-    """ Main """
-
-    if args.download_dwarf_fortress == True:
-        download_link(
-                get_dwarf_fortress_link(),
-                'Dwarf_Fortress.tar.bz2')
-
-    if args.download_phoebus == True:
-        download_link(
-                get_phoebus_download_link(get_phoebus_host_link()),
-                'Phoebus.zip') #}}}
-
-
-try:
-    main(get_args())
-except KeyboardInterrupt:
-    sys.exit()
