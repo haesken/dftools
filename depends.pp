@@ -2,6 +2,6 @@ $depends = [
     "wget",
     "python2.7",
     "python-lxml",
-    "unzip"
+    "unzip",
 ]
 package { $depends: ensure => "latest" }

@@ -15,8 +15,3 @@ $libs = [
     "ia32-libs",
 ]
 package { $libs: ensure => "latest" }
-
-$download = [
-    "wget",
-]
-package { $download: ensure => "latest" }
