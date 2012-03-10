@@ -11,6 +11,7 @@ import copy_libgl
 import disable_aquifers
 import download_df
 import lazy_newb_embark
+import install_dwarf_therapist
 
 
 def get_args(): #{{{
@@ -152,10 +153,12 @@ def main(args): #{{{
         print bar #}}}
 
     if args.dwarf_therapist: #{{{
-        run_cmd("sudo apt-add-repository " +
-                "'deb http://dwarftherapist.com/apt oneiric universe'")
-        run_cmd("sudo apt-get update")
-        run_cmd("sudo apt-get install dwarftherapist") #}}}
+        print bar
+        print 'Installing Dwarf Therapist'
+        install_dwarf_therapist.install_dwarf_therapist() #}}}
+        print bar
+        print 'Installed Dwarf Therapist!'
+        print bar
     #}}}
 
 
