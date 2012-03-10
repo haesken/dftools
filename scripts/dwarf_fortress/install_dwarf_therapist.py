@@ -1,10 +1,6 @@
 # encoding: utf-8
 
-import subprocess
-
-
-def run_cmd(cmd): #{{{
-    subprocess.call(cmd, shell=True) #}}}
+from dfa_common import run_cmd
 
 
 def install_dwarf_therapist(): #{{{

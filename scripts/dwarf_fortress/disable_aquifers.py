@@ -2,7 +2,8 @@
 
 import os
 import shutil
-import subprocess
+
+from dfa_common import run_cmd
 
 
 def disable_aquifers(df_dir_df):
@@ -24,5 +25,4 @@ def disable_aquifers(df_dir_df):
             if 'inorganic_stone' in entry]
 
     for raw in objects_aquifers:
-        subprocess.call(
-            "sed -i 's/\[AQUIFER\]//g' {raw}".format(raw=raw), shell=True)
+        run_cmd("sed -i 's/\[AQUIFER\]//g' {raw}".format(raw=raw))

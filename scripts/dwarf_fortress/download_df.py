@@ -6,7 +6,8 @@
 """
 
 from lxml import etree
-import subprocess
+
+from dfa_common import run_cmd
 
 
 def extract_links_from_xpath(url, link_xpath): #{{{
@@ -17,6 +18,12 @@ def extract_links_from_xpath(url, link_xpath): #{{{
 
     links = [(elem.text, str(elem.values()[0])) for elem in elems]
     return links #}}}
+
+
+def download_link(link, filename): #{{{
+    """ Download a given url with wget. """
+    run_cmd('wget "{link}" -O "{filename}"'.format(
+        link=link, filename=filename)) #}}}
 
 
 def get_dwarf_fortress_link(): #{{{
@@ -60,13 +67,3 @@ def get_phoebus_download_link(host_link): #{{{
     phoebus_download_link = host + download_suffix
 
     return phoebus_download_link #}}}
-
-
-def download_link(link, filename): #{{{
-    """ Download a given url with wget. """
-
-    wget_cmd = 'wget "{link}" -O "{filename}"'
-    subprocess.call(wget_cmd.format(
-        link=link,
-        filename=filename),
-        shell=True) #}}}
