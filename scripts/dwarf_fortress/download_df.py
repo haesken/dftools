@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # encoding: utf-8
 
 """ Scrape the Bay12 site and forums for links to:
