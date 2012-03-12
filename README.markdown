@@ -1,17 +1,33 @@
 Dwarf Fortress Auto
 ===================
 
-A set of scripts to download and install
-Dwarf Fortress and Dwarf Therapist, with a few included utilities.
+A set of scripts to download and install Dwarf Fortress and
+Dwarf Therapist, with a few included utilities.
+
+## Attribution
+
+This program uses materials from the
+[Lazy Newb Pack](http://www.bay12forums.com/smf/index.php?topic=59026.0)
+with permission.
+
+Specifically it includes the provided embark profiles, which
+were originally authored by
+[LucasUP](http://www.funkybomp.com/),
+[captnduck](https://www.youtube.com/user/captnduck), and
+[Mike Mayday](http://mayday.w.staszic.waw.pl/df.php).
+
 
 ## Requirements
 
-- [Puppet](http://puppetlabs.com/)
+- [Puppet](http://puppetlabs.com/), Ubuntu package name: "puppet"
+- [pip](http://www.pip-installer.org), Ubuntu package name: "python-pip"
 
-- Other dependencies will be handled by puppet.
+- Other dependencies will be handled by pip and puppet.
 
 ## Usage
 ### Install dependencies:
+
+Install python, etc with Puppet.
 
     sudo puppet apply depends.pp
 
@@ -21,6 +37,9 @@ Note:
     If your are on a different platform you will need to
     install the dependencies manually.
 
+Install envoy libary with pip.
+
+    sudo pip install -r requirements.txt
 
 ### Run df\_install.py
 
@@ -28,22 +47,39 @@ Note:
 
 ## df\_install.py Options
 
-Install Dwarf Fortress
+    -df,  --dwarf_fortress   : Install Dwarf Fortress
+    -ph,  --phoebus          : Install Phoebus tileset
+    -lze, --lazy_newb_embark : Install embark profiles from Lazy Newb Pack
+    -daq, --disable_aquifers : Disable aquifers
+    -dt,  --dwarf_therapist  : Install Dwarf Therapist (apt compatible platforms)
 
-    -df, --dwarf_fortress
+## Full dependency list
+These are the packages installed via puppet, so you can find equivalents.
 
-Install Phoebus tileset
+Dependencies for the scripts:
 
-    -ph, --phoebus
+    python2.7
+    python-lxml
+    python-pip
+    unzip
+    wget
 
-Install embark profiles from Lazy Newb Pack
+    envoy (python package)
 
-    -lze, --lazy_newb_embark
+Dependencies for Dwarf Fortress:
 
-Disable aquifers
+    ncurses-base
+    libncurses5
+    libncurses5-dev
+    libsdl1.2debian-all
+    libsdl1.2-dev
+    libsdl-image1.2
+    libsdl-image1.2-dev
+    libglu1-mesa
+    libglu1-mesa-dev
+    libgtk2.0-0
+    libgtk2.0-dev
+    libopenal1
+    libopenal-dev
 
-    -daq, --disable_aquifers
-
-Install Dwarf Therapist (apt compatible platforms)
-
-    -dt, --dwarf_therapist
+    ia32-libs (needed only on 64 bit systems)

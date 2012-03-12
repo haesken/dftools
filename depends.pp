@@ -1,7 +1,8 @@
 $depends = [
-    "wget",
-    "python2.7",
     "python-lxml",
+    "python-pip",
+    "python2.7",
     "unzip",
+    "wget",
 ]
-package { $depends: ensure => "latest" }
+package { $depends: ensure => "installed" }

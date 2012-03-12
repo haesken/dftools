@@ -14,4 +14,4 @@ $libs = [
     "libopenal-dev",
     "ia32-libs",
 ]
-package { $libs: ensure => "latest" }
+package { $libs: ensure => "installed" }
