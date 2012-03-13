@@ -2,10 +2,19 @@
 
 import subprocess
 import os
+import fnmatch
 
 
 def run_cmd(cmd): #{{{
     subprocess.call(cmd, shell=True) #}}}
+
+
+def find_recursive(path, term): #{{{
+    matches = []
+    for root, dirnames, filenames in os.walk(path):
+        for filename in fnmatch.filter(filenames, term):
+            matches.append(os.path.join(root, filename))
+    return matches #}}}
 
 
 def ensure_dir(directory): #{{{

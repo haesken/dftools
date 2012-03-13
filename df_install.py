@@ -87,8 +87,8 @@ def main(args): #{{{
     #}}}
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': #{{{
     try:
         main(get_args())
     except KeyboardInterrupt:
-        sys.exit()
+        sys.exit() #}}}

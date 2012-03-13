@@ -11,7 +11,7 @@ import zipfile
 def find_type(archive_path): #{{{
     """ See if the file is actually an archive. """
 
-    extension = archive_path.split(".")[-1]
+    extension = archive_path.split(".")[-1].lower()
 
     if extension in ['tar', 'bz2', 'gz', 'gzip']:
         if tarfile.is_tarfile(archive_path):

@@ -7,7 +7,7 @@ from dfa_common import ensure_dir, copy
 from extract_archive import extract_archive
 
 
-def install_phoebus(df_dir_df):
+def install_phoebus(df_dir_df): #{{{
     """ Download and install the Phoebus tileset. """
 
     phoebus_dir = path.join(df_dir_df, 'phoebus/')
@@ -27,23 +27,25 @@ def install_phoebus(df_dir_df):
     phoebus_dir_raw = path.join(phoebus_dir, 'raw/')
     df_dir_root = path.join(df_dir_df, 'df_linux/')
     df_dir_data = path.join(df_dir_df, 'df_linux/data/')
+    df_dir_raw = path.join(df_dir_df, 'df_linux/raw/')
 
     if not path.exists(phoebus_dir_data):
         print 'Extracting Phoebux tileset'
         extract_archive(zip_path, phoebus_dir)
 
-    # Copy phoebus data dir to df_linux/data
+    # Copy Phoebus data dir to df_linux/data
     if path.exists(phoebus_dir_data):
         print 'Copying Phoebus data dir to {dest}'.format(dest=df_dir_data)
         copy(phoebus_dir_data, df_dir_root)
 
-    # Copy phoebus raw dir to df_linux/raw
+    # Copy Phoebus raw dir to df_linux/raw
     if path.exists(phoebus_dir_raw):
         print 'Copying Phoebus raw dir to {dest}'.format(dest=df_dir_raw)
         copy(phoebus_dir_raw, df_dir_root)
 
+    # Copy Phoebus init files into actual init dir.
     if path.exists(path.join(
         df_dir_df, 'df_linux/data/init/phoebus')):
         print 'Installing Phoebus init files'
         copy(path.join(df_dir_data, 'init/phoebus/*'),
-            path.join(df_dir_data, 'init/'))
+            path.join(df_dir_data, 'init/')) #}}}

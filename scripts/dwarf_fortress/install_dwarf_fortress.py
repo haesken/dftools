@@ -8,7 +8,7 @@ import copy_libgl
 import download_df
 
 
-def install_dwarf_fortress(df_dir_df):
+def install_dwarf_fortress(df_dir_df): #{{{
     """ Install Dwarf Fortress. """
 
     ensure_dir(df_dir_df)
@@ -30,5 +30,6 @@ def install_dwarf_fortress(df_dir_df):
     else:
         print 'df_linux dir present, not extracting'
 
-    print 'Installing libgl library'
-    copy_libgl.copy_libgl()
+    if not os.path.exists(os.path.join(df_dir_df, 'df_linux/libs/libgl.so.1')):
+        print 'Installing libgl library'
+        copy_libgl.copy_libgl(df_dir_df) #}}}

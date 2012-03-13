@@ -1,28 +1,28 @@
 # encoding: utf-8
 
 import os
-import envoy
 import shutil
+from dfa_common import find_recursive
 
 
-def copy_libgl(): #{{{
-    libgl_canidates_lib = envoy.run('find /usr/lib -iname libgl.so.1')
-    libgl_canidates_lib32 = envoy.run('find /usr/lib32 -iname libgl.so.1')
+def copy_libgl(df_dir_df): #{{{
 
     libgl_canidates = []
 
-    for canidate in libgl_canidates_lib.std_out.strip().split('\n'):
-        libgl_canidates.append(canidate)
+    lib_matches = find_recursive('/usr/lib/', 'libGL.so.1')
+    if lib_matches != None:
+        for item in lib_matches:
+            libgl_canidates.append(item)
 
-    for canidate in libgl_canidates_lib32.std_out.strip().split('\n'):
-        libgl_canidates.append(canidate)
+    lib_matches_32 = find_recursive('/usr/lib32/', 'libGL.so.1')
+    if lib_matches != None:
+        for item in lib_matches_32:
+            libgl_canidates.append(item)
 
     libgl_path = [canidate for canidate in libgl_canidates
         if 'nvidia' not in canidate and '64' not in canidate][0]
 
-
-    df_libs_path = os.path.join(
-            '/home/mike/games/dwarf_fortress_auto/', 'dwarffortress/df_linux/libs/')
+    df_libs_path = os.path.join(df_dir_df, 'df_linux/libs/')
 
     shutil.copy2(libgl_path, os.path.join(df_libs_path, 'libgl.so.1'))
 
