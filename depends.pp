@@ -1,6 +1,5 @@
 $depends = [
     "python-lxml",
-    "python-pip",
     "python2.7",
     "wget",
 ]
