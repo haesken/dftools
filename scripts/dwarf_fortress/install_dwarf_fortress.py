@@ -2,7 +2,8 @@
 
 import os
 
-from dfa_common import run_cmd, ensure_dir
+from dfa_common import ensure_dir
+from extract_archive import extract_archive
 import copy_libgl
 import download_df
 
@@ -25,8 +26,7 @@ def install_dwarf_fortress(df_dir_df):
 
     if not os.path.exists(os.path.join(df_dir_df, 'df_linux/')):
         print 'Extracting Dwarf_Fortress.tar.bz2'
-        run_cmd('tar -xf {tar_file} -C {folder}'.format(
-            tar_file=tar_path, folder=df_dir_df))
+        extract_archive(tar_path, df_dir_df)
     else:
         print 'df_linux dir present, not extracting'
 
