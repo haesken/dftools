@@ -61,7 +61,6 @@ Dependencies for the scripts:
     python2.7
     python-lxml
     python-pip
-    unzip
     wget
 
     envoy (python package)
