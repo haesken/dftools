@@ -20,9 +20,8 @@ were originally authored by
 ## Requirements
 
 - [Puppet](http://puppetlabs.com/), Ubuntu package name: "puppet"
-- [pip](http://www.pip-installer.org), Ubuntu package name: "python-pip"
 
-- Other dependencies will be handled by pip and puppet.
+- Other dependencies will be handled by puppet.
 
 ## Usage
 ### Install dependencies:
@@ -36,10 +35,6 @@ Note:
     The package list provided in depends.pp is for Ubuntu.
     If your are on a different platform you will need to
     install the dependencies manually.
-
-Install envoy libary with pip.
-
-    sudo pip install -r requirements.txt
 
 ### Run df\_install.py
 
@@ -60,10 +55,7 @@ Dependencies for the scripts:
 
     python2.7
     python-lxml
-    python-pip
     wget
-
-    envoy (python package)
 
 Dependencies for Dwarf Fortress:
 
