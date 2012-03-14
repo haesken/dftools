@@ -20,8 +20,6 @@ were originally authored by
 
 - [Puppet](http://puppetlabs.com/)
 
-- Other dependencies will be handled by puppet.
-
 ## Usage
 ### Download
 
@@ -29,7 +27,7 @@ were originally authored by
     - Go to the
         [tags page](https://github.com/haesken/dwarf_fortress_auto/tags)
         and download the latest tag.
-- Current
+- Current (Recommended)
     - [Download zip](https://github.com/haesken/dwarf_fortress_auto/zipball/master)
     - [Download tar.gz](https://github.com/haesken/dwarf_fortress_auto/tarball/master)
 
@@ -51,13 +49,14 @@ Note:
 
 ### df\_install.py Options
 
+    -dir, --directory        : Directory to install Dwarf Fortress in.
     -df,  --dwarf_fortress   : Install Dwarf Fortress
     -ph,  --phoebus          : Install Phoebus tileset
     -lze, --lazy_newb_embark : Install embark profiles from Lazy Newb Pack
     -daq, --disable_aquifers : Disable aquifers
     -dt,  --dwarf_therapist  : Install Dwarf Therapist (apt compatible platforms)
 
-## Full dependency list
+## Dependency list
 These are the packages installed via puppet, so you can find equivalents.
 
 Dependencies for the scripts:
