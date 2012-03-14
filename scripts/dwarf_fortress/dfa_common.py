@@ -35,8 +35,3 @@ def download_with_progress(url, filename): #{{{
     grabber = urlgrabber.grabber.URLGrabber()
     grabber.opts.progress_obj = urlgrabber.progress.TextMeter()
     grabber.urlgrab(url, filename) #}}}
-
-
-def copy(src, dest): #{{{
-    copy_cmd = 'cp -r {src} {dest}'.format(src=src, dest=dest)
-    subprocess.call(copy_cmd, shell=True) #}}}

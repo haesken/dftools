@@ -1,16 +1,13 @@
 # encoding: utf-8
 
-import os
-from dfa_common import copy
+from os import path
+from distutils.file_util import copy_file
 
 
 def install_lazy_newb_embarks(df_dir_root):
-    src = os.path.join(
+    copy_file(path.join(
             df_dir_root,
-            'custom/data/init/embark_profiles.txt')
-
-    dest = os.path.join(
+            'custom/data/init/embark_profiles.txt'),
+            path.join(
             df_dir_root,
-            'dwarffortress/df_linux/data/init/embark_profiles.txt')
-
-    copy(src, dest)
+            'dwarffortress/df_linux/data/init/embark_profiles.txt'))
