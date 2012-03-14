@@ -1,6 +1,6 @@
 $depends = [
-    "python-lxml",
     "python2.7",
-    "wget",
+    "python-lxml",
+    "python-urlgrabber",
 ]
 package { $depends: ensure => "installed" }

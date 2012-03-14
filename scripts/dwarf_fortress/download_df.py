@@ -7,8 +7,6 @@
 
 from lxml import etree
 
-from dfa_common import run_cmd
-
 
 def extract_links_from_xpath(url, link_xpath): #{{{
     """ Parse the html of a given url and extract the links of an xpath. """
@@ -18,12 +16,6 @@ def extract_links_from_xpath(url, link_xpath): #{{{
 
     links = [(elem.text, str(elem.values()[0])) for elem in elems]
     return links #}}}
-
-
-def download_link(link, filename): #{{{
-    """ Download a given url with wget. """
-    run_cmd('wget "{link}" -O "{filename}"'.format(
-        link=link, filename=filename)) #}}}
 
 
 def get_dwarf_fortress_link(): #{{{

@@ -2,8 +2,8 @@
 
 from os import path
 
-import download_df
-from dfa_common import ensure_dir, copy
+from download_df import get_phoebus_host_link, get_phoebus_download_link
+from dfa_common import ensure_dir, copy, download_with_progress
 from extract_archive import extract_archive
 
 
@@ -18,9 +18,8 @@ def install_phoebus(df_dir_df): #{{{
 
     if not path.exists(zip_path):
         print 'Phoebus.zip not present, downloading'
-        download_df.download_link(
-                download_df.get_phoebus_download_link(
-                download_df.get_phoebus_host_link()),
+        download_with_progress(
+                get_phoebus_download_link(get_phoebus_host_link()),
                 zip_path)
 
     phoebus_dir_data = path.join(phoebus_dir, 'data/')

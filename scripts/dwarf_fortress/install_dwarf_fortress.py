@@ -2,10 +2,10 @@
 
 import os
 
-from dfa_common import ensure_dir
+from dfa_common import ensure_dir, download_with_progress
 from extract_archive import extract_archive
-import copy_libgl
-import download_df
+from copy_libgl import copy_libgl
+from download_df import get_dwarf_fortress_link
 
 
 def install_dwarf_fortress(df_dir_df): #{{{
@@ -18,8 +18,8 @@ def install_dwarf_fortress(df_dir_df): #{{{
     if not os.path.exists(tar_path):
         print ('Dwarf_Fortress.tar.bz2 not present, ' +
                 'downloading Dwarf Fortress...')
-        download_df.download_link(
-                download_df.get_dwarf_fortress_link(),
+        download_with_progress(
+                get_dwarf_fortress_link(),
                 tar_path)
     else:
         print 'Dwarf_Fortress.tar.bz2 present, not downloading.'
@@ -32,4 +32,4 @@ def install_dwarf_fortress(df_dir_df): #{{{
 
     if not os.path.exists(os.path.join(df_dir_df, 'df_linux/libs/libgl.so.1')):
         print 'Installing libgl library'
-        copy_libgl.copy_libgl(df_dir_df) #}}}
+        copy_libgl(df_dir_df) #}}}
