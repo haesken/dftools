@@ -3,7 +3,7 @@
 """ Find and copy libgl library to the Dwarf Fortress libs directory. """
 
 import os
-import shutil
+from distutils.file_util import copy_file
 from dfa_common import find_recursive
 
 
@@ -27,7 +27,7 @@ def copy_libgl(df_dir_df): #{{{
 
     df_libs_path = os.path.join(df_dir_df, 'df_linux/libs/')
 
-    shutil.copy2(libgl_path, os.path.join(df_libs_path, 'libgl.so.1'))
+    copy_file(libgl_path, os.path.join(df_libs_path, 'libgl.so.1'))
 
     print "Copied: {libgl_path} to {df_libs_path}".format(
             libgl_path=libgl_path, df_libs_path=df_libs_path) #}}}
