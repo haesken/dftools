@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+""" Download and install Dwarf Fortress. """
+
 import os
 
 from dfa_common import ensure_dir, download_with_progress
@@ -9,7 +11,7 @@ from download_df import get_dwarf_fortress_link
 
 
 def install_dwarf_fortress(df_dir_df): #{{{
-    """ Install Dwarf Fortress. """
+    """ Download and install Dwarf Fortress. """
 
     ensure_dir(df_dir_df)
 

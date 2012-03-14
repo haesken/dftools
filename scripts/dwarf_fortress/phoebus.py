@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+""" Install the Phoebus tileset. """
+
 from os import path
 from distutils.dir_util import copy_tree
 

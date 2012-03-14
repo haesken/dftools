@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+""" Common functions for Dwarf Fortress Auto """
+
 import subprocess
 import os
 import fnmatch
@@ -9,6 +11,8 @@ import urlgrabber.grabber
 
 
 def run_cmd(cmd): #{{{
+    """ Run an external command. """
+
     subprocess.call(cmd, shell=True) #}}}
 
 

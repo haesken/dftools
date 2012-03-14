@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+""" Disable aquifers in Dwarf Fortress. """
+
 import os
 import shutil
 
@@ -7,6 +9,8 @@ from dfa_common import run_cmd
 
 
 def disable_aquifers(df_dir_df):
+    """ Delete all instances of '[AQUIFER]' in the raws. """
+
     raws_dir = os.path.join(df_dir_df, 'df_linux/raw/')
 
     dir_objects = os.path.join(raws_dir, 'objects/')

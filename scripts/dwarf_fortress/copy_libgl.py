@@ -1,11 +1,14 @@
 # encoding: utf-8
 
+""" Find and copy libgl library to the Dwarf Fortress libs directory. """
+
 import os
 import shutil
 from dfa_common import find_recursive
 
 
 def copy_libgl(df_dir_df): #{{{
+    """ Find and copy libgl library to the Dwarf Fortress libs directory. """
 
     libgl_canidates = []
 
