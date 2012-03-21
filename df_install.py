@@ -36,7 +36,7 @@ import argparse
 import os
 import sys
 
-sys.path.append('scripts/dwarf_fortress/')
+sys.path.append('modules/')
 import disable_aquifers
 import install_dwarf_fortress
 import install_dwarf_therapist
