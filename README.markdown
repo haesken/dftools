@@ -55,6 +55,7 @@ Note:
     -lze, --lazy_newb_embark : Install embark profiles from Lazy Newb Pack
     -daq, --disable_aquifers : Disable aquifers
     -dt,  --dwarf_therapist  : Install Dwarf Therapist (apt compatible platforms)
+    -dft  --dfhack           : Install DFHack
 
 ## Dependency list
 These are the packages installed via puppet, so you can find equivalents.
