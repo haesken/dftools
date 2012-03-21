@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Common functions for Dwarf Fortress Auto """
+""" Download and install dfhack (https://github.com/peterix/dfhack). """
 
 """
 Copyright (c) 2012, haesken
@@ -29,40 +29,34 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import subprocess
-import os
-import fnmatch
+from os import path
 
-import urlgrabber.progress
-import urlgrabber.grabber
-
-
-def run_cmd(cmd): #{{{
-    """ Run an external command. """
-
-    subprocess.call(cmd, shell=True) #}}}
+from dfa_common import ensure_dir, download_with_progress
+from extract_archive import extract_archive
+from find_links import get_dfhack_download_link
 
 
-def find_recursive(path, term): #{{{
-    """ Search a directory recursively for a file. """
+def install_dfhack(path_root): #{{{
+    """ Download and install dfhack. """
 
-    matches = []
-    for root, dirnames, filenames in os.walk(path):
-        for filename in fnmatch.filter(filenames, term):
-            matches.append(os.path.join(root, filename))
-    return matches #}}}
+    path_df_linux = path.join(path_root, 'dwarffortress/df_linux/')
+    path_dfhack_dir = path.join(path_root, 'dwarffortress/dfhack/')
+    path_dfhack_tar = path.join(path_dfhack_dir, 'dfhack.tar.gz')
+
+    if not path.exists(path_dfhack_tar):
+        print 'dfhack.tar.gz not found, downloading.'
+        ensure_dir(path_dfhack_dir)
+        download_with_progress(get_dfhack_download_link(),
+                            path_dfhack_tar)
+    else:
+        print 'Found dfhack.tar.gz here, not downloading.'
+
+    # Extract the archive contents to a separate folder first.
+    if not path.exists(path.join(path_df_linux, 'dfhack.init-example')):
+        print 'Extracting DFHack.'
+        extract_archive(path_dfhack_tar, path_df_linux)
+    else:
+        print 'Found DFHack already extracted here, not overwriting.'
 
 
-def ensure_dir(directory): #{{{
-    """ Make sure a directory exists, if not create it. """
-
-    if not os.path.exists(directory):
-        os.mkdir(directory) #}}}
-
-
-def download_with_progress(url, filename): #{{{
-    """ Download a file with a progress bar. """
-    dfa_user_agent = 'Dwarf Fortress Auto'
-    grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
-    grabber.opts.progress_obj = urlgrabber.progress.TextMeter()
-    grabber.urlgrab(url, filename) #}}}
+    #}}}

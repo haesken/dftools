@@ -40,6 +40,7 @@ sys.path.append('modules/')
 import disable_aquifers
 import install_dwarf_fortress
 import install_dwarf_therapist
+import install_dfhack
 import lazy_newb_embark
 import phoebus
 from dfa_common import ensure_dir
@@ -76,6 +77,10 @@ def get_args(): #{{{
     parser.add_argument("-dt", "--dwarf_therapist",
             action="store_true",
             help="Install Dwarf Therapist.")
+
+    parser.add_argument("-dfh", "--dfhack",
+            action="store_true",
+            help="Install dfhack.")
 
     args = parser.parse_args()
     return args #}}}
@@ -122,6 +127,13 @@ def main(args): #{{{
         install_dwarf_therapist.install_dwarf_therapist()
         print divider
         print 'Installed Dwarf Therapist!'
+        print divider #}}}
+
+    if args.dfhack: #{{{
+        print divider
+        print 'Installing dfhack'
+        install_dfhack.install_dfhack(args.directory)
+        print 'dfhack installed!'
         print divider #}}}
     #}}}
 

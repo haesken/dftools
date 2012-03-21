@@ -32,13 +32,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from lxml import etree
+from lxml import html
+import requests
+
+
+def download_page(url): #{{{
+    """ Download a page with Requests. Will handle https. """
+    try:
+        page = requests.get(url)
+    except requests.ConnectionError:
+        pass
+
+    if page.status_code == 200:
+        return page.content #}}}
 
 
 def extract_links_from_xpath(url, link_xpath): #{{{
     """ Parse the html of a given url and extract the links of an xpath. """
 
-    tree = etree.parse(url, etree.HTMLParser())
+    page = download_page(url)
+    tree = html.fromstring(page)
     elems = tree.xpath(link_xpath)
 
     links = [(elem.text, str(elem.values()[0])) for elem in elems]
@@ -86,3 +99,17 @@ def get_phoebus_download_link(host_link): #{{{
     phoebus_download_link = host + download_suffix
 
     return phoebus_download_link #}}}
+
+
+def get_dfhack_download_link(): #{{{
+    """ Get the download link for the current version of DFHack. """
+
+    dfhack_downloads_link = 'http://github.com/peterix/dfhack/downloads/'
+    links = extract_links_from_xpath(dfhack_downloads_link, "//a[@href]"),
+
+    current_linux_link = [link[1] for link in links[0]
+            if "linux.tar.gz" in link[1].lower()][0]
+
+    current_linux_link_absolute = 'http://www.github.com' + current_linux_link
+
+    return current_linux_link_absolute #}}}

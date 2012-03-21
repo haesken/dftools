@@ -32,9 +32,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from os import path
 from distutils.dir_util import copy_tree
 
-from download_df import get_phoebus_host_link, get_phoebus_download_link
 from dfa_common import ensure_dir, download_with_progress
 from extract_archive import extract_archive
+from find_links import get_phoebus_host_link, get_phoebus_download_link
 
 
 def install_phoebus(df_dir_df): #{{{

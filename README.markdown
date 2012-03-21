@@ -63,6 +63,7 @@ Dependencies for the scripts:
 
     python2.7
     python-lxml
+    python-requests
     python-urlgrabber
 
 Dependencies for Dwarf Fortress:

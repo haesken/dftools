@@ -31,10 +31,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 
+from copy_libgl import copy_libgl
 from dfa_common import ensure_dir, download_with_progress
 from extract_archive import extract_archive
-from copy_libgl import copy_libgl
-from download_df import get_dwarf_fortress_link
+from find_links import get_dwarf_fortress_link
 
 
 def install_dwarf_fortress(df_dir_df): #{{{
