@@ -40,22 +40,22 @@ def download_page(url): #{{{
     """ Download a page with Requests. Will handle https. """
     try:
         page = requests.get(url)
+        if page.status_code == 200:
+            return page.content
     except requests.ConnectionError:
-        pass
-
-    if page.status_code == 200:
-        return page.content #}}}
+        print 'Requests ConnectionError!'
 
 
 def extract_links_from_xpath(url, link_xpath): #{{{
     """ Parse the html of a given url and extract the links of an xpath. """
 
     page = download_page(url)
-    tree = html.fromstring(page)
-    elems = tree.xpath(link_xpath)
+    if page != None:
+        tree = html.fromstring(page)
+        elems = tree.xpath(link_xpath)
 
-    links = [(elem.text, str(elem.values()[0])) for elem in elems]
-    return links #}}}
+        links = [(elem.text, str(elem.values()[0])) for elem in elems]
+        return links #}}}
 
 
 def get_dwarf_fortress_link(): #{{{
