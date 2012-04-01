@@ -41,18 +41,14 @@ def get_args(): #{{{
 
     parser.add_argument("-p", "--path",
             type=str,
-            default="defaultval",
             help="Path to the Dwarf Fortress init.txt/d_init.txt file")
 
     parser.add_argument("-o", "--option",
             type=str,
-            default="population",
-            help="Option to set, ex: population")
-
-    parser.add_argument("-v", "--value",
-            type=str,
-            default="defaultval",
-            help="New value of the option, ex: 70")
+            action='append',
+            nargs='*',
+            help="Option/value pair to set,\n" +
+                 "Example: -o 'population' '80'")
 
     args = parser.parse_args()
     return args #}}}
@@ -65,18 +61,8 @@ def read_file(path): #{{{
     f = open(path)
     lines = f.readlines()
     f.close()
-    return lines #}}}
-
-
-def find_option(option_name, lines): #{{{
-    """ Find a line containing the option.
-        Return the line.
-    """
-
     for line in lines:
-        if line.startswith('[') and line.strip('\r\n').endswith(']'):
-            if option_name.lower() in line.lower():
-                return line.strip('\r\n') #}}}
+        yield line.strip('\r\n') #}}}
 
 
 def parse_option(line): #{{{
@@ -89,6 +75,19 @@ def parse_option(line): #{{{
     return (option, values) #}}}
 
 
+def find_option(option_name, lines): #{{{
+    """ Find a line containing the option.
+        Return the line.
+    """
+
+    option_lines = [line for line in lines
+            if line.startswith('[') and line.endswith(']')]
+
+    for option_line in option_lines:
+        if option_name in parse_option(option_line)[0]:
+            return option_line #}}}
+
+
 def set_option_values(option_pair, new_values): #{{{
     """ Set new values for an option.
         Returns a tuple with the option and new argument values.
@@ -98,24 +97,45 @@ def set_option_values(option_pair, new_values): #{{{
     return new_pair #}}}
 
 
-def make_option_line(option_pair): #{{{
+def make_option_line(option_tuple): #{{{
     """ Generate a valid option line for the init file, ex: '[Population:70]'.
         Returns the new line (including '\r\n' at the end).
     """
 
-    values = [item for item in option_pair[1:]][0]
-    line = '[{option}:{values}]\r\n'.format(
-            option=option_pair[0],
-            values=values)
+    # If we have multiple arguments join them with a :
+    if len(option_tuple[1]) > 1:
+        values = ':'.join(option_tuple[1])
+    else:
+        values = option_tuple[1][0]
+
+    line = '[{option}:{values}]'.format(
+            option=option_tuple[0],
+            values=values.upper())
+
     return line #}}}
 
 
-def write_to_file(new_contents, file_path): #{{{
+def write_lines_to_file(new_contents, file_path): #{{{
     """ Write text to a file. """
+    new_contents_with_newlines = [line + '\r\n' for line in new_contents]
 
     f = open(file_path, 'w')
-    f.write(new_contents)
+    f.writelines(new_contents_with_newlines)
     f.close() #}}}
+
+
+def insert_modified_line(inits, option_name, new_option_line): #{{{
+    new_inits = []
+    for line in inits:
+        if line.startswith('[') and line.endswith(']'):
+            if option_name in line:
+                new_inits.append(new_option_line)
+            else:
+                new_inits.append(line)
+        else:
+            new_inits.append(line)
+
+    return new_inits #}}}
 
 
 def main(args): #{{{
@@ -123,24 +143,24 @@ def main(args): #{{{
         Then set the new value for that option and write it to the file.
     """
 
-    inits = read_file(args.path)
-    option_pair = parse_option(find_option(args.option, inits))
-    new_option_pair = set_option_values(option_pair, args.value)
-    new_option_line = make_option_line(new_option_pair)
+    inits = list(read_file(args.path))
 
-    new_inits = []
-    for line in inits:
-        if new_option_pair[0] in line:
-            new_inits.append(new_option_line)
-        else:
-            new_inits.append(line)
+    for item in args.option:
+        try:
+            current_option_line = find_option(item[0].upper(), inits)
+            option_tuple = parse_option(current_option_line)
 
-    new_init_contents = ''.join(new_inits)
+            new_option_tuple = set_option_values(option_tuple, item[1:])
+            new_option_line = make_option_line(new_option_tuple)
+            new_init_contents = insert_modified_line(inits,
+                    new_option_tuple[0], new_option_line)
 
-    if new_init_contents != None:
-        write_to_file(new_init_contents, args.path)
-    else:
-        raise ValueError #}}}
+            if new_init_contents != None:
+                write_lines_to_file(new_init_contents, args.path)
+            else:
+                raise ValueError("New inits contains nothing, aborting.")
+        except ValueError:
+            print "Something went horribly wrong..." #}}}
 
 
 if __name__ == '__main__': #{{{
