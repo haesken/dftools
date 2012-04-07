@@ -82,6 +82,10 @@ def get_args(): #{{{
             action="store_true",
             help="Install dfhack.")
 
+    parser.add_argument("-q", "--quick",
+            action="store_true",
+            help="Equivalent to -df -ph -lze -daq -dfh")
+
     args = parser.parse_args()
     return args #}}}
 
@@ -93,7 +97,7 @@ def main(args): #{{{
 
     divider = 60 * '='
 
-    if args.dwarf_fortress: #{{{
+    if args.dwarf_fortress or args.quick: #{{{
         print divider
         print 'Installing Dwarf Fortress'
         install_dwarf_fortress.install_dwarf_fortress(df_dir_df)
@@ -101,7 +105,7 @@ def main(args): #{{{
         print 'Dwarf Fortress installed!'
         print divider #}}}
 
-    if args.phoebus: #{{{
+    if args.phoebus or args.quick: #{{{
         print divider
         print 'Installing Phoebus tileset'
         print divider
@@ -109,16 +113,23 @@ def main(args): #{{{
         print 'Phoebus tileset installed!'
         print divider #}}}
 
-    if args.lazy_newb_embark: #{{{
+    if args.lazy_newb_embark or args.quick: #{{{
         print divider
         lazy_newb_embark.install_lazy_newb_embarks(args.directory)
         print 'Installed Lazy Newb Pack embark profiles!'
         print divider #}}}
 
-    if args.disable_aquifers: #{{{
+    if args.disable_aquifers or args.quick: #{{{
         print divider
         disable_aquifers.disable_aquifers(df_dir_df)
         print 'Disabled aquifers!'
+        print divider #}}}
+
+    if args.dfhack or args.quick: #{{{
+        print divider
+        print 'Installing dfhack'
+        install_dfhack.install_dfhack(args.directory)
+        print 'dfhack installed!'
         print divider #}}}
 
     if args.dwarf_therapist: #{{{
@@ -127,13 +138,6 @@ def main(args): #{{{
         install_dwarf_therapist.install_dwarf_therapist()
         print divider
         print 'Installed Dwarf Therapist!'
-        print divider #}}}
-
-    if args.dfhack: #{{{
-        print divider
-        print 'Installing dfhack'
-        install_dfhack.install_dfhack(args.directory)
-        print 'dfhack installed!'
         print divider #}}}
     #}}}
 

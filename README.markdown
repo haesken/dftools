@@ -43,11 +43,8 @@ Note:
     If your are on a different platform you will need to
     install the dependencies manually.
 
-### Run df\_install.py
-
-    python df_install.py [options]
-
-### df\_install.py Options
+#### df\_install.py
+    Usage: python df_install.py [options]
 
     -dir, --directory        : Directory to install Dwarf Fortress in.
     -df,  --dwarf_fortress   : Install Dwarf Fortress
@@ -55,7 +52,22 @@ Note:
     -lze, --lazy_newb_embark : Install embark profiles from Lazy Newb Pack
     -daq, --disable_aquifers : Disable aquifers
     -dt,  --dwarf_therapist  : Install Dwarf Therapist (apt compatible platforms)
-    -dft  --dfhack           : Install DFHack
+    -dfh, --dfhack           : Install DFHack
+    -q,   --quick            : Equivalent to '-df -ph -lze -daq -dfh'
+
+#### init\_editor.py
+    Usage: python init_editor.py [options]
+
+    -p,   --path             : Path to the config file.
+    -s,   --search           : Search for an option.
+    -o,   --option           : Option to change
+
+        Examples:
+            Set POPULATION_CAP to 80   : -o population 80
+            Set BABY_CHILD_CAP to 0:10 : -o child 0 10
+
+        This option can be repeated, example:
+            -o population 80 -o child 0 10
 
 ## Dependency list
 These are the packages installed via puppet, so you can find equivalents.
