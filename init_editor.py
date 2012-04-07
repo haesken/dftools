@@ -51,8 +51,8 @@ def get_args(): #{{{
             nargs='*',
             help="Option/value pair to set.\n" +
                  "Examples:\n" +
-                 "    'population' '80'\n" +
-                 "    'embark_rectangle' '4' '4'")
+                 "    population 80\n" +
+                 "    embark_rectangle 4 4")
 
     parser.add_argument("-s", "--search",
             type=str,
@@ -92,7 +92,7 @@ def find_option(option_name, lines): #{{{
 
     for option_line in option_lines:
         if option_name in parse_option(option_line)[0]:
-            return option_line #}}}
+            yield option_line #}}}
 
 
 def set_option_values(option_pair, new_values): #{{{
@@ -132,6 +132,8 @@ def write_lines_to_file(new_contents, file_path): #{{{
 
 
 def insert_modified_line(inits, option_name, new_option_line): #{{{
+    """ Insert the modified line into the file. """
+
     new_inits = []
     for line in inits:
         if line.startswith('[') and line.endswith(']'):
@@ -150,29 +152,61 @@ def main(args): #{{{
         Then set the new value for that option and write it to the file.
     """
 
-    inits = list(read_file(args.path))
+    if args.search: #{{{
+        inits = list(read_file(args.path))
+        search_term = args.search.upper()
+        search_results = list(find_option(search_term, inits))
 
-    if args.search:
-        search_res = find_option(args.search.upper(), inits)
-        print search_res
+        if len(search_results) >= 1:
+            for result in search_results:
+                print result
+        else:
+            print "Found no option containing '{option}'!".format(
+                    option=search_term) #}}}
 
-    if args.option:
+    if args.option: #{{{
         for item in args.option:
-            try:
-                current_option_line = find_option(item[0].upper(), inits)
+            """ Read/write the inits file on each iteration so
+                the current change doesn't discard the previous
+                change.
+            """
+            inits = list(read_file(args.path))
+
+            option_name = item[0].upper()
+            search_results = list(find_option(option_name, inits))
+
+            # Handle bad search results {{{
+            if len(search_results) == 0:
+                print "Found no option containing '{option}'!".format(
+                        option=option_name)
+                sys.exit()
+
+            elif len(search_results) > 1:
+                print "Multiple options containing '{option_name}'!".format(
+                        option_name=option_name)
+                print "Use ONE option from the following:"
+                for i in search_results:
+                    print i
+                sys.exit() #}}}
+
+            current_option_line = search_results[0]
+
+            # If the option actually exists
+            if current_option_line != None:
                 option_tuple = parse_option(current_option_line)
 
-                new_option_tuple = set_option_values(option_tuple, item[1:])
-                new_option_line = make_option_line(new_option_tuple)
-                new_init_contents = insert_modified_line(inits,
-                        new_option_tuple[0], new_option_line)
+                new_option_tuple = set_option_values(
+                        option_tuple, item[1:])
 
-                if new_init_contents != None:
-                    write_lines_to_file(new_init_contents, args.path)
-                else:
-                    raise ValueError("New inits contains nothing, aborting.")
-            except ValueError:
-                print "Something went horribly wrong..." #}}}
+                new_option_line = make_option_line(new_option_tuple)
+
+                new_inits = insert_modified_line(
+                        inits, option_tuple[0], new_option_line)
+
+                write_lines_to_file(new_inits, args.path)
+            else:
+                print "Found no option '{option}', aborting.".format(
+                        option=item[0]) #}}}
 
 
 if __name__ == '__main__': #{{{
