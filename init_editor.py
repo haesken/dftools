@@ -29,6 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import argparse
+import collections
 import os
 import sys
 
@@ -43,12 +44,14 @@ def get_args(): #{{{
     parser.add_argument("-p", "--path",
             type=str,
             required=True,
+            dest="inits_path",
             help="Path to the Dwarf Fortress init.txt/d_init.txt file")
 
     parser.add_argument("-o", "--option",
             type=str,
-            action='append',
-            nargs='*',
+            action="append",
+            dest="options_list",
+            nargs="*",
             help="Option/value pair to set.\n" +
                  "Examples:\n" +
                  "    population 80\n" +
@@ -56,10 +59,12 @@ def get_args(): #{{{
 
     parser.add_argument("-s", "--search",
             type=str,
+            dest="search_term",
             help="Search for an option.")
 
     parser.add_argument("-c", "--custom",
             type=str,
+            dest="custom_inits_path",
             help="Path to file to load options from.")
 
     return parser.parse_args() #}}}
@@ -90,10 +95,7 @@ def parse_option_line(line): #{{{
     """ Parse the option line.
         Returns a tuple with the option and a list of argument values.
     """
-    segments = line.strip('[').strip(']').split(':')
-    option = segments[0]
-    values = segments[1:]
-    return (option, values) #}}}
+    return line.strip('[').strip(']').split(':') #}}}
 
 
 def find_option_line(option_name, lines): #{{{
@@ -109,19 +111,19 @@ def find_option_line(option_name, lines): #{{{
             yield option_line #}}}
 
 
-def make_option_line(option_tuple): #{{{
+def make_option_line(option_list): #{{{
     """ Generate a valid option line for the init file.
         Example: '[Population:70]'.
     """
 
-    option_name = option_tuple[0]
-    option_values = option_tuple[1:]
+    option_name = option_list[0]
+    option_values = option_list[1:]
 
     # If we have multiple arguments join them with a :
     if len(option_values) > 1:
         new_values = ':'.join(option_values)
     else:
-        new_values = option_values[0][0]
+        new_values = option_values[0]
 
     return '[{option}:{values}]'.format(
             option=option_name,
@@ -142,7 +144,7 @@ def search_inits(inits_path, search_term): #{{{
     """ Search for an option in a config file. """
 
     inits = list(read_lines(inits_path))
-    search_results = list(find_option_line(search_term.upper(), inits))
+    search_results = list(find_option_line(search_term, inits))
 
     if len(search_results) != 0:
         for result in search_results:
@@ -159,7 +161,7 @@ def set_option(option, inits_path): #{{{
 
     inits = list(read_lines(inits_path))
 
-    option_name = option[0].upper()
+    option_name = option[0]
     search_results = list(find_option_line(option_name, inits))
 
     # Handle bad search results {{{
@@ -177,45 +179,71 @@ def set_option(option, inits_path): #{{{
         sys.exit() #}}}
 
     current_option_line = search_results[0]
-    option_tuple = parse_option_line(current_option_line)
+    option_list = parse_option_line(current_option_line)
 
-    new_option_tuple = (option_tuple[0], option[1:])
-    new_option_line = make_option_line(new_option_tuple)
+    new_option_list = list(flatten_iterable((option_list[0], option[1:])))
+    new_option_line = make_option_line(new_option_list)
 
-    new_inits = insert_option_line(
-            inits, option_tuple[0], new_option_line)
-
-    import ipdb; ipdb.set_trace()
+    new_inits = insert_option_line(inits, option_name, new_option_line)
 
     write_lines(new_inits, inits_path) #}}}
 
 
-def custom_options(custom_options_path): #{{{
+def custom_options(custom_options_path, inits_path): #{{{
     """ Restore custom options from a file. """
+
     custom_options = [option.strip('[').strip(']').split(':')
             for option in list(read_lines(custom_options_path))]
 
+
     for option in custom_options:
-        set_option(option, custom_options_path) #}}}
+        set_option(process_option(option), inits_path) #}}}
+
+
+def flatten_iterable(an_iterable): #{{{
+    """ Flatten a nested iterable. """
+
+    for element in an_iterable:
+        if isinstance(element, collections.Iterable) and not isinstance(
+                element, basestring):
+
+            for sub_element in flatten_iterable(element):
+                yield sub_element
+        else:
+            yield element #}}}
+
+
+def uppercase_args(option): #{{{
+    """ Uppercase each item in a list. """
+
+    return [arg.upper() for arg in option] #}}}
+
+
+def process_option(option): #{{{
+    """ Flatten a list and uppercase each element. """
+
+    return list(uppercase_args(flatten_iterable(option))) #}}}
 
 
 def main(args): #{{{
     """ Run selected functions. """
 
-    if args.search:
-        for result in list(search_inits(args.path, args.search)):
+    if args.search_term:
+        for result in list(search_inits(
+                            args.inits_path,
+                            args.search_term.upper())):
             print result
 
-    if args.option:
+    if args.options_list:
         """ Read/write the inits file on each iteration so
             the current change doesn't discard the previous
             change.
         """
-        for option in args.option:
-            set_option(option, args.path)
+        for option in args.options_list:
+            set_option(process_option(option), args.inits_path)
 
-    if args.custom:
-        custom_options(args.custom) #}}}
+    if args.custom_inits_path:
+        custom_options(args.custom_inits_path, args.inits_path) #}}}
 
 
 if __name__ == '__main__': #{{{
