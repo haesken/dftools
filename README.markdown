@@ -58,9 +58,14 @@ Note:
 #### init\_editor.py
     Usage: python init_editor.py [options]
 
-    -p,   --path             : Path to the config file.
+    -p,   --path             : Path to the config file to write to.
     -s,   --search           : Search for an option.
-    -o,   --option           : Option to change
+
+        Examples:
+            Search for POPULATION : -s pop
+            Search for BABY_CHILD_CAP : -s child
+
+    -o,   --option           : Option to change.
 
         Examples:
             Set POPULATION_CAP to 80   : -o population 80
@@ -68,6 +73,19 @@ Note:
 
         This option can be repeated, example:
             -o population 80 -o child 0 10
+
+    -r,   --restore          : Restore custom options from a file.
+
+        Examples:
+            Restore values from 'foo.txt' : -r foo.txt
+
+        This option will read options from a file and write
+        the values to the selecte file.
+
+        The format/syntax for the restore file is the same
+        as the Dwarf Fortress config file, and two examples
+        are included. (custom_d_init.txt, custom_init.txt)
+
 
 ## Dependency list
 These are the packages installed via puppet, so you can find equivalents.

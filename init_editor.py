@@ -62,9 +62,9 @@ def get_args(): #{{{
             dest="search_term",
             help="Search for an option.")
 
-    parser.add_argument("-c", "--custom",
+    parser.add_argument("-r", "--restore",
             type=str,
-            dest="custom_inits_path",
+            dest="restore_inits_path",
             help="Path to file to load options from.")
 
     return parser.parse_args() #}}}
@@ -189,14 +189,14 @@ def set_option(option, inits_path): #{{{
     write_lines(new_inits, inits_path) #}}}
 
 
-def custom_options(custom_options_path, inits_path): #{{{
+def restore_options(restore_inits_path, inits_path): #{{{
     """ Restore custom options from a file. """
 
-    custom_options = [option.strip('[').strip(']').split(':')
-            for option in list(read_lines(custom_options_path))]
+    restore_file_options = [option.strip('[').strip(']').split(':')
+            for option in list(read_lines(restore_inits_path))]
 
 
-    for option in custom_options:
+    for option in restore_file_options:
         set_option(process_option(option), inits_path) #}}}
 
 
@@ -243,7 +243,7 @@ def main(args): #{{{
             set_option(process_option(option), args.inits_path)
 
     if args.custom_inits_path:
-        custom_options(args.custom_inits_path, args.inits_path) #}}}
+        restore_options(args.restore_inits_path, args.inits_path) #}}}
 
 
 if __name__ == '__main__': #{{{
