@@ -58,6 +58,10 @@ def get_args(): #{{{
             type=str,
             help="Search for an option.")
 
+    parser.add_argument("-c", "--custom",
+            type=str,
+            help="Path to file to load options from.")
+
     return parser.parse_args() #}}}
 
 
@@ -110,15 +114,18 @@ def make_option_line(option_tuple): #{{{
         Example: '[Population:70]'.
     """
 
+    option_name = option_tuple[0]
+    option_values = option_tuple[1:]
+
     # If we have multiple arguments join them with a :
-    if len(option_tuple[1]) > 1:
-        values = ':'.join(option_tuple[1])
+    if len(option_values) > 1:
+        new_values = ':'.join(option_values)
     else:
-        values = option_tuple[1][0]
+        new_values = option_values[0][0]
 
     return '[{option}:{values}]'.format(
-            option=option_tuple[0],
-            values=values.upper()) #}}}
+            option=option_name,
+            values=new_values.upper()) #}}}
 
 
 def insert_option_line(inits, option_name, new_option_line): #{{{
@@ -178,7 +185,18 @@ def set_option(option, inits_path): #{{{
     new_inits = insert_option_line(
             inits, option_tuple[0], new_option_line)
 
+    import ipdb; ipdb.set_trace()
+
     write_lines(new_inits, inits_path) #}}}
+
+
+def custom_options(custom_options_path): #{{{
+    """ Restore custom options from a file. """
+    custom_options = [option.strip('[').strip(']').split(':')
+            for option in list(read_lines(custom_options_path))]
+
+    for option in custom_options:
+        set_option(option, custom_options_path) #}}}
 
 
 def main(args): #{{{
@@ -194,7 +212,10 @@ def main(args): #{{{
             change.
         """
         for option in args.option:
-            set_option(option, args.path) #}}}
+            set_option(option, args.path)
+
+    if args.custom:
+        custom_options(args.custom) #}}}
 
 
 if __name__ == '__main__': #{{{
