@@ -242,7 +242,7 @@ def main(args): #{{{
         for option in args.options_list:
             set_option(process_option(option), args.inits_path)
 
-    if args.custom_inits_path:
+    if args.restore_inits_path:
         restore_options(args.restore_inits_path, args.inits_path) #}}}
 
 
