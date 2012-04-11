@@ -29,7 +29,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from os import path
+from os import path, remove
 from distutils.dir_util import copy_tree
 
 from dfa_common import ensure_dir, download_with_progress
@@ -37,47 +37,63 @@ from extract_archive import extract_archive
 from find_links import get_phoebus_host_link, get_phoebus_download_link
 
 
-def install_phoebus(df_dir_df): #{{{
+def download_phoebus(path_phoebus_archive): #{{{
+    """ blah """
+
+    print 'Phoebus.zip not present, downloading'
+    download_with_progress(
+            get_phoebus_download_link(get_phoebus_host_link()),
+            path_phoebus_archive, 1) #}}}
+
+
+def install_phoebus(path_df_root): #{{{
     """ Download and install the Phoebus tileset. """
 
-    phoebus_dir = path.join(df_dir_df, 'phoebus/')
-    zip_path = path.join(df_dir_df, 'Phoebus.zip')
+    path_phoebus = path.join(path_df_root, 'phoebus/')
+    path_phoebus_data = path.join(path_phoebus, 'data/')
+    path_phoebus_raw = path.join(path_phoebus, 'raw/')
 
-    print df_dir_df
-    ensure_dir(df_dir_df)
-    ensure_dir(phoebus_dir)
+    path_phoebus_archive = path.join(path_df_root, 'Phoebus.zip')
 
-    if not path.exists(zip_path):
-        print 'Phoebus.zip not present, downloading'
-        download_with_progress(
-                get_phoebus_download_link(get_phoebus_host_link()),
-                zip_path)
+    path_dflinux = path.join(path_df_root, 'df_linux/')
+    path_dflinux_data = path.join(path_df_root, 'df_linux/data/')
+    path_dflinux_raw = path.join(path_df_root, 'df_linux/raw/')
 
-    phoebus_dir_data = path.join(phoebus_dir, 'data/')
-    phoebus_dir_raw = path.join(phoebus_dir, 'raw/')
-    df_dir_root = path.join(df_dir_df, 'df_linux/')
-    df_dir_data = path.join(df_dir_df, 'df_linux/data/')
-    df_dir_raw = path.join(df_dir_df, 'df_linux/raw/')
+    ensure_dir(path_df_root)
+    ensure_dir(path_phoebus)
 
-    if not path.exists(phoebus_dir_data):
+    if not path.exists(path_phoebus_archive):
+        download_phoebus(path_phoebus_archive)
+
+    if not path.exists(path_phoebus_data):
         print 'Extracting Phoebux tileset'
-        extract_archive(zip_path, phoebus_dir)
+
+        retry = 0
+        while retry < 3:
+            try:
+                extract_archive(path_phoebus_archive, path_phoebus)
+                retry += 1
+            # If the archive is incomplete etc.
+            except IOError:
+                remove(path_phoebus_archive)
+                download_phoebus(path_phoebus_archive)
+                retry += 1
 
     # Copy Phoebus data dir to df_linux/data
-    if path.exists(phoebus_dir_data):
-        print 'Copying Phoebus data dir to {dest}'.format(dest=df_dir_data)
-        print phoebus_dir_data
-        print df_dir_root
-        copy_tree(phoebus_dir_data, df_dir_data)
+    if path.exists(path_phoebus_data):
+        print 'Copying Phoebus data dir to {dest}'.format(
+                dest=path_dflinux_data)
+        copy_tree(path_phoebus_data, path_dflinux_data)
 
     # Copy Phoebus raw dir to df_linux/raw
-    if path.exists(phoebus_dir_raw):
-        print 'Copying Phoebus raw dir to {dest}'.format(dest=df_dir_raw)
-        copy_tree(phoebus_dir_raw, df_dir_raw)
+    if path.exists(path_phoebus_raw):
+        print 'Copying Phoebus raw dir to {dest}'.format(
+                dest=path_dflinux_raw)
+        copy_tree(path_phoebus_raw, path_dflinux_raw)
 
     # Copy Phoebus init files into actual init dir.
     if path.exists(path.join(
-        df_dir_df, 'df_linux/data/init/phoebus')):
+        path_df_root, 'df_linux/data/init/phoebus')):
         print 'Installing Phoebus init files'
-        copy_tree(path.join(df_dir_data, 'init/phoebus/'),
-            path.join(df_dir_data, 'init/')) #}}}
+        copy_tree(path.join(path_dflinux_data, 'init/phoebus/'),
+            path.join(path_dflinux_data, 'init/')) #}}}
