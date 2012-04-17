@@ -33,7 +33,7 @@ were originally authored by
 
 ### Install dependencies:
 
-Install script dependencies with Puppet.
+Install script dependencies with Pip.
 
     pip install -r requirements.txt
 
