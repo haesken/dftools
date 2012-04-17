@@ -18,30 +18,24 @@ were originally authored by
 
 ## Requirements
 
-- [Puppet](http://puppetlabs.com/)
+- [Pip](www.pip-installer.org)
+- Dwarf Fortress' dependencies (found at the end of this readme)
 
 ## Usage
 ### Download
 
-- Stable version
+- Stable version (Recommended)
     - Go to the
         [tags page](https://github.com/haesken/dwarf_fortress_auto/tags)
         and download the latest tag.
-- Current (Recommended)
-    - [Download zip](https://github.com/haesken/dwarf_fortress_auto/zipball/master)
-    - [Download tar.gz](https://github.com/haesken/dwarf_fortress_auto/tarball/master)
+- Current
+    - Clone this repo
 
 ### Install dependencies:
 
 Install script dependencies with Puppet.
 
-    sudo puppet apply depends.pp
-
-Note:
-
-    The package list provided in depends.pp is for Ubuntu.
-    If your are on a different platform you will need to
-    install the dependencies manually.
+    pip install -r requirements.txt
 
 #### df\_install.py
     Usage: python df_install.py [options]
@@ -88,16 +82,7 @@ Note:
 
 
 ## Dependency list
-These are the packages installed via puppet, so you can find equivalents.
-
-Dependencies for the scripts:
-
-    python2.7
-    python-lxml
-    python-requests
-    python-urlgrabber
-
-Dependencies for Dwarf Fortress:
+Dependencies for Dwarf Fortress (Ubuntu packages):
 
     ncurses-base
     libncurses5
@@ -113,4 +98,4 @@ Dependencies for Dwarf Fortress:
     libopenal1
     libopenal-dev
 
-    ia32-libs (needed only on 64 bit systems)
+    ia32-libs (only needed on 64 bit systems)

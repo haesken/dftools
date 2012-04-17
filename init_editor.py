@@ -95,6 +95,7 @@ def parse_option_line(line): #{{{
     """ Parse the option line.
         Returns a tuple with the option and a list of argument values.
     """
+
     return line.strip('[').strip(']').split(':') #}}}
 
 
@@ -113,7 +114,7 @@ def find_option_line(option_name, lines): #{{{
 
 def make_option_line(option_list): #{{{
     """ Generate a valid option line for the init file.
-        Example: '[Population:70]'.
+        Example: '[Population:70]'
     """
 
     option_name = option_list[0]
@@ -194,7 +195,6 @@ def restore_options(restore_inits_path, inits_path): #{{{
 
     restore_file_options = [option.strip('[').strip(']').split(':')
             for option in list(read_lines(restore_inits_path))]
-
 
     for option in restore_file_options:
         set_option(process_option(option), inits_path) #}}}

@@ -1,0 +1,3 @@
+lxml>=2.3
+requests>=0.10.6
+urlgrabber>=3.9.1
