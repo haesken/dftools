@@ -38,7 +38,7 @@ from find_links import get_phoebus_host_link, get_phoebus_download_link
 
 
 def download_phoebus(path_phoebus_archive): #{{{
-    """ blah """
+    """ Download the Phoebus tileset. """
 
     print 'Phoebus.zip not present, downloading'
     download_with_progress(
