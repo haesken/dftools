@@ -54,7 +54,7 @@ def copy_libgl(path_dflinux): #{{{
 
     path_df_libs = os.path.join(path_dflinux, 'df_linux/libs/')
 
-    copy_file(libgl_path, os.path.join(path_df_libs, 'libgl.so.1'))
+    copy_file(libgl_path, os.path.join(path_df_libs, 'libGL.so.1'))
 
     print "Copied: {libgl_path} to {path_df_libs}".format(
             libgl_path=libgl_path, path_df_libs=path_df_libs) #}}}
