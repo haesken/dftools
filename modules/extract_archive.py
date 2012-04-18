@@ -53,12 +53,13 @@ def check_for_bad_filenames(names_list): #{{{
     """ Look for Malicious filenames in the archive.
         Throw an exception if we find any.
     """
+
     for name in names_list:
         if name.startswith('/'):
-            raise Exception('Malicous filenames in this archive!')
+            raise ValueError('Malicous filenames in this archive!')
         for level in name.split('/'):
             if '..' in level:
-                raise Exception('Malicous filenames in this archive!') #}}}
+                raise ValueError('Malicous filenames in this archive!') #}}}
 
 
 def extract_tar(archive_path, comp_type, extract_path): #{{{
@@ -73,9 +74,9 @@ def extract_tar(archive_path, comp_type, extract_path): #{{{
     tar_file.close() #}}}
 
 
-def extract_zip(archive, extract_path): #{{{
-    """ Extract a zip archive. """
-    zip_file = zipfile.ZipFile(archive, 'r')
+def extract_zip(archive_path, extract_path): #{{{
+    """ Extract a zip archive_path. """
+    zip_file = zipfile.ZipFile(archive_path, 'r')
 
     check_for_bad_filenames(zip_file.namelist())
 
@@ -94,4 +95,4 @@ def extract_archive(archive_path, extract_path): #{{{
         elif archive_type[0] == 'zip':
             extract_zip(archive_path, extract_path)
     else:
-        raise(IOError, 'Bad archive!') #}}}
+        raise IOError('Bad archive!') #}}}

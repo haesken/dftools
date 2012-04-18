@@ -55,7 +55,7 @@ def get_args(): #{{{
 
     parser.add_argument("-dir", "--directory",
             type=str,
-            default=os.getcwd(),
+            default=os.path.join(os.getcwd(), 'dwarffortress'),
             help="Directory to install Dwarf Fortress in.")
 
     parser.add_argument("-df", "--dwarf_fortress",
@@ -92,15 +92,27 @@ def get_args(): #{{{
 
 def main(args): #{{{
     """ Run functions for selected args. """
-    ensure_dir(args.directory)
-    df_dir_df = os.path.join(args.directory, 'dwarffortress/')
+
+    path_dfa_root = os.getcwd()
+
+    # Path to custom files (embark profiles, init option restores)
+    path_custom = os.path.join(path_dfa_root, 'custom')
+
+    # Wrapper directory where downloaded/extracted archives,
+    # and the df_linux directory go.
+    path_dwarffortress = args.directory
+    ensure_dir(path_dwarffortress)
+
+    # Actual Dwarf Fortress install directory.
+    path_dflinux = os.path.join(path_dwarffortress, 'df_linux')
+
 
     divider = 60 * '='
 
     if args.dwarf_fortress or args.quick: #{{{
         print divider
         print 'Installing Dwarf Fortress'
-        install_dwarf_fortress.install_dwarf_fortress(df_dir_df)
+        install_dwarf_fortress.install_dwarf_fortress(path_dwarffortress)
         print divider
         print 'Dwarf Fortress installed!'
         print divider #}}}
@@ -109,26 +121,26 @@ def main(args): #{{{
         print divider
         print 'Installing Phoebus tileset'
         print divider
-        phoebus.install_phoebus(df_dir_df)
+        phoebus.install_phoebus(path_dwarffortress)
         print 'Phoebus tileset installed!'
         print divider #}}}
 
     if args.lazy_newb_embark or args.quick: #{{{
         print divider
-        lazy_newb_embark.install_lazy_newb_embarks(args.directory)
+        lazy_newb_embark.install_lazy_newb_embarks(path_custom, path_dflinux)
         print 'Installed Lazy Newb Pack embark profiles!'
         print divider #}}}
 
     if args.disable_aquifers or args.quick: #{{{
         print divider
-        disable_aquifers.disable_aquifers(df_dir_df)
+        disable_aquifers.disable_aquifers(path_dflinux)
         print 'Disabled aquifers!'
         print divider #}}}
 
     if args.dfhack or args.quick: #{{{
         print divider
         print 'Installing dfhack'
-        install_dfhack.install_dfhack(args.directory)
+        install_dfhack.install_dfhack(path_dwarffortress)
         print 'dfhack installed!'
         print divider #}}}
 

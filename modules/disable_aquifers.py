@@ -34,20 +34,20 @@ import re
 from distutils.dir_util import copy_tree
 
 
-def disable_aquifers(df_dir_df): #{{{
+def disable_aquifers(path_dflinux): #{{{
     """ Delete all instances of '[AQUIFER]' in the raws. """
 
-    raws_dir = os.path.join(df_dir_df, 'df_linux/raw/')
-    dir_objects = os.path.join(raws_dir, 'objects/')
-    dir_objects_backup = os.path.join(raws_dir, 'objects_bak/')
+    path_df_raws = os.path.join(path_dflinux, 'raw/')
+    path_df_objects = os.path.join(path_df_raws, 'objects/')
+    path_df_objects_backup = os.path.join(path_df_raws, 'objects_bak/')
 
     # Backup the raws dir
-    if not os.path.exists(dir_objects_backup):
-        copy_tree(dir_objects, dir_objects_backup)
+    if not os.path.exists(path_df_objects_backup):
+        copy_tree(path_df_objects, path_df_objects_backup)
 
-    # Make the paths of items in dir_objects absolute
-    objects = [os.path.join(dir_objects, item) for item in
-            os.listdir(dir_objects)]
+    # Make the paths of items in path_df_objects absolute
+    objects = [os.path.join(path_df_objects, item) for item in
+            os.listdir(path_df_objects)]
 
     # Only pay attention of the inorganic_stone files
     objects_aquifers = [entry for entry in objects

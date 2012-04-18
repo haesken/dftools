@@ -37,28 +37,27 @@ from extract_archive import extract_archive
 from find_links import get_dwarf_fortress_link
 
 
-def install_dwarf_fortress(df_dir_df): #{{{
+def install_dwarf_fortress(path_dwarffortress): #{{{
     """ Download and install Dwarf Fortress. """
 
-    ensure_dir(df_dir_df)
+    ensure_dir(path_dwarffortress)
 
-    tar_path = os.path.join(df_dir_df, 'Dwarf_Fortress.tar.bz2')
+    path_df_tar = os.path.join(path_dwarffortress, 'Dwarf_Fortress.tar.bz2')
 
-    if not os.path.exists(tar_path):
+    if not os.path.exists(path_df_tar):
         print ('Dwarf_Fortress.tar.bz2 not present, ' +
                 'downloading Dwarf Fortress...')
-        download_with_progress(
-                get_dwarf_fortress_link(),
-                tar_path)
+        download_with_progress(get_dwarf_fortress_link(), path_df_tar, 1)
     else:
         print 'Dwarf_Fortress.tar.bz2 present, not downloading.'
 
-    if not os.path.exists(os.path.join(df_dir_df, 'df_linux/')):
+    if not os.path.exists(os.path.join(path_dwarffortress, 'df_linux/')):
         print 'Extracting Dwarf_Fortress.tar.bz2'
-        extract_archive(tar_path, df_dir_df)
+        extract_archive(path_df_tar, path_dwarffortress)
     else:
         print 'df_linux dir present, not extracting'
 
-    if not os.path.exists(os.path.join(df_dir_df, 'df_linux/libs/libgl.so.1')):
+    if not os.path.exists(
+            os.path.join(path_dwarffortress, 'df_linux/libs/libgl.so.1')):
         print 'Installing libgl library'
-        copy_libgl(df_dir_df) #}}}
+        copy_libgl(path_dwarffortress) #}}}

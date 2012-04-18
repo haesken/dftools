@@ -33,12 +33,9 @@ from os import path
 from distutils.file_util import copy_file
 
 
-def install_lazy_newb_embarks(df_dir_root): #{{{
+def install_lazy_newb_embarks(path_custom, path_dflinux): #{{{
     """ Install the embark profiles from Lazy Newb Pack. """
 
-    copy_file(path.join(
-            df_dir_root,
-            'custom/data/init/embark_profiles.txt'),
-            path.join(
-            df_dir_root,
-            'dwarffortress/df_linux/data/init/embark_profiles.txt')) #}}}
+    copy_file(
+            path.join(path_custom, 'embark_profiles.txt'),
+            path.join(path_dflinux, 'data/init/embark_profiles.txt')) #}}}

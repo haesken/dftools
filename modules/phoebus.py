@@ -46,25 +46,26 @@ def download_phoebus(path_phoebus_archive): #{{{
             path_phoebus_archive, 1) #}}}
 
 
-def install_phoebus(path_df_root): #{{{
+def install_phoebus(path_dwarffortress): #{{{
     """ Download and install the Phoebus tileset. """
 
-    path_phoebus = path.join(path_df_root, 'phoebus/')
+    path_phoebus = path.join(path_dwarffortress, 'phoebus/')
     path_phoebus_data = path.join(path_phoebus, 'data/')
     path_phoebus_raw = path.join(path_phoebus, 'raw/')
 
-    path_phoebus_archive = path.join(path_df_root, 'Phoebus.zip')
+    path_phoebus_archive = path.join(path_dwarffortress, 'Phoebus.zip')
 
-    path_dflinux = path.join(path_df_root, 'df_linux/')
-    path_dflinux_data = path.join(path_df_root, 'df_linux/data/')
-    path_dflinux_raw = path.join(path_df_root, 'df_linux/raw/')
+    path_dflinux = path.join(path_dwarffortress, 'df_linux/')
+    path_dflinux_data = path.join(path_dflinux, 'data/')
+    path_dflinux_raw = path.join(path_dflinux, 'raw/')
 
-    ensure_dir(path_df_root)
+    ensure_dir(path_dwarffortress)
     ensure_dir(path_phoebus)
 
     if not path.exists(path_phoebus_archive):
         download_phoebus(path_phoebus_archive)
 
+    # We retry here because the file host (dffd) is rather slow.
     if not path.exists(path_phoebus_data):
         print 'Extracting Phoebux tileset'
 
@@ -73,7 +74,7 @@ def install_phoebus(path_df_root): #{{{
             try:
                 extract_archive(path_phoebus_archive, path_phoebus)
                 retry += 1
-            # If the archive is incomplete etc.
+            # If the archive is incomplete, corrupted, etc.
             except IOError:
                 remove(path_phoebus_archive)
                 download_phoebus(path_phoebus_archive)
@@ -93,7 +94,7 @@ def install_phoebus(path_df_root): #{{{
 
     # Copy Phoebus init files into actual init dir.
     if path.exists(path.join(
-        path_df_root, 'df_linux/data/init/phoebus')):
+        path_dwarffortress, 'df_linux/data/init/phoebus')):
         print 'Installing Phoebus init files'
         copy_tree(path.join(path_dflinux_data, 'init/phoebus/'),
             path.join(path_dflinux_data, 'init/')) #}}}
