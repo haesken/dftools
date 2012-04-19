@@ -79,8 +79,7 @@ def read_lines(path): #{{{
     lines = f.readlines()
     f.close()
 
-    for line in lines:
-        yield line.strip('\n').strip('\r') #}}}
+    return [line.strip('\n').strip('\r') for line in lines] #}}}
 
 
 def write_lines(new_contents, file_path): #{{{
@@ -104,12 +103,10 @@ def find_option_line(option_name, lines): #{{{
         Return the line.
     """
 
-    option_lines = [line for line in lines
-            if line.startswith('[') and line.endswith(']')]
-
-    for option_line in option_lines:
-        if option_name in parse_option_line(option_line)[0]:
-            yield option_line #}}}
+    for line in lines:
+        if line.startswith('[') and line.endswith(']'):
+            if option_name in parse_option_line(line)[0]:
+                yield line #}}}
 
 
 def make_option_line(option_list): #{{{
@@ -117,8 +114,7 @@ def make_option_line(option_list): #{{{
         Example: '[Population:70]'
     """
 
-    option_name = option_list[0]
-    option_values = option_list[1:]
+    option_name, option_values = option_list[0], option_list[1:]
 
     # If we have multiple arguments join them with a :
     if len(option_values) > 1:
@@ -127,8 +123,7 @@ def make_option_line(option_list): #{{{
         new_values = option_values[0]
 
     return '[{option}:{values}]'.format(
-            option=option_name,
-            values=new_values.upper()) #}}}
+            option=option_name, values=new_values.upper()) #}}}
 
 
 def insert_option_line(inits, option_name, new_option_line): #{{{
@@ -144,7 +139,7 @@ def insert_option_line(inits, option_name, new_option_line): #{{{
 def search_inits(inits_path, search_term): #{{{
     """ Search for an option in a config file. """
 
-    inits = list(read_lines(inits_path))
+    inits = read_lines(inits_path)
     search_results = list(find_option_line(search_term, inits))
 
     if len(search_results) != 0:
@@ -160,7 +155,7 @@ def set_option(option, inits_path): #{{{
         then set the new value for that option and write it to the file.
     """
 
-    inits = list(read_lines(inits_path))
+    inits = read_lines(inits_path)
 
     option_name = option[0]
     search_results = list(find_option_line(option_name, inits))
@@ -193,8 +188,8 @@ def set_option(option, inits_path): #{{{
 def restore_options(restore_inits_path, inits_path): #{{{
     """ Restore custom options from a file. """
 
-    restore_file_options = [option.strip('[').strip(']').split(':')
-            for option in list(read_lines(restore_inits_path))]
+    restore_file_options = [parse_option_line(option)
+            for option in read_lines(restore_inits_path)]
 
     for option in restore_file_options:
         set_option(process_option(option), inits_path) #}}}
@@ -204,8 +199,8 @@ def flatten_iterable(an_iterable): #{{{
     """ Flatten a nested iterable. """
 
     for element in an_iterable:
-        if isinstance(element, collections.Iterable) and not isinstance(
-                element, basestring):
+        if (isinstance(element, collections.Iterable) and not
+                isinstance(element, basestring)):
 
             for sub_element in flatten_iterable(element):
                 yield sub_element
@@ -229,9 +224,8 @@ def main(args): #{{{
     """ Run selected functions. """
 
     if args.search_term:
-        for result in list(search_inits(
-                            args.inits_path,
-                            args.search_term.upper())):
+        for result in list(
+                search_inits(args.inits_path, args.search_term.upper())):
             print result
 
     if args.options_list:
