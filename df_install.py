@@ -137,7 +137,7 @@ def main(args): #{{{
         print 'Disabled aquifers!'
         print divider #}}}
 
-    if args.dfhack or args.quick: #{{{
+    if args.dfhack: #{{{
         print divider
         print 'Installing dfhack'
         install_dfhack.install_dfhack(path_dwarffortress)
