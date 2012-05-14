@@ -3,3 +3,4 @@ dwarftherapist/
 dfhack/
 *.pyc
 quickfort
+.virtualenv/
