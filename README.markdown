@@ -40,14 +40,42 @@ Install script dependencies with Pip.
 #### df\_install.py
     Usage: python df_install.py [options]
 
-    -dir, --directory        : Directory to install Dwarf Fortress in.
+    -dir, --directory        : Directory to install Dwarf Fortress to.
     -df,  --dwarf_fortress   : Install Dwarf Fortress
-    -ph,  --phoebus          : Install Phoebus tileset
-    -lze, --lazy_newb_embark : Install embark profiles from Lazy Newb Pack
-    -daq, --disable_aquifers : Disable aquifers
-    -dt,  --dwarf_therapist  : Install Dwarf Therapist (apt compatible platforms)
+    -t,   --tileset          : Install tilesets
+
+        Example:
+            Install Phoebus tileset: -t phoebus
+
+        Available tilesets:
+            Phoebus          : phoebus
+            Mayday           : mayday
+            Jolly Bastion    : jollybastion
+            ASCII (Square)   : asciisquare
+            Default          : default
+
+    -e,   --embarks          : Install embark profiles
+
+        Example:
+            Install Lazy Newb Pack embark profiles: -e lnp
+
+        Available embark profiles:
+            Lazy Newb Pack   : lnp
+            Default          : default
+
+    -aq,  --aquifers         : Enable/disable aquifers
+
+        Example:
+            Disable aquifers : -aq disable
+        Available modes:
+            Enable           : enable
+            Disable          : disable
+
     -dfh, --dfhack           : Install DFHack
-    -q,   --quick            : Equivalent to '-df -ph -lze -daq -dfh'
+    -q,   --quick            : Quick install
+
+        Equivalent to '-df -t phoebus -e lnp -aq disable'
+
 
 #### init\_editor.py
     Usage: python init_editor.py [options]
