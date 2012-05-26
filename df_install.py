@@ -49,8 +49,7 @@ def get_args(): #{{{
     """ Get arguments from the command line. """
 
     parser = argparse.ArgumentParser(
-            description="Install Dwarf Fortress and utilities.",
-            formatter_class=argparse.RawTextHelpFormatter)
+            description="Install Dwarf Fortress and utilities.")
 
     parser.add_argument("-dir", "--directory",
             type=str,
@@ -63,21 +62,18 @@ def get_args(): #{{{
 
     parser.add_argument("-t", "--tileset",
             type=str,
-            default="phoebus",
-            help="Install a tileset.\n" +
-                 "Default: phoebus")
+            choices=("phoebus", "mayday", "jollybastion", "default"),
+            help="Install a tileset.")
 
     parser.add_argument("-e", "--embarks",
             type=str,
-            default="lnp",
-            help="Install embark profiles.\n" +
-                 "Default: lnp")
+            choices=("lnp", "default"),
+            help="Install embark profiles.")
 
     parser.add_argument("-aq", "--aquifers",
             type=str,
-            default='disable',
-            help="Enable or disable aquifers.\n" +
-                 "Default: disable")
+            choices=('disable', 'enable'),
+            help="Enable or disable aquifers.")
 
     parser.add_argument("-dfh", "--dfhack",
             action="store_true",
@@ -88,8 +84,7 @@ def get_args(): #{{{
             help="Quick install of some sensible defaults.\n" +
                  "Equivalent to '-df -t phoebus -e lnp -aq disable'")
 
-    args = parser.parse_args()
-    return args #}}}
+    return parser.parse_args() #}}}
 
 
 def main(args): #{{{
