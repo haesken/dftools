@@ -90,7 +90,7 @@ def get_args(): #{{{
 def main(args): #{{{
     """ Run selected options. """
 
-    # platform = sys.platform
+    platform = sys.platform
 
     # Wrapper directory where downloaded/extracted archives,
     # and the df_linux directory go.
@@ -104,7 +104,7 @@ def main(args): #{{{
 
     if args.dwarf_fortress or args.quick:
         print divider
-        dfa_df.install_dwarf_fortress(path_dwarffortress)
+        dfa_df.install_dwarf_fortress(platform, path_dwarffortress)
         print divider
 
     if args.tileset or args.quick:

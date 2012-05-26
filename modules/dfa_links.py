@@ -43,7 +43,7 @@ def download_page(url): #{{{
         if page.status_code == 200:
             return page.content
     except requests.ConnectionError:
-        print 'Requests ConnectionError!'
+        print 'Requests ConnectionError!' #}}}
 
 
 def extract_links_from_xpath(url, link_xpath): #{{{
@@ -58,18 +58,18 @@ def extract_links_from_xpath(url, link_xpath): #{{{
         return links #}}}
 
 
-def get_dwarf_fortress_link(): #{{{
+def get_dwarf_fortress_links(): #{{{
     """ Get the download link to the linux version of Dwarf Fortress. """
 
     bay12_link = 'http://www.bay12games.com/dwarves/'
-    links = extract_links_from_xpath(bay12_link, "//p/a[@href]"),
+    raw_links = extract_links_from_xpath(bay12_link, "//p/a[@href]"),
 
-    linux_link = [link[1] for link in links[0]
-            if "linux.tar" in link[1].lower()]
+    platform_links = raw_links[0][:6]
+    windows_link = bay12_link + platform_links[0][1]
+    linux_link = bay12_link + platform_links[4][1]
+    osx_link = bay12_link + platform_links[5][1]
 
-    linux_link_absolute = bay12_link + linux_link[0]
-
-    return linux_link_absolute #}}}
+    return (windows_link, linux_link, osx_link) #}}}
 
 
 def get_phoebus_host_link(): #{{{

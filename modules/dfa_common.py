@@ -59,6 +59,7 @@ def ensure_dir(directory): #{{{
 
 def download_with_progress(url, filename, retry_num): #{{{
     """ Download a file with a progress bar. """
+    print "Downloading: {url}".format(url=url)
     dfa_user_agent = 'Dwarf Fortress Auto'
     grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
     grabber.opts.progress_obj = urlgrabber.progress.TextMeter()
