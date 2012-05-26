@@ -32,17 +32,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from os import path, remove
 from distutils.dir_util import copy_tree
 
-from dfa_common import ensure_dir, download_with_progress
-from extract_archive import extract_archive
-from find_links import get_phoebus_host_link, get_phoebus_download_link
+import dfa_common
+import dfa_archive
+import dfa_links
 
 
 def download_phoebus(path_phoebus_archive): #{{{
     """ Download the Phoebus tileset. """
 
     print 'Phoebus.zip not present, downloading'
-    download_with_progress(
-            get_phoebus_download_link(get_phoebus_host_link()),
+    dfa_common.download_with_progress(
+            dfa_links.get_phoebus_download_link(
+                dfa_links.get_phoebus_host_link()),
             path_phoebus_archive, 1) #}}}
 
 
@@ -59,8 +60,8 @@ def install_phoebus(path_dwarffortress): #{{{
     path_dflinux_data = path.join(path_dflinux, 'data/')
     path_dflinux_raw = path.join(path_dflinux, 'raw/')
 
-    ensure_dir(path_dwarffortress)
-    ensure_dir(path_phoebus)
+    dfa_common.ensure_dir(path_dwarffortress)
+    dfa_common.ensure_dir(path_phoebus)
 
     if not path.exists(path_phoebus_archive):
         download_phoebus(path_phoebus_archive)
@@ -72,7 +73,8 @@ def install_phoebus(path_dwarffortress): #{{{
         retry = 0
         while retry < 3:
             try:
-                extract_archive(path_phoebus_archive, path_phoebus)
+                dfa_archive.extract_archive(
+                        path_phoebus_archive, path_phoebus)
                 retry += 1
             # If the archive is incomplete, corrupted, etc.
             except IOError:

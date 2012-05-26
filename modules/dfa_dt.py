@@ -29,7 +29,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from dfa_common import run_cmd
+import dfa_common
 
 
 def install_dwarf_therapist(): #{{{
@@ -45,11 +45,11 @@ def install_dwarf_therapist(): #{{{
                 sources=sources_path)
         print 'Adding repo to {sources}'.format(sources=sources_path)
 
-        run_cmd("sudo apt-add-repository " +
+        dfa_common.run_cmd("sudo apt-add-repository " +
                 "'deb http://dwarftherapist.com/apt oneiric universe'")
     else:
         print 'Dwarf Therapist found in {sources}, not adding.'.format(
                 sources=sources_path)
 
-    run_cmd("sudo apt-get update")
-    run_cmd("sudo apt-get install dwarftherapist") #}}}
+    dfa_common.run_cmd("sudo apt-get update")
+    dfa_common.run_cmd("sudo apt-get install dwarftherapist") #}}}

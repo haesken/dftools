@@ -37,13 +37,13 @@ import os
 import sys
 
 sys.path.append('modules/')
-import disable_aquifers
-import install_dwarf_fortress
-import install_dwarf_therapist
-import install_dfhack
-import lazy_newb_embark
-import phoebus
-from dfa_common import ensure_dir
+import dfa_common
+import dfa_aquifers
+import dfa_dfhack
+import dfa_df
+import dfa_dt
+import dfa_embarks
+import dfa_tilesets
 
 
 def get_args(): #{{{
@@ -101,7 +101,7 @@ def main(args): #{{{
     # Wrapper directory where downloaded/extracted archives,
     # and the df_linux directory go.
     path_dwarffortress = args.directory
-    ensure_dir(path_dwarffortress)
+    dfa_common.ensure_dir(path_dwarffortress)
 
     # Actual Dwarf Fortress install directory.
     path_dflinux = os.path.join(path_dwarffortress, 'df_linux')
@@ -112,7 +112,7 @@ def main(args): #{{{
     if args.dwarf_fortress or args.quick: #{{{
         print divider
         print 'Installing Dwarf Fortress'
-        install_dwarf_fortress.install_dwarf_fortress(path_dwarffortress)
+        dfa_df.install_dwarf_fortress(path_dwarffortress)
         print divider
         print 'Dwarf Fortress installed!'
         print divider #}}}
@@ -121,33 +121,34 @@ def main(args): #{{{
         print divider
         print 'Installing Phoebus tileset'
         print divider
-        phoebus.install_phoebus(path_dwarffortress)
+        dfa_tilesets.install_phoebus(path_dwarffortress)
         print 'Phoebus tileset installed!'
         print divider #}}}
 
     if args.lazy_newb_embark or args.quick: #{{{
         print divider
-        lazy_newb_embark.install_lazy_newb_embarks(path_custom, path_dflinux)
+        dfa_embarks.install_lazy_newb_embarks(
+                path_custom, path_dflinux)
         print 'Installed Lazy Newb Pack embark profiles!'
         print divider #}}}
 
     if args.disable_aquifers or args.quick: #{{{
         print divider
-        disable_aquifers.disable_aquifers(path_dflinux)
+        dfa_aquifers.disable_aquifers(path_dflinux)
         print 'Disabled aquifers!'
         print divider #}}}
 
     if args.dfhack: #{{{
         print divider
         print 'Installing dfhack'
-        install_dfhack.install_dfhack(path_dwarffortress)
+        dfa_dfhack.install_dfhack(path_dwarffortress)
         print 'dfhack installed!'
         print divider #}}}
 
     if args.dwarf_therapist: #{{{
         print divider
         print 'Installing Dwarf Therapist'
-        install_dwarf_therapist.install_dwarf_therapist()
+        dfa_dt.install_dwarf_therapist()
         print divider
         print 'Installed Dwarf Therapist!'
         print divider #}}}
