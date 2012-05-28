@@ -90,41 +90,49 @@ def get_args(): #{{{
 def main(args): #{{{
     """ Run selected options. """
 
-    platform = sys.platform
+    if 'linux' in sys.platform:
+        platform = 'linux'
+    elif 'darwin' in sys.platform:
+        platform = 'osx'
+    # Includes cygwin
+    elif 'win' in sys.platform:
+        platform = 'windows'
 
     # Wrapper directory where downloaded/extracted archives,
     # and the df_linux directory go.
-    path_dwarffortress = args.directory
-    dfa_common.ensure_dir(path_dwarffortress)
+    path_wrapper_dir = args.directory
+    dfa_common.ensure_dir(path_wrapper_dir)
 
     # Actual Dwarf Fortress install directory.
-    path_dflinux = os.path.join(path_dwarffortress, 'df_linux')
+    name_df_main = 'df_{platform}'.format(platform=platform)
+    path_df_main = os.path.join(path_wrapper_dir, name_df_main)
 
     divider = 60 * '='
 
     if args.dwarf_fortress or args.quick:
         print divider
-        dfa_df.install_dwarf_fortress(platform, path_dwarffortress)
+        dfa_df.install_dwarf_fortress(platform, path_wrapper_dir)
         print divider
 
     if args.tileset or args.quick:
         print divider
-        dfa_tilesets.install_tileset(args.tileset, path_dwarffortress)
+        dfa_tilesets.install_tileset(
+                args.tileset, name_df_main, path_wrapper_dir)
         print divider
 
     if args.embarks or args.quick:
         print divider
-        dfa_embarks.install_embarks(args.embarks, path_dflinux)
+        dfa_embarks.install_embarks(args.embarks, path_df_main)
         print divider
 
     if args.aquifers or args.quick:
         print divider
-        dfa_aquifers.toggle_aquifers(args.aquifers, path_dflinux)
+        dfa_aquifers.toggle_aquifers(args.aquifers, path_df_main)
         print divider
 
     if args.dfhack:
         print divider
-        dfa_dfhack.install_dfhack(path_dwarffortress)
+        dfa_dfhack.install_dfhack(path_wrapper_dir)
         print divider
     #}}}
 

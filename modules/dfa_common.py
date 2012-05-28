@@ -29,17 +29,11 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import subprocess
 import os
 import fnmatch
 
 import urlgrabber.progress
 import urlgrabber.grabber
-
-
-def run_cmd(cmd): #{{{
-    """ Run an external command. """
-    subprocess.call(cmd, shell=True) #}}}
 
 
 def find_recursive(path, term): #{{{
@@ -59,6 +53,7 @@ def ensure_dir(directory): #{{{
 
 def download_with_progress(url, filename, retry_num): #{{{
     """ Download a file with a progress bar. """
+
     print "Downloading: {url}".format(url=url)
     dfa_user_agent = 'Dwarf Fortress Auto'
     grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
