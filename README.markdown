@@ -28,14 +28,10 @@ were originally authored by
     - Go to the
         [tags page](https://github.com/haesken/dwarf_fortress_auto/tags)
         and download the latest tag.
-- Current
-    - Clone this repo
 
-### Install dependencies:
+### Install
 
-Install script dependencies with Pip.
-
-    pip install -r requirements.txt
+    ./setup.sh
 
 #### df\_install.py
     Usage: python df_install.py [options]
