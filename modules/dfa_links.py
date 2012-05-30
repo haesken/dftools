@@ -68,40 +68,6 @@ def get_dwarf_fortress_links(): #{{{
     return (windows_link, linux_link, osx_link) #}}}
 
 
-def get_phoebus_host_link(): #{{{
-    """ Scrape the Bay12 forums for the Phoebus tileset download link. """
-
-    phoebus_post_link = ('http://www.bay12forums.com/' +
-            'smf/index.php?topic=57557.0')
-    links_xpath = '//a[@href]'
-    links = extract_links_from_xpath(phoebus_post_link, links_xpath)
-
-    return [link[1] for link in links
-            if "Graphic Set Package @DFFD" == link[0]][0] #}}}
-
-
-def get_phoebus_download_link(host_link): #{{{
-    """ Scrape the given link for the actual download link. """
-
-    links_xpath = '//a[@href]'
-    links = extract_links_from_xpath(host_link, links_xpath)
-
-    host = 'http://{host}/'.format(host=host_link.split("/")[2])
-    download_suffix = [link[1] for link in links
-            if "download.php?id=" in link[1]][0]
-
-    return host + download_suffix #}}}
-
-
-def get_mayday_link(): #{{{
-    mayday_page_link = 'http://artgoblin.pl/df.php'
-
-    links_xpath = '//a[@href]'
-    links = extract_links_from_xpath(mayday_page_link, links_xpath)
-
-    return [link[1] for link in links if "win.zip" in link[1]][0] #}}}
-
-
 def get_dfhack_download_link(): #{{{
     """ Get the download link for the current version of DFHack. """
 

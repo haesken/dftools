@@ -62,7 +62,7 @@ def get_args(): #{{{
 
     parser.add_argument("-t", "--tileset",
             type=str,
-            choices=("phoebus", "mayday", "jollybastion", "default"),
+            choices=("phoebus", "mayday", "jollybastion", "square"),
             help="Install a tileset.")
 
     parser.add_argument("-e", "--embarks",

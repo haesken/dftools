@@ -34,7 +34,6 @@ from distutils.dir_util import copy_tree
 
 import dfa_common
 import dfa_archive
-import dfa_links
 
 
 def copy_tree_verbose(path_from, path_to): #{{{
@@ -56,13 +55,23 @@ def get_tileset_url(tileset_name): #{{{
     """ Get the url for the specified tileset,
         return the url and the filename of the archive.
     """
+    dfa_media_repo_link = ("https://github.com/haesken/" +
+            "dwarf_fortress_auto_media/blob/master/")
+
     if tileset_name == 'phoebus':
-        tileset_url = dfa_links.get_phoebus_download_link(
-                dfa_links.get_phoebus_host_link())
-        tileset_filename = tileset_url.split('=')[-1]
+        tileset_url = (dfa_media_repo_link +
+                "tilesets/34_10_phoebus.tar.gz?raw=true")
     elif tileset_name == 'mayday':
-        tileset_url = dfa_links.get_mayday_link()
-        tileset_filename = tileset_url.split('/')[-1]
+        tileset_url = (dfa_media_repo_link +
+                "tilesets/34_10_mayday.tar.gz?raw=true")
+    elif tileset_name == 'jollybastion':
+        tileset_url = (dfa_media_repo_link +
+                "tilesets/34_10_jolly_bastion_12x12.tar.gz?raw=true")
+    elif tileset_name == 'square':
+        tileset_url = (dfa_media_repo_link +
+                "tilesets/34_10_phoebus.tar.gz?raw=true")
+
+    tileset_filename = tileset_url.split('/')[-1][:-9]
 
     return (tileset_url, tileset_filename) #}}}
 
