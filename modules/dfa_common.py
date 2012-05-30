@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Common functions for Dwarf Fortress Auto """
+""" Common DFA functions """
 
 """
 Copyright (c) 2012, haesken

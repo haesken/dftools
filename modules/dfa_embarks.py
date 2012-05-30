@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Install the embark profiles from Lazy Newb Pack. """
+""" Install the embark profiles. """
 
 """
 Copyright (c) 2012, haesken

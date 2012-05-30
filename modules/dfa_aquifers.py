@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Disable aquifers in Dwarf Fortress. """
+""" Enable/disable aquifers. """
 
 """
 Copyright (c) 2012, haesken

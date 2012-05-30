@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Install the Phoebus tileset. """
+""" Install tilesets. """
 
 """
 Copyright (c) 2012, haesken

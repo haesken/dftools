@@ -1,9 +1,6 @@
 # encoding: utf-8
 
-""" Scrape the Bay12 site and forums for links to:
-    Linux version of Dwarf Fortress, Phoebus tileset
-    Then download them.
-"""
+""" Scrape various sites for df/tileset download links. """
 
 """
 Copyright (c) 2012, haesken
