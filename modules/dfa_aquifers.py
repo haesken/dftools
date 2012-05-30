@@ -34,20 +34,23 @@ import re
 from distutils.dir_util import copy_tree
 
 
-def disable_aquifers(path_dflinux): #{{{
+def disable_aquifers(path_df_main): #{{{
     """ Delete all instances of '[AQUIFER]' in the raws. """
 
-    path_df_raws = os.path.join(path_dflinux, 'raw/')
-    path_df_objects = os.path.join(path_df_raws, 'objects/')
-    path_df_objects_backup = os.path.join(path_df_raws, 'objects_bak/')
+    print "Disabled aquifers!"
+
+    path_df_main_raw = os.path.join(path_df_main, 'raw/')
+    path_df_main_objects = os.path.join(path_df_main_raw, 'objects/')
+    path_df_main_objects_backup = os.path.join(
+            path_df_main_raw, 'objects_bak/')
 
     # Backup the raws dir
-    if not os.path.exists(path_df_objects_backup):
-        copy_tree(path_df_objects, path_df_objects_backup)
+    if not os.path.exists(path_df_main_objects_backup):
+        copy_tree(path_df_main_objects, path_df_main_objects_backup)
 
-    # Make the paths of items in path_df_objects absolute
-    objects = [os.path.join(path_df_objects, item) for item in
-            os.listdir(path_df_objects)]
+    # Make the paths of items in path_df_main_objects absolute
+    objects = [os.path.join(path_df_main_objects, item) for item in
+            os.listdir(path_df_main_objects)]
 
     # Only pay attention of the inorganic_stone files
     objects_aquifers = [entry for entry in objects
@@ -69,3 +72,8 @@ def disable_aquifers(path_dflinux): #{{{
         raw_file = open(raw, 'w')
         raw_file.writelines(output_lines)
         raw_file.close() #}}}
+
+
+def toggle_aquifers(toggle, path_df_main):
+    if toggle == 'disable':
+        disable_aquifers(path_df_main)
