@@ -90,6 +90,8 @@ def extract_archive(archive_path, extract_path): #{{{
     archive_type = find_type(archive_path)
 
     if archive_type != None:
+        print 'Extracting: {filename}'.format(
+                filename=archive_path.split('/')[-1])
         if archive_type[0] == 'tar':
             extract_tar(archive_path, archive_type[1], extract_path)
         elif archive_type[0] == 'zip':

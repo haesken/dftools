@@ -37,26 +37,19 @@ import dfa_archive
 import dfa_links
 
 
-def copy_data():
-    pass
+def copy_tree_verbose(path_from, path_to): #{{{
+    print 'Copying {path_from} to {path_to}'.format(
+            path_from=path_from, path_to=path_to)
+    copy_tree(path_from, path_to) #}}}
 
 
-def copy_raws():
-    pass
-
-
-def copy_inits():
-    pass
-
-
-def extract_tileset(path_tileset_archive, path_tileset):
+def extract_tileset(path_tileset_archive, path_tileset): #{{{
     try:
         dfa_archive.extract_archive(path_tileset_archive, path_tileset)
         return 0
-
     # If the archive is incomplete, corrupted, etc.
     except IOError:
-        return 1
+        return 1 #}}}
 
 
 def get_tileset_url(tileset_name): #{{{
@@ -74,53 +67,40 @@ def install_tileset(tileset_name, platform, path_dwarffortress): #{{{
     """ Download and install a tileset. """
 
     # Check for the current version of the tileset
+    print 'Checking current version of tileset.'
     tileset_url, tileset_filename = get_tileset_url(tileset_name)
 
     path_tileset_archive = os.path.join(path_dwarffortress, tileset_filename)
     path_tileset = os.path.join(path_dwarffortress, tileset_name)
     path_tileset_data = os.path.join(path_tileset, 'data/')
     path_tileset_raw = os.path.join(path_tileset, 'raw/')
+    path_tileset_inits = os.path.join(
+            path_tileset_data, 'init/{tileset_name}'.format(
+                tileset_name=tileset_name))
 
     # Download the tileset if the archive isn't present.
     if not os.path.exists(path_tileset_archive):
+        print '{tileset_filename} not present, downloading.'.format(
+                tileset_filename=tileset_filename)
         dfa_common.download_with_progress(tileset_url, path_tileset_archive, 3)
 
-    # If the archive hasn't already been extracted (to its own dir)
+    # If the archive hasn't already been extracted (to its own dir).
     if not os.path.exists(path_tileset_data):
         extracted_status = extract_tileset(path_tileset_archive, path_tileset)
         # If the archive is broken, corrupt, etc then remove it.
         if extracted_status != 0:
             os.remove(path_tileset_archive)
 
-    # copy tileset data
-    # copy tileset raws
-    # copy tileset inits
+    path_df_main = os.path.join(path_dwarffortress, 'df_linux/')
+    path_df_main_data = os.path.join(path_df_main, 'data/')
+    path_df_main_raw = os.path.join(path_df_main, 'raw/')
+    path_df_main_inits = os.path.join(path_df_main_data, 'init')
 
-
-    path_dflinux = os.path.join(path_dwarffortress, 'df_linux/')
-    path_dflinux_data = os.path.join(path_dflinux, 'data/')
-    path_dflinux_raw = os.path.join(path_dflinux, 'raw/')
-
-    dfa_common.ensure_dir(path_dwarffortress)
-    dfa_common.ensure_dir(path_tileset)
-
-    # We retry here because the file host (dffd) is rather slow.
-
-    # Copy Phoebus data dir to df_linux/data
+    # Copy tileset data/raws to the df_main directory.
     if os.path.exists(path_tileset_data):
-        print 'Copying Phoebus data dir to {dest}'.format(
-                dest=path_dflinux_data)
-        copy_tree(path_tileset_data, path_dflinux_data)
+        copy_tree_verbose(path_tileset_data, path_df_main_data)
+        copy_tree_verbose(path_tileset_raw, path_df_main_raw)
 
-    # Copy Phoebus raw dir to df_linux/raw
-    if os.path.exists(path_tileset_raw):
-        print 'Copying Phoebus raw dir to {dest}'.format(
-                dest=path_dflinux_raw)
-        copy_tree(path_tileset_raw, path_dflinux_raw)
-
-    # Copy Phoebus init files into actual init dir.
-    if os.path.exists(os.path.join(
-        path_dwarffortress, 'df_linux/data/init/phoebus')):
-        print 'Installing Phoebus init files'
-        copy_tree(os.path.join(path_dflinux_data, 'init/phoebus/'),
-            os.path.join(path_dflinux_data, 'init/')) #}}}
+    # Copy tileset init files into the actual init directory.
+    if os.path.exists(path_tileset_inits):
+        copy_tree_verbose(path_tileset_inits, path_df_main_inits) #}}}

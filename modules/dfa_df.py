@@ -81,7 +81,6 @@ def install_linux(path_dwarffortress, archive_url):
         download_df(archive_url, archive_filename, path_df_archive)
 
     if not os.path.exists(os.path.join(path_dwarffortress, 'df_linux/')):
-        print 'Extracting {filename}'.format(filename=archive_filename)
         dfa_archive.extract_archive(path_df_archive, path_dwarffortress)
 
     if not os.path.exists(
@@ -100,7 +99,6 @@ def install_osx(path_dwarffortress, archive_url):
         download_df(archive_url, archive_filename, path_df_archive)
 
     if not os.path.exists(os.path.join(path_dwarffortress, 'df_osx/')):
-        print 'Extracting {filename}'.format(filename=archive_filename)
         dfa_archive.extract_archive(path_df_archive, path_dwarffortress)
 
 
@@ -116,7 +114,6 @@ def install_win(path_dwarffortress, archive_url):
     path_df_win = os.path.join(path_dwarffortress, 'df_win/')
     if not os.path.exists(path_df_win):
         dfa_common.ensure_dir(path_df_win)
-        print 'Extracting {filename}'.format(filename=archive_filename)
         dfa_archive.extract_archive(path_df_archive, path_df_win)
 
 
