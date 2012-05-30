@@ -60,7 +60,11 @@ def get_tileset_url(tileset_name): #{{{
         tileset_url = dfa_links.get_phoebus_download_link(
                 dfa_links.get_phoebus_host_link())
         tileset_filename = tileset_url.split('=')[-1]
-        return (tileset_url, tileset_filename) #}}}
+    elif tileset_name == 'mayday':
+        tileset_url = dfa_links.get_mayday_link()
+        tileset_filename = tileset_url.split('/')[-1]
+
+    return (tileset_url, tileset_filename) #}}}
 
 
 def install_tileset(tileset_name, platform, path_dwarffortress): #{{{

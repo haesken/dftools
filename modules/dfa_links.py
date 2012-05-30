@@ -51,8 +51,7 @@ def extract_links_from_xpath(url, link_xpath): #{{{
         tree = html.fromstring(page)
         elems = tree.xpath(link_xpath)
 
-        links = [(elem.text, str(elem.values()[0])) for elem in elems]
-        return links #}}}
+        return [(elem.text, str(elem.values()[0])) for elem in elems] #}}}
 
 
 def get_dwarf_fortress_links(): #{{{
@@ -77,10 +76,8 @@ def get_phoebus_host_link(): #{{{
     links_xpath = '//a[@href]'
     links = extract_links_from_xpath(phoebus_post_link, links_xpath)
 
-    phoebus_host_link = [link[1] for link in links
-            if "Graphic Set Package @DFFD" == link[0]][0]
-
-    return phoebus_host_link #}}}
+    return [link[1] for link in links
+            if "Graphic Set Package @DFFD" == link[0]][0] #}}}
 
 
 def get_phoebus_download_link(host_link): #{{{
@@ -93,9 +90,16 @@ def get_phoebus_download_link(host_link): #{{{
     download_suffix = [link[1] for link in links
             if "download.php?id=" in link[1]][0]
 
-    phoebus_download_link = host + download_suffix
+    return host + download_suffix #}}}
 
-    return phoebus_download_link #}}}
+
+def get_mayday_link(): #{{{
+    mayday_page_link = 'http://artgoblin.pl/df.php'
+
+    links_xpath = '//a[@href]'
+    links = extract_links_from_xpath(mayday_page_link, links_xpath)
+
+    return [link[1] for link in links if "win.zip" in link[1]][0] #}}}
 
 
 def get_dfhack_download_link(): #{{{
@@ -107,6 +111,4 @@ def get_dfhack_download_link(): #{{{
     current_linux_link = [link[1] for link in links[0]
             if "linux.tar.gz" in link[1].lower()][0]
 
-    current_linux_link_absolute = 'http://www.github.com' + current_linux_link
-
-    return current_linux_link_absolute #}}}
+    return  'http://www.github.com' + current_linux_link #}}}
