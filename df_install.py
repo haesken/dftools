@@ -83,7 +83,7 @@ def get_args(): #{{{
 
     parser.add_argument("-e", "--embarks",
             type=str,
-            choices=("lnp", "default"),
+            choices=("lnp", ),
             help="Install embark profiles.")
 
     parser.add_argument("-aq", "--aquifers",

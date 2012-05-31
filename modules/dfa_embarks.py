@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from os import path
 
 
-def append_embarks(path_embarks_custom, path_df_main):
+def append_embarks(path_embarks_custom, path_df_main): #{{{
     """ Append custom embark profiles to the current ones. """
     path_embarks_current = path.join(
         path_df_main, 'data/init/embark_profiles.txt')
@@ -40,13 +40,15 @@ def append_embarks(path_embarks_custom, path_df_main):
     new_embarks = (open(path_embarks_current, "r").read() +
                    open(path_embarks_custom, "r").read())
 
-    open(path_embarks_current, "w").write(new_embarks)
+    open(path_embarks_current, "w").write(new_embarks) #}}}
 
 
-def install_embarks(embarks_name, path_custom, path_df_main):
+def install_embarks(embarks_name, path_custom, path_df_main): #{{{
     """ Install selected embark profiles. """
     path_embarks_custom = path.join(path_custom, 'embarks/')
     if embarks_name == "lnp":
+        print "Added Lazy Newb Pack embark profiles!"
         append_embarks(
             path.join(path_embarks_custom, 'embarks_lazy_newb_pack.txt'),
             path_df_main)
+    #}}}
