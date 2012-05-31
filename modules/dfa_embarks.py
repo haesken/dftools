@@ -43,12 +43,12 @@ def append_embarks(path_embarks_custom, path_df_main): #{{{
     open(path_embarks_current, "w").write(new_embarks) #}}}
 
 
-def install_embarks(embarks_name, path_custom, path_df_main): #{{{
+def install_embarks(embarks_name, path_custom, df_paths): #{{{
     """ Install selected embark profiles. """
     path_embarks_custom = path.join(path_custom, 'embarks/')
     if embarks_name == "lnp":
         print "Added Lazy Newb Pack embark profiles!"
         append_embarks(
             path.join(path_embarks_custom, 'embarks_lazy_newb_pack.txt'),
-            path_df_main)
+            df_paths['df_main'])
     #}}}

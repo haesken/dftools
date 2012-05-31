@@ -29,15 +29,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
-import os
 from distutils.file_util import copy_file
+from os import path
 
 import dfa_common
 import dfa_archive
 import dfa_links
 
 
-def copy_libgl(path_dflinux): #{{{
+def copy_libgl(path_df_libs): #{{{
     """ Find and copy libgl library to the Dwarf Fortress libs directory. """
 
     libgl_canidates = []
@@ -55,9 +55,7 @@ def copy_libgl(path_dflinux): #{{{
     libgl_path = [canidate for canidate in libgl_canidates
         if 'nvidia' not in canidate and '64' not in canidate][0]
 
-    path_df_libs = os.path.join(path_dflinux, 'df_linux/libs/')
-
-    copy_file(libgl_path, os.path.join(path_df_libs, 'libGL.so.1'))
+    copy_file(libgl_path, path.join(path_df_libs, 'libGL.so.1'))
 
     print "Copied: {libgl_path} to {path_df_libs}".format(
             libgl_path=libgl_path, path_df_libs=path_df_libs) #}}}
@@ -71,61 +69,34 @@ def download_df(archive_url, archive_filename, path_df_archive): #{{{
     dfa_common.download_with_progress(archive_url, path_df_archive, 1) #}}}
 
 
-def install_linux(path_dwarffortress, archive_url): #{{{
-    """ Install on Linux. """
+def install_generic(df_paths, archive_url, platform): #{{{
+    """ Install. """
 
     archive_filename = archive_url.split('/')[-1]
-    path_df_archive = os.path.join(path_dwarffortress, archive_filename)
+    path_df_archive = path.join(df_paths['wrapper'], archive_filename)
 
-    if not os.path.exists(path_df_archive):
+    if not path.exists(path_df_archive):
         download_df(archive_url, archive_filename, path_df_archive)
 
-    if not os.path.exists(os.path.join(path_dwarffortress, 'df_linux/')):
-        dfa_archive.extract_archive(path_df_archive, path_dwarffortress)
+    if not path.exists(df_paths['df_main']):
+        dfa_archive.extract_archive(path_df_archive, df_paths['wrapper'])
 
-    if not os.path.exists(
-            os.path.join(path_dwarffortress, 'df_linux/libs/libgl.so.1')):
-        print 'Installing libgl library'
-        copy_libgl(path_dwarffortress) #}}}
-
-
-def install_osx(path_dwarffortress, archive_url): #{{{
-    """ Install on OSX. """
-
-    archive_filename = archive_url.split('/')[-1]
-    path_df_archive = os.path.join(path_dwarffortress, archive_filename)
-
-    if not os.path.exists(path_df_archive):
-        download_df(archive_url, archive_filename, path_df_archive)
-
-    if not os.path.exists(os.path.join(path_dwarffortress, 'df_osx/')):
-        dfa_archive.extract_archive(path_df_archive, path_dwarffortress) #}}}
+    if platform == 'linux':
+        if not path.exists(
+                path.join(df_paths['df_main_libs'], 'libgl.so.1')):
+            print 'Installing libgl library'
+            copy_libgl(df_paths['df_main_libs']) #}}}
 
 
-def install_win(path_dwarffortress, archive_url): #{{{
-    """ Install on Windows. """
-
-    archive_filename = archive_url.split('/')[-1]
-    path_df_archive = os.path.join(path_dwarffortress, archive_filename)
-
-    if not os.path.exists(path_df_archive):
-        download_df(archive_url, archive_filename, path_df_archive)
-
-    path_df_win = os.path.join(path_dwarffortress, 'df_windows/')
-    if not os.path.exists(path_df_win):
-        dfa_common.ensure_dir(path_df_win)
-        dfa_archive.extract_archive(path_df_archive, path_df_win) #}}}
-
-
-def install_dwarf_fortress(platform, path_dwarffortress): #{{{
+def install_dwarf_fortress(platform, df_paths): #{{{
     """ Download and install Dwarf Fortress. """
 
-    dfa_common.ensure_dir(path_dwarffortress)
+    dfa_common.ensure_dir(df_paths['wrapper'])
     archive_urls = dfa_links.get_dwarf_fortress_links()
 
-    if "linux" in platform:
-        install_linux(path_dwarffortress, archive_urls[1])
-    elif "darwin" in platform:
-        install_osx(path_dwarffortress, archive_urls[2])
-    elif "win" in platform:
-        install_win(path_dwarffortress, archive_urls[0]) #}}}
+    if platform == "linux":
+        install_generic(df_paths, archive_urls['linux'], platform)
+    elif platform == "darwin":
+        install_generic(df_paths, archive_urls['osx'], platform)
+    elif platform == "windows":
+        install_generic(df_paths, archive_urls['windows'], platform) #}}}

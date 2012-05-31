@@ -60,12 +60,11 @@ def get_dwarf_fortress_links(): #{{{
     bay12_link = 'http://www.bay12games.com/dwarves/'
     raw_links = extract_links_from_xpath(bay12_link, "//p/a[@href]"),
 
-    platform_links = raw_links[0][:6]
-    windows_link = bay12_link + platform_links[0][1]
-    linux_link = bay12_link + platform_links[4][1]
-    osx_link = bay12_link + platform_links[5][1]
-
-    return (windows_link, linux_link, osx_link) #}}}
+    return {
+            'linux': bay12_link + raw_links[0][4][1],
+            'osx': bay12_link + raw_links[0][5][1],
+            'windows': bay12_link + raw_links[0][0][1],
+    } #}}}
 
 
 def get_dfhack_download_link(): #{{{

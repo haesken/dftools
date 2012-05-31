@@ -33,7 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
 import argparse
-import os
+from os import path, getcwd
 import sys
 
 sys.path.append('modules/')
@@ -61,9 +61,9 @@ def get_args(): #{{{
     parser = argparse.ArgumentParser(
             description="Install Dwarf Fortress and utilities.")
 
-    parser.add_argument("-dir", "--directory",
+    parser.add_argument("-d", "--directory",
             type=str,
-            default=os.path.join(os.getcwd(), 'dwarffortress'),
+            default=path.join(getcwd(), 'dwarffortress'),
             help="Directory to install Dwarf Fortress to.")
 
     parser.add_argument("-p", "--platform",
@@ -113,37 +113,47 @@ def main(args): #{{{
 
     # Actual Dwarf Fortress install directory.
     name_df_main = 'df_{platform}'.format(platform=args.platform)
-    path_df_main = os.path.join(path_wrapper_dir, name_df_main)
+    path_df_main = path.join(path_wrapper_dir, name_df_main)
 
     # Directory for custom files such as embark profiles and init restores.
-    path_custom = os.path.join(os.getcwd(), 'custom')
+    path_custom = path.join(getcwd(), 'custom')
+
+    df_paths = {
+            'wrapper': path_wrapper_dir,
+            'df_main': path_df_main,
+            'df_main_data': path.join(path_df_main, 'data/'),
+            'df_main_inits': path.join(path_df_main, 'data/init'),
+            'df_main_raw': path.join(path_df_main, 'raw/'),
+            'df_main_objects': path.join(path_df_main, 'raw/objects'),
+            'df_main_libs': path.join(path_df_main, 'libs'),
+            }
 
     divider = 60 * '='
 
     if args.dwarf_fortress or args.quick:
         print divider
-        dfa_df.install_dwarf_fortress(args.platform, path_wrapper_dir)
+        dfa_df.install_dwarf_fortress(args.platform, df_paths)
         print divider
 
     if args.tileset or args.quick:
         print divider
-        dfa_tilesets.install_tileset(
-                args.tileset, name_df_main, path_wrapper_dir)
+        dfa_tilesets.install_tileset(args.tileset, df_paths)
         print divider
 
     if args.embarks or args.quick:
         print divider
-        dfa_embarks.install_embarks(args.embarks, path_custom, path_df_main)
+        dfa_embarks.install_embarks(
+                args.embarks, path_custom, df_paths)
         print divider
 
     if args.aquifers or args.quick:
         print divider
-        dfa_aquifers.toggle_aquifers(args.aquifers, path_df_main)
+        dfa_aquifers.toggle_aquifers(args.aquifers, df_paths)
         print divider
 
     if args.dfhack:
         print divider
-        dfa_dfhack.install_dfhack(path_wrapper_dir)
+        dfa_dfhack.install_dfhack(df_paths)
         print divider #}}}
 
 

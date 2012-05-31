@@ -29,28 +29,20 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
-import os
-import re
 from distutils.dir_util import copy_tree
+from os import path, listdir
+
+import re
 
 
-def disable_aquifers(path_df_main): #{{{
+def disable_aquifers(df_paths): #{{{
     """ Delete all instances of '[AQUIFER]' in the raws. """
 
     print "Disabled aquifers!"
 
-    path_df_main_raw = os.path.join(path_df_main, 'raw/')
-    path_df_main_objects = os.path.join(path_df_main_raw, 'objects/')
-    path_df_main_objects_backup = os.path.join(
-            path_df_main_raw, 'objects_bak/')
-
-    # Backup the raws dir
-    if not os.path.exists(path_df_main_objects_backup):
-        copy_tree(path_df_main_objects, path_df_main_objects_backup)
-
     # Make the paths of items in path_df_main_objects absolute
-    objects = [os.path.join(path_df_main_objects, item) for item in
-            os.listdir(path_df_main_objects)]
+    objects = [path.join(df_paths['df_main_objects'], item) for item in
+            listdir(df_paths['df_main_objects'])]
 
     # Only pay attention of the inorganic_stone files
     objects_aquifers = [entry for entry in objects

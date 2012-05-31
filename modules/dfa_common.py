@@ -29,7 +29,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
-import os
+from os import path, mkdir, walk
 import fnmatch
 
 import urlgrabber.progress
@@ -39,16 +39,16 @@ import urlgrabber.grabber
 def find_recursive(path, term): #{{{
     """ Search a directory recursively for a file. """
     matches = []
-    for root, dirnames, filenames in os.walk(path):
+    for root, dirnames, filenames in walk(path):
         for filename in fnmatch.filter(filenames, term):
-            matches.append(os.path.join(root, filename))
+            yield path.join(root, filename)
     return matches #}}}
 
 
 def ensure_dir(directory): #{{{
     """ Make sure a directory exists, if not create it. """
-    if not os.path.exists(directory):
-        os.mkdir(directory) #}}}
+    if not path.exists(directory):
+        mkdir(directory) #}}}
 
 
 def download_with_progress(url, filename, retry_num): #{{{
