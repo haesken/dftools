@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-""" A set of scripts to download and install Dwarf Fortress
-    and Dwarf Therapist, with a few included utilities.
+""" A set of scripts to download and install Dwarf Fortress,
+    tilesets, and embark profiles.
 """
 
-"""
+""" #{{{
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -30,7 +30,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-"""
+""" #}}}
 
 import argparse
 import os
@@ -39,10 +39,20 @@ import sys
 sys.path.append('modules/')
 import dfa_common
 import dfa_aquifers
-import dfa_dfhack
 import dfa_df
+import dfa_dfhack
 import dfa_embarks
 import dfa_tilesets
+
+
+def get_platform(): #{{{
+    if 'linux' in sys.platform:
+        return 'linux'
+    elif 'darwin' in sys.platform:
+        return 'osx'
+    # Includes cygwin
+    elif 'win' in sys.platform:
+        return 'windows' #}}}
 
 
 def get_args(): #{{{
@@ -55,6 +65,12 @@ def get_args(): #{{{
             type=str,
             default=os.path.join(os.getcwd(), 'dwarffortress'),
             help="Directory to install Dwarf Fortress to.")
+
+    parser.add_argument("-p", "--platform",
+            type=str,
+            choices=("linux", "osx", "windows"),
+            default=get_platform(),
+            help="Override platform detection.")
 
     parser.add_argument("-df", "--dwarf_fortress",
             action="store_true",
@@ -90,28 +106,23 @@ def get_args(): #{{{
 def main(args): #{{{
     """ Run selected options. """
 
-    if 'linux' in sys.platform:
-        platform = 'linux'
-    elif 'darwin' in sys.platform:
-        platform = 'osx'
-    # Includes cygwin
-    elif 'win' in sys.platform:
-        platform = 'windows'
-
     # Wrapper directory where downloaded/extracted archives,
-    # and the df_linux directory go.
+    # and the main df directory go.
     path_wrapper_dir = args.directory
     dfa_common.ensure_dir(path_wrapper_dir)
 
     # Actual Dwarf Fortress install directory.
-    name_df_main = 'df_{platform}'.format(platform=platform)
+    name_df_main = 'df_{platform}'.format(platform=args.platform)
     path_df_main = os.path.join(path_wrapper_dir, name_df_main)
+
+    # Directory for custom files such as embark profiles and init restores.
+    path_custom = os.path.join(os.getcwd(), 'custom')
 
     divider = 60 * '='
 
     if args.dwarf_fortress or args.quick:
         print divider
-        dfa_df.install_dwarf_fortress(platform, path_wrapper_dir)
+        dfa_df.install_dwarf_fortress(args.platform, path_wrapper_dir)
         print divider
 
     if args.tileset or args.quick:
@@ -122,7 +133,7 @@ def main(args): #{{{
 
     if args.embarks or args.quick:
         print divider
-        dfa_embarks.install_embarks(args.embarks, path_df_main)
+        dfa_embarks.install_embarks(args.embarks, path_custom, path_df_main)
         print divider
 
     if args.aquifers or args.quick:
@@ -133,8 +144,7 @@ def main(args): #{{{
     if args.dfhack:
         print divider
         dfa_dfhack.install_dfhack(path_wrapper_dir)
-        print divider
-    #}}}
+        print divider #}}}
 
 
 if __name__ == '__main__': #{{{
