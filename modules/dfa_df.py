@@ -42,12 +42,14 @@ def copy_libgl(path_df_libs): #{{{
 
     libgl_canidates = []
 
-    lib_matches = dfa_common.find_recursive('/usr/lib/', 'libGL.so.1')
+    lib_matches = list(
+        dfa_common.find_recursive('/usr/lib/', 'libGL.so.1'))
     if lib_matches != None:
         for item in lib_matches:
             libgl_canidates.append(item)
 
-    lib_matches_32 = dfa_common.find_recursive('/usr/lib32/', 'libGL.so.1')
+    lib_matches_32 = list(
+        dfa_common.find_recursive('/usr/lib32/', 'libGL.so.1'))
     if lib_matches != None:
         for item in lib_matches_32:
             libgl_canidates.append(item)
@@ -69,9 +71,12 @@ def download_df(archive_url, archive_filename, path_df_archive): #{{{
     dfa_common.download_with_progress(archive_url, path_df_archive, 1) #}}}
 
 
-def install_generic(df_paths, archive_url, platform): #{{{
-    """ Install. """
+def install_dwarf_fortress(platform, df_paths): #{{{
+    """ Download and install Dwarf Fortress. """
 
+    dfa_common.ensure_dir(df_paths['wrapper'])
+    archive_urls = dfa_links.get_dwarf_fortress_links()
+    archive_url = archive_urls['{platform}'.format(platform=platform)]
     archive_filename = archive_url.split('/')[-1]
     path_df_archive = path.join(df_paths['wrapper'], archive_filename)
 
@@ -92,17 +97,3 @@ def install_generic(df_paths, archive_url, platform): #{{{
         if not path.exists(path.join(df_paths['df_main_libs'], 'libgl.so.1')):
             print 'Installing libgl library'
             copy_libgl(df_paths['df_main_libs']) #}}}
-
-
-def install_dwarf_fortress(platform, df_paths): #{{{
-    """ Download and install Dwarf Fortress. """
-
-    dfa_common.ensure_dir(df_paths['wrapper'])
-    archive_urls = dfa_links.get_dwarf_fortress_links()
-
-    if platform == "linux":
-        install_generic(df_paths, archive_urls['linux'], platform)
-    elif platform == "darwin":
-        install_generic(df_paths, archive_urls['osx'], platform)
-    elif platform == "windows":
-        install_generic(df_paths, archive_urls['windows'], platform) #}}}
