@@ -79,11 +79,17 @@ def install_generic(df_paths, archive_url, platform): #{{{
         download_df(archive_url, archive_filename, path_df_archive)
 
     if not path.exists(df_paths['df_main']):
-        dfa_archive.extract_archive(path_df_archive, df_paths['wrapper'])
+        # The Linux & OSX versions of DF are packaged within folders
+        # ('df_linux' and 'df_osx') so we extract them to the wrapper dir.
+        if platform == 'linux' or platform == 'osx':
+            dfa_archive.extract_archive(path_df_archive, df_paths['wrapper'])
+        # The Windows version of DF is packaged with no folder,
+        # so we make one ('df_windows') and then extract to it.
+        elif platform == 'windows':
+            dfa_archive.extract_archive(path_df_archive, df_paths['df_main'])
 
     if platform == 'linux':
-        if not path.exists(
-                path.join(df_paths['df_main_libs'], 'libgl.so.1')):
+        if not path.exists(path.join(df_paths['df_main_libs'], 'libgl.so.1')):
             print 'Installing libgl library'
             copy_libgl(df_paths['df_main_libs']) #}}}
 

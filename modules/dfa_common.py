@@ -41,7 +41,7 @@ def find_recursive(path, term): #{{{
     matches = []
     for root, dirnames, filenames in walk(path):
         for filename in fnmatch.filter(filenames, term):
-            yield path.join(root, filename)
+            matches.append(path.join(root, filename))
     return matches #}}}
 
 
