@@ -16,27 +16,28 @@ were originally authored by
 [Mike Mayday](http://mayday.w.staszic.waw.pl/df.php).
 
 
-## Requirements
+## Dependencies
 
-- [Pip](www.pip-installer.org)
-- Dwarf Fortress' dependencies (found at the end of this readme)
+- Linux
+    - Dwarf Fortress' dependencies (found at the end of this readme)
 
 ## Usage
 ### Download
 
-- Stable version (Recommended)
-    - Go to the
-        [tags page](https://github.com/haesken/dwarf_fortress_auto/tags)
-        and download the latest tag.
+- Stable version (recommended)
+    - Check the Downloads page for prebuilt binaries (Linux/OSX/Windows)
+- Development version
+    - Clone this repo and run the setup script.
 
-### Install
+### Run
 
-    ./setup.sh
+    Linux/OSX : Run 'df_install' or 'init_options' in a terminal.
+    Windows : Open a command prompt and run 'df_install' or 'init_options'.
 
 #### df\_install.py
     Usage: python df_install.py [options]
 
-    -dir, --directory        : Directory to install Dwarf Fortress to.
+    -d,   --directory        : Directory to install Dwarf Fortress to.
     -df,  --dwarf_fortress   : Install Dwarf Fortress
     -t,   --tileset          : Install tilesets
 
@@ -48,7 +49,6 @@ were originally authored by
             Mayday           : mayday
             Jolly Bastion    : jollybastion
             ASCII (Square)   : asciisquare
-            Default          : default
 
     -e,   --embarks          : Install embark profiles
 
@@ -57,7 +57,6 @@ were originally authored by
 
         Available embark profiles:
             Lazy Newb Pack   : lnp
-            Default          : default
 
     -aq,  --aquifers         : Enable/disable aquifers
 
