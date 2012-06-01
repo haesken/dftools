@@ -5,7 +5,8 @@
     tilesets, and embark profiles.
 """
 
-""" #{{{
+# License #{{{
+license = """
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -45,7 +46,8 @@ import dfa_embarks
 import dfa_tilesets
 
 
-def get_platform(): #{{{
+def detect_platform(): #{{{
+    """ Detect what platform we are running on. """
     if 'linux' in sys.platform:
         return 'linux'
     elif 'darwin' in sys.platform:
@@ -69,7 +71,7 @@ def get_args(): #{{{
     parser.add_argument("-p", "--platform",
             type=str,
             choices=("linux", "osx", "windows"),
-            default=get_platform(),
+            default=detect_platform(),
             help="Override platform detection.")
 
     parser.add_argument("-df", "--dwarf_fortress",
@@ -99,6 +101,10 @@ def get_args(): #{{{
             action="store_true",
             help="Quick install of some sensible defaults.\n" +
                  "Equivalent to '-df -t phoebus -e lnp -aq disable'")
+
+    parser.add_argument("-l", "--license",
+            action="store_true",
+            help="Display the lisence.")
 
     return parser.parse_args() #}}}
 
@@ -155,6 +161,9 @@ def main(args): #{{{
         print divider
         dfa_dfhack.install_dfhack(df_paths)
         print divider #}}}
+
+    if args.license:
+        print license
 
 
 if __name__ == '__main__': #{{{

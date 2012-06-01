@@ -29,7 +29,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
-from distutils.dir_util import copy_tree
 from os import path, listdir
 
 import re
@@ -67,5 +66,6 @@ def disable_aquifers(df_paths): #{{{
 
 
 def toggle_aquifers(toggle, path_df_main): #{{{
+    """ Enable or disable aquifers. """
     if toggle == 'disable':
         disable_aquifers(path_df_main) #}}}

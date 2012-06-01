@@ -37,12 +37,14 @@ import dfa_archive
 
 
 def copy_tree_verbose(path_from, path_to): #{{{
+    """ Recursively copy a file or directory. """
     print 'Copying {path_from} to {path_to}'.format(
             path_from=path_from, path_to=path_to)
     copy_tree(path_from, path_to) #}}}
 
 
 def extract_tileset(path_tileset_archive, path_tileset): #{{{
+    """ Try to extract a tileset, don't explode if the archive is corrupt. """
     try:
         dfa_archive.extract_archive(path_tileset_archive, path_tileset)
         return 0
@@ -77,6 +79,7 @@ def get_tileset_url(tileset_name): #{{{
 
 
 def define_tileset_paths(tileset_name, tileset_filename, df_paths): #{{{
+    """ Define paths for the tileset files. """
     path_tileset_archive = path.join(df_paths['wrapper'], tileset_filename)
     path_tileset = path.join(df_paths['wrapper'], tileset_name)
     path_tileset_data = path.join(path_tileset, 'data/')

@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-""" #{{{
+""" Edit/backup/restore Dwarf Fortress init configs. """
+
+# License #{{{
+license = """
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -43,7 +46,6 @@ def get_args(): #{{{
 
     parser.add_argument("-p", "--path",
             type=str,
-            required=True,
             dest="inits_path",
             help="Path to the Dwarf Fortress init.txt/d_init.txt file")
 
@@ -66,6 +68,10 @@ def get_args(): #{{{
             type=str,
             dest="restore_inits_path",
             help="Path to file to load options from.")
+
+    parser.add_argument("-l", "--license",
+            action="store_true",
+            help="Display the lisence.")
 
     return parser.parse_args() #}}}
 
@@ -238,6 +244,9 @@ def main(args): #{{{
 
     if args.restore_inits_path:
         restore_options(args.restore_inits_path, args.inits_path) #}}}
+
+    if args.license:
+        print license
 
 
 if __name__ == '__main__': #{{{
