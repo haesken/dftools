@@ -29,30 +29,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """ #}}}
 
-# Keep os import in this format, or path.join will be confused.
-import os
+from os import path, walk, mkdir
 import fnmatch
 
 import urlgrabber.progress
 import urlgrabber.grabber
 
 
-def find_recursive(path, term): #{{{
+def find_recursive(search_path, term): #{{{
     """ Search a directory recursively for a file. """
-    for root, dirnames, filenames in os.walk(path):
+    for root, dirnames, filenames in walk(search_path):
         for filename in fnmatch.filter(filenames, term):
-            yield os.path.join(root, filename) #}}}
+            yield path.join(root, filename) #}}}
 
 
 def ensure_dir(directory): #{{{
     """ Make sure a directory exists, if not create it. """
-    if not os.path.exists(directory):
-        os.mkdir(directory) #}}}
+    if not path.exists(directory):
+        mkdir(directory) #}}}
 
 
 def download_with_progress(url, filename, retry_num): #{{{
     """ Download a file with a progress bar. """
-
     print "Downloading: {url}".format(url=url)
     dfa_user_agent = 'Dwarf Fortress Auto'
     grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
