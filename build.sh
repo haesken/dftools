@@ -9,6 +9,6 @@ mkdir -p build/dwarf_fortress_auto
 cp develop/build/dist/* build/dwarf_fortress_auto
 cp -r custom build/dwarf_fortress_auto
 
-rm *.tar.gz
 cd build
+rm *.tar.gz
 tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1).tar.gz dwarf_fortress_auto/
