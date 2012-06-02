@@ -2,3 +2,4 @@ dwarffortress/
 .virtualenv/
 develop/build/build/
 develop/build/dist/
+build/

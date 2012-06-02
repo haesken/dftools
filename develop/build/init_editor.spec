@@ -1,6 +1,6 @@
 # -*- mode: python -*-
-a = Analysis(['../../init_editor.py'],
-             pathex=['../pyinstaller'],
+a = Analysis(['init_editor.py'],
+             pathex=['develop/pyinstaller'],
              hiddenimports=[],
              hookspath=None)
 pyz = PYZ(a.pure)

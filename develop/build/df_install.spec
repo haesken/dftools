@@ -1,6 +1,6 @@
 # -*- mode: python -*-
-a = Analysis(['../../df_install.py'],
-             pathex=['../../modules/', '../pyinstaller'],
+a = Analysis(['df_install.py'],
+             pathex=['modules', 'develop/pyinstaller'],
              hiddenimports=[],
              hookspath=None)
 pyz = PYZ(a.pure)
