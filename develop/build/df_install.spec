@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 a = Analysis(['../../df_install.py'],
-             pathex=['../../modules/', '/home/mike/games/dwarf_fortress_auto/develop/pyinstaller'],
+             pathex=['../../modules/', '../pyinstaller'],
              hiddenimports=[],
              hookspath=None)
 pyz = PYZ(a.pure)
