@@ -11,4 +11,4 @@ cp -r custom build/dwarf_fortress_auto
 
 cd build
 rm *.tar.gz
-tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1).tar.gz dwarf_fortress_auto/
+tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1)-linux.tar.gz dwarf_fortress_auto/
