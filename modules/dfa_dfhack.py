@@ -33,10 +33,9 @@ from os import path
 
 import dfa_common
 import dfa_archive
-import dfa_links
 
 
-def install_dfhack(df_paths): #{{{
+def install_dfhack(platform, df_paths): #{{{
     """ Download and install dfhack. """
 
     path_dfhack = path.join(df_paths['wrapper'], 'dfhack/')
@@ -45,8 +44,20 @@ def install_dfhack(df_paths): #{{{
     if not path.exists(path_dfhack_archive):
         print 'dfhack archive not found, downloading.'
         dfa_common.ensure_dir(path_dfhack)
-        dfa_common.download_with_progress(
-                dfa_links.get_dfhack_download_link(), path_dfhack_archive, 3)
+
+        media_repo_link = ('https://github.com/haesken/'
+            + 'dfa_media/blob/master/{filename}')
+
+        if platform == 'linux':
+            dfhack_link = media_repo_link.format(
+                filename='dfhack/dfhack-0.34.10-r1-Linux.tar.gz?raw=true')
+        elif platform == 'windows':
+            dfhack_link = media_repo_link.format(
+                filename='dfhack/dfhack-0.34.10-r1-Windows.tar.gz?raw=true')
+        else:
+            print "Your platform is not supported by DFHack!"
+
+        dfa_common.download_with_progress(dfhack_link, path_dfhack_archive, 3)
     else:
         print 'Found dfhack archive here, not downloading.'
 

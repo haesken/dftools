@@ -159,7 +159,7 @@ def main(args): #{{{
 
     if args.dfhack:
         print divider
-        dfa_dfhack.install_dfhack(df_paths)
+        dfa_dfhack.install_dfhack(args.platform, df_paths)
         print divider
 
     if args.license:

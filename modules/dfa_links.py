@@ -65,15 +65,3 @@ def get_dwarf_fortress_links(): #{{{
             'osx': bay12_link + raw_links[0][5][1],
             'windows': bay12_link + raw_links[0][0][1],
     } #}}}
-
-
-def get_dfhack_download_link(): #{{{
-    """ Get the download link for the current version of DFHack. """
-
-    dfhack_downloads_link = 'http://github.com/peterix/dfhack/downloads/'
-    links = extract_links_from_xpath(dfhack_downloads_link, "//a[@href]"),
-
-    current_linux_link = [link[1] for link in links[0]
-            if "linux.tar.gz" in link[1].lower()][0]
-
-    return  'http://www.github.com' + current_linux_link #}}}
