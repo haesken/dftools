@@ -1,1 +1,1 @@
-urlgrabber==3.9.1
+urlgrabber=>3.9.1
