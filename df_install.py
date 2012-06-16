@@ -80,7 +80,7 @@ def get_args(): #{{{
 
     parser.add_argument("-t", "--tileset",
             type=str,
-            choices=("phoebus", "mayday", "jollybastion", "square"),
+            choices=("phoebus", "mayday", "jolly9", "jolly12"),
             help="Install a tileset.")
 
     parser.add_argument("-e", "--embarks",
@@ -160,10 +160,10 @@ def main(args): #{{{
     if args.dfhack:
         print divider
         dfa_dfhack.install_dfhack(df_paths)
-        print divider #}}}
+        print divider
 
     if args.license:
-        print license
+        print license #}}}
 
 
 if __name__ == '__main__': #{{{

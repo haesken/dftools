@@ -58,20 +58,17 @@ def get_tileset_url(tileset_name): #{{{
         return the url and the filename of the archive.
     """
     dfa_media_repo_link = ("https://github.com/haesken/" +
-            "dwarf_fortress_auto_media/blob/master/")
+            "dfa_media/blob/master/")
 
     if tileset_name == 'phoebus':
         tileset_url = (dfa_media_repo_link +
-                "tilesets/34_10_phoebus.tar.gz?raw=true")
-    elif tileset_name == 'mayday':
+                "tilesets/34_11_phoebus.tar.gz?raw=true")
+    elif tileset_name == 'jolly9':
         tileset_url = (dfa_media_repo_link +
-                "tilesets/34_10_mayday.tar.gz?raw=true")
-    elif tileset_name == 'jollybastion':
+                "tilesets/34_11_jolly_9x12.tar.gz?raw=true")
+    elif tileset_name == 'jolly12':
         tileset_url = (dfa_media_repo_link +
-                "tilesets/34_10_jolly_bastion_12x12.tar.gz?raw=true")
-    elif tileset_name == 'square':
-        tileset_url = (dfa_media_repo_link +
-                "tilesets/34_10_phoebus.tar.gz?raw=true")
+                "tilesets/34_11_jolly_12x12.tar.gz?raw=true")
 
     tileset_filename = tileset_url.split('/')[-1][:-9]
 

@@ -37,8 +37,12 @@ def append_embarks(path_embarks_custom, path_df_main): #{{{
     path_embarks_current = path.join(
         path_df_main, 'data/init/embark_profiles.txt')
 
-    new_embarks = (open(path_embarks_current, "r").read() +
-                   open(path_embarks_custom, "r").read())
+    # If there is already a set of embark profiles, then append the new ones.
+    if path.exists(path_embarks_current):
+        new_embarks = (open(path_embarks_current, "r").read() +
+                        open(path_embarks_custom, "r").read())
+    else:
+        new_embarks = open(path_embarks_custom, "r").read()
 
     open(path_embarks_current, "w").write(new_embarks) #}}}
 
@@ -50,5 +54,4 @@ def install_embarks(embarks_name, path_custom, df_paths): #{{{
         print "Added Lazy Newb Pack embark profiles!"
         append_embarks(
             path.join(path_embarks_custom, 'embarks_lazy_newb_pack.txt'),
-            df_paths['df_main'])
-    #}}}
+            df_paths['df_main']) #}}}

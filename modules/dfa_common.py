@@ -56,4 +56,5 @@ def download_with_progress(url, filename, retry_num): #{{{
     grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
     grabber.opts.progress_obj = urlgrabber.progress.TextMeter()
     grabber.opts.retry = retry_num
+    grabber.opts.ssl_verify_peer = False
     grabber.urlgrab(url, filename) #}}}
