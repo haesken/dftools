@@ -31,8 +31,13 @@ were originally authored by
 
 ### Run
 
-    Linux/OSX : Run 'df_install' or 'init_options' in a terminal.
-    Windows : Open a command prompt and run 'df_install' or 'init_options'.
+- Prebuilt binaries:
+    - Linux/OSX
+        - Run 'df_install' or 'init_options' in a terminal.
+    - Windows
+        - Open a command prompt and run 'df_install' or 'init_options'.
+- Development version:
+    Run 'python df_install.py' or 'python init_options.py' in a terminal.
 
 #### df\_install.py
     Usage: python df_install.py [options]
