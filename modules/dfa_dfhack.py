@@ -36,24 +36,23 @@ import dfa_archive
 import dfa_links
 
 
-def install_dfhack(path_dwarffortress): #{{{
+def install_dfhack(df_paths): #{{{
     """ Download and install dfhack. """
 
-    path_dflinux = path.join(path_dwarffortress, 'df_linux/')
-    path_dfhack = path.join(path_dwarffortress, 'dfhack/')
-    path_dfhack_tar = path.join(path_dfhack, 'dfhack.tar.gz')
+    path_dfhack = path.join(df_paths['wrapper'], 'dfhack/')
+    path_dfhack_archive = path.join(path_dfhack, 'dfhack.tar.gz')
 
-    if not path.exists(path_dfhack_tar):
-        print 'dfhack.tar.gz not found, downloading.'
+    if not path.exists(path_dfhack_archive):
+        print 'dfhack archive not found, downloading.'
         dfa_common.ensure_dir(path_dfhack)
         dfa_common.download_with_progress(
-                dfa_links.get_dfhack_download_link(), path_dfhack_tar, 3)
+                dfa_links.get_dfhack_download_link(), path_dfhack_archive, 3)
     else:
-        print 'Found dfhack.tar.gz here, not downloading.'
+        print 'Found dfhack archive here, not downloading.'
 
     # Extract the archive contents to a separate folder first.
-    if not path.exists(path.join(path_dflinux, 'dfhack.init-example')):
+    if not path.exists(path.join(df_paths['df_main'], 'dfhack.init-example')):
         print 'Extracting DFHack.'
-        dfa_archive.extract_archive(path_dfhack_tar, path_dflinux)
+        dfa_archive.extract_archive(path_dfhack_archive, df_paths['df_main'])
     else:
         print 'Found DFHack already extracted here, not overwriting.' #}}}
