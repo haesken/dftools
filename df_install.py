@@ -134,36 +134,31 @@ def main(args): #{{{
             'df_main_libs': path.join(path_df_main, 'libs'),
             }
 
-    divider = 60 * '='
-
-    if args.dwarf_fortress or args.quick:
-        print divider
+    if args.dwarf_fortress:
         dfa_df.install_dwarf_fortress(args.platform, df_paths)
-        print divider
 
-    if args.tileset or args.quick:
-        print divider
+    if args.tileset:
         dfa_tilesets.install_tileset(args.tileset, df_paths)
-        print divider
 
-    if args.embarks or args.quick:
-        print divider
+    if args.embarks:
         dfa_embarks.install_embarks(
                 args.embarks, path_custom, df_paths)
-        print divider
 
-    if args.aquifers or args.quick:
-        print divider
+    if args.aquifers:
         dfa_aquifers.toggle_aquifers(args.aquifers, df_paths)
-        print divider
 
     if args.dfhack:
-        print divider
         dfa_dfhack.install_dfhack(args.platform, df_paths)
-        print divider
 
     if args.license:
-        print license #}}}
+        print license
+
+    if args.quick:
+        dfa_df.install_dwarf_fortress(args.platform, df_paths)
+        dfa_tilesets.install_tileset("phoebus", df_paths)
+        dfa_embarks.install_embarks(
+                "lnp", path_custom, df_paths)
+        dfa_aquifers.toggle_aquifers("disable", df_paths) #}}}
 
 
 if __name__ == '__main__': #{{{

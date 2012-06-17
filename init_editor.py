@@ -71,7 +71,7 @@ def get_args(): #{{{
 
     parser.add_argument("-l", "--license",
             action="store_true",
-            help="Display the lisence.")
+            help="Display the license.")
 
     return parser.parse_args() #}}}
 
