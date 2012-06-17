@@ -80,7 +80,7 @@ def get_args(): #{{{
 
     parser.add_argument("-t", "--tileset",
             type=str,
-            choices=("phoebus", "mayday", "jolly9", "jolly12"),
+            choices=("phoebus", "jolly9", "jolly12"),
             help="Install a tileset.")
 
     parser.add_argument("-e", "--embarks",
@@ -104,7 +104,7 @@ def get_args(): #{{{
 
     parser.add_argument("-l", "--license",
             action="store_true",
-            help="Display the lisence.")
+            help="Display the license.")
 
     return parser.parse_args() #}}}
 

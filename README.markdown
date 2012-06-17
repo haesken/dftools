@@ -42,18 +42,28 @@ were originally authored by
 #### df\_install.py
     Usage: python df_install.py [options]
 
+    -h,   --help             : Display the help text.
     -d,   --directory        : Directory to install Dwarf Fortress to.
-    -df,  --dwarf_fortress   : Install Dwarf Fortress
-    -t,   --tileset          : Install tilesets
+    -p,   --platform         : Override OS detection.
+
+        This will override the OS detection and
+        let you specify what version of DF to use
+        (Linux/OSX/Windows).
+
+        This is useful if you want to install a different
+        OS's version of DF.
+
+    -df,  --dwarf_fortress   : Install Dwarf Fortress.
+    -t,   --tileset          : Install a tileset
 
         Example:
-            Install Phoebus tileset: -t phoebus
+            Install the Phoebus tileset: -t phoebus
 
         Available tilesets:
-            Phoebus          : phoebus
-            Mayday           : mayday
-            Jolly Bastion    : jollybastion
-            ASCII (Square)   : asciisquare
+            Phoebus             : phoebus
+            Jolly Bastion 9x12  : jolly9
+            Jolly Bastion 12x12 : jolly12
+
 
     -e,   --embarks          : Install embark profiles
 
@@ -75,6 +85,8 @@ were originally authored by
     -q,   --quick            : Quick install
 
         Equivalent to '-df -t phoebus -e lnp -aq disable'
+
+    -l,  --license           : Display the license
 
 
 #### init\_editor.py
