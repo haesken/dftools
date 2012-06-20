@@ -2,6 +2,7 @@
 
 rm -r binaries/
 rm -r develop/dist/
+rm -r develop/build/
 
 python develop/pyinstaller/utils/Build.py develop/df_install.spec
 python develop/pyinstaller/utils/Build.py develop/init_editor.spec
