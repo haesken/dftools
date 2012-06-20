@@ -1,5 +1,5 @@
 dwarffortress/
 .virtualenv/
-develop/build/build/
-develop/build/dist/
-build/
+develop/build/
+develop/dist/
+binaries/

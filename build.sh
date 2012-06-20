@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 rm -r develop/build/dist/
-python develop/pyinstaller/utils/Build.py develop/build/df_install.spec
-python develop/pyinstaller/utils/Build.py develop/build/init_editor.spec
+python develop/pyinstaller/utils/Build.py develop/df_install.spec
+python develop/pyinstaller/utils/Build.py develop/init_editor.spec
 
-mkdir -p build/dwarf_fortress_auto
+mkdir -p binaries/dwarf_fortress_auto
 
-cp develop/build/dist/* build/dwarf_fortress_auto
-cp -r custom build/dwarf_fortress_auto
+cp develop/dist/* binaries/dwarf_fortress_auto
+cp -r custom binaries/dwarf_fortress_auto
 
-cd build
+cd binaries
 rm *.tar.gz
 tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1)-linux.tar.gz dwarf_fortress_auto/
