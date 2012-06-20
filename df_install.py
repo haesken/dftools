@@ -165,8 +165,7 @@ def main(args): #{{{
     if args.quick:
         dfa_df.install_dwarf_fortress(args.platform, df_paths)
         dfa_tilesets.install_tileset("phoebus", df_paths)
-        dfa_embarks.install_embarks(
-                "lnp", path_custom, df_paths)
+        dfa_embarks.install_embarks("lnp", path_custom, df_paths)
         dfa_aquifers.toggle_aquifers("disable", df_paths) #}}}
 
 

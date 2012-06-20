@@ -35,12 +35,12 @@ were originally authored by
     - Linux/OSX
         - Run 'df_install' or 'init_options' in a terminal.
     - Windows
-        - Open a command prompt and run 'df_install' or 'init_options'.
+        - Open a command prompt and run 'df_install.exe' or 'init_options.exe'.
 - Development version:
     Run 'python df_install.py' or 'python init_options.py' in a terminal.
 
-#### df\_install.py
-    Usage: python df_install.py [options]
+#### df\_install
+    Usage: ./df_install [options]
 
     -h,   --help             : Display the help text.
     -d,   --directory        : Directory to install Dwarf Fortress to.
@@ -87,10 +87,11 @@ were originally authored by
         Equivalent to '-df -t phoebus -e lnp -aq disable'
 
     -l,  --license           : Display the license
+    -v,  --version           : Disaply the version
 
 
-#### init\_editor.py
-    Usage: python init_editor.py [options]
+#### init\_editor
+    Usage: python init_editor [options]
 
     -p,   --path             : Path to the config file to write to.
     -s,   --search           : Search for an option.
