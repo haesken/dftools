@@ -65,7 +65,7 @@ def download_file(url, filename): #{{{
             sha1=hashlib.sha1(raw_file).hexdigest())
 
     if response.ok:
-        archive = open(filename, 'w')
+        archive = open(filename, 'wb')
         archive.write(raw_file)
         archive.close()
         archive = open(filename, 'rb')
