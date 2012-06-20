@@ -60,10 +60,10 @@ were originally authored by
             Install the Phoebus tileset: -t phoebus
 
         Available tilesets:
-            Phoebus             : phoebus
-            Jolly Bastion 9x12  : jolly9
-            Jolly Bastion 12x12 : jolly12
-
+            Phoebus                                : phoebus
+            Jolly Bastion 9x12                     : jolly9
+            Jolly Bastion 12x12                    : jolly12
+            Jolly Bastion 12x12 (With curses font) : jollycurses
 
     -e,   --embarks          : Install embark profiles
 

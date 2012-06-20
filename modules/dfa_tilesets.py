@@ -69,6 +69,9 @@ def get_tileset_url(tileset_name): #{{{
     elif tileset_name == 'jolly12':
         tileset_url = (dfa_media_repo_link +
                 "tilesets/34_11_jolly_12x12.tar.gz?raw=true")
+    elif tileset_name == 'jollycurses':
+        tileset_url = (dfa_media_repo_link +
+                "tilesets/34_11_jolly_12x12_curses.tar.gz?raw=true")
 
     tileset_filename = tileset_url.split('/')[-1][:-9]
 
