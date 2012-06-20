@@ -54,7 +54,7 @@ def download_file(url, filename): #{{{
     headers = {
         'User-Agent': 'Dwarf Fortress Auto'
         }
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, verify=False)
     raw_file = response.content
     print 'Remote filesize: {size}B'.format(
             size=response.headers['content-length'])
