@@ -51,7 +51,10 @@ def ensure_dir(directory): #{{{
 def download_file(url, filename): #{{{
     """ Download a file. """
     print "Downloading: {url}".format(url=url)
-    response = requests.get(url)
+    headers = {
+        'User-Agent': 'Dwarf Fortress Auto'
+        }
+    response = requests.get(url, headers=headers)
     raw_file = response.content
     print 'Remote filesize: {size}B'.format(
             size=response.headers['content-length'])
@@ -64,4 +67,9 @@ def download_file(url, filename): #{{{
     if response.ok:
         archive = open(filename, 'w')
         archive.write(raw_file)
+        archive.close()
+        archive = open(filename, 'rb')
+        print 'SHA1 for {filename} on disk: {sha1}'.format(
+                filename=filename.split(path.sep)[-1],
+                sha1=hashlib.sha1(archive.read()).hexdigest())
         archive.close()
