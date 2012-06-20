@@ -57,7 +57,7 @@ def install_dfhack(platform, df_paths): #{{{
         else:
             print "Your platform is not supported by DFHack!"
 
-        dfa_common.download_with_progress(dfhack_link, path_dfhack_archive, 3)
+        dfa_common.download_file(dfhack_link, path_dfhack_archive)
     else:
         print 'Found dfhack archive here, not downloading.'
 

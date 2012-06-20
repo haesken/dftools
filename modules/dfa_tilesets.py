@@ -110,8 +110,8 @@ def install_tileset(tileset_name, df_paths): #{{{
     if not path.exists(tileset_paths['tileset_archive']):
         print '{tileset_filename} not present, downloading.'.format(
                 tileset_filename=tileset_filename)
-        dfa_common.download_with_progress(
-                tileset_url, tileset_paths['tileset_archive'], 3)
+        dfa_common.download_file(
+                tileset_url, tileset_paths['tileset_archive'])
 
     # If the archive hasn't already been extracted (to its own dir).
     if not path.exists(tileset_paths['tileset_data']):

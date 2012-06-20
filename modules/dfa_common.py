@@ -31,9 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from os import path, walk, mkdir
 import fnmatch
-
-import urlgrabber.progress
-import urlgrabber.grabber
+import requests
 
 
 def find_recursive(search_path, term): #{{{
@@ -49,12 +47,10 @@ def ensure_dir(directory): #{{{
         mkdir(directory) #}}}
 
 
-def download_with_progress(url, filename, retry_num): #{{{
-    """ Download a file with a progress bar. """
+def download_file(url, filename): #{{{
+    """ Download a file. """
     print "Downloading: {url}".format(url=url)
-    dfa_user_agent = 'Dwarf Fortress Auto'
-    grabber = urlgrabber.grabber.URLGrabber(user_agent=dfa_user_agent)
-    grabber.opts.progress_obj = urlgrabber.progress.TextMeter()
-    grabber.opts.retry = retry_num
-    grabber.opts.ssl_verify_peer = False
-    grabber.urlgrab(url, filename) #}}}
+    response = requests.get(url).content
+    archive = open(filename, 'w')
+    archive.write(response)
+    archive.close()

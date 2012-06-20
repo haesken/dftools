@@ -68,7 +68,7 @@ def download_df(archive_url, archive_filename, path_df_archive): #{{{
 
     print ('{filename} not present, downloading...'.format(
         filename=archive_filename))
-    dfa_common.download_with_progress(archive_url, path_df_archive, 1) #}}}
+    dfa_common.download_file(archive_url, path_df_archive) #}}}
 
 
 def install_dwarf_fortress(platform, df_paths): #{{{
