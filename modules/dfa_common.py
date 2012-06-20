@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from os import path, walk, mkdir
 import fnmatch
+import hashlib
 import requests
 
 
@@ -50,7 +51,17 @@ def ensure_dir(directory): #{{{
 def download_file(url, filename): #{{{
     """ Download a file. """
     print "Downloading: {url}".format(url=url)
-    response = requests.get(url).content
-    archive = open(filename, 'w')
-    archive.write(response)
-    archive.close()
+    response = requests.get(url)
+    raw_file = response.content
+    print 'Remote filesize: {size}B'.format(
+            size=response.headers['content-length'])
+    print 'Downloaded filesize: {size}B'.format(
+            size=len(raw_file))
+    print 'SHA1 for {filename}: {sha1}'.format(
+            filename=filename.split(path.sep)[-1],
+            sha1=hashlib.sha1(raw_file).hexdigest())
+
+    if response.ok:
+        archive = open(filename, 'w')
+        archive.write(raw_file)
+        archive.close()
