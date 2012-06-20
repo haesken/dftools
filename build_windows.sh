@@ -11,4 +11,4 @@ cp -r custom binaries/dwarf_fortress_auto
 
 cd binaries
 rm *.tar.gz
-tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1)-linux.tar.gz dwarf_fortress_auto/
+tar cvzf dwarf_fortress_auto-$(git log --pretty=format:'%h' -n 1)-windows.tar.gz dwarf_fortress_auto/
