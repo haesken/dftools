@@ -16,11 +16,6 @@ were originally authored by
 [Mike Mayday](http://mayday.w.staszic.waw.pl/df.php).
 
 
-## Dependencies
-
-- Linux
-    - Dwarf Fortress' dependencies (found at the end of this readme)
-
 ## Usage
 ### Download
 
@@ -36,10 +31,9 @@ were originally authored by
         - Run 'df_install' or 'init_options' in a terminal.
     - Windows
         - Open a command prompt and run 'df_install.exe' or 'init_options.exe'.
-- Development version:
-    Run 'python df_install.py' or 'python init_options.py' in a terminal.
 
 #### df\_install
+
     Usage: ./df_install [options]
 
     -h,   --help             : Display the help text.
@@ -120,23 +114,3 @@ were originally authored by
         The format/syntax for the restore file is the same
         as the Dwarf Fortress config file, and two examples
         are included. (custom_d_init.txt, custom_init.txt)
-
-
-## Dependency list
-Dependencies for Dwarf Fortress (Ubuntu packages):
-
-    ncurses-base
-    libncurses5
-    libncurses5-dev
-    libsdl1.2debian-all
-    libsdl1.2-dev
-    libsdl-image1.2
-    libsdl-image1.2-dev
-    libglu1-mesa
-    libglu1-mesa-dev
-    libgtk2.0-0
-    libgtk2.0-dev
-    libopenal1
-    libopenal-dev
-
-    ia32-libs (only needed on 64 bit systems)
