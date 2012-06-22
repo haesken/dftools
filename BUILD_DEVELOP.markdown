@@ -41,18 +41,18 @@ Have the virtualenv activated, then run
     ./build.sh
 
 This will use pyinstaller to build the binaries,
-copy them and the 'custom' directory to the
-'binaries/dwarf_fortress_auto' directory, and finally make a
-tar.gz containing the 'dwarf_fortress_auto folder'.
+copy them and the `custom` directory to the
+`binaries/dwarf_fortress_auto` directory, and finally make a
+tar.gz containing the `dwarf_fortress_auto` folder.
 
 ## Building (Windows)
 
 I use a Windows 7 virtual machine dedicated to this, so
 python & its modules are installed globally.
 
-You will need to have all the dependencies installed.
-First install python, then your python directory and the 'scripts' subdirectory to your path.
-[More info](http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7)
+You will need to have all the dependencies installed. First
+install python, then your python directory and the `scripts`
+subdirectory to your path. [More info](http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7)
 
 Install setuptools and pip.
 

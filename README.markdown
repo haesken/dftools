@@ -25,14 +25,14 @@ were originally authored by
 - Linux/OSX
     - Run either of these in a terminal.
 
-        ./df_install -h
-        ./init_options -h
+        `./df_install -h`
+        `./init_options -h`
 
 - Windows
     - Open a command prompt in the dwarf_fortress_auto dir and run:
 
-        df_install.exe -h
-        init_options.exe -h
+        `df_install.exe -h`
+        `init_options.exe -h`
 
 #### df\_install
 
