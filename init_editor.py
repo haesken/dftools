@@ -111,7 +111,8 @@ def find_option_line(option_name, lines): #{{{
 
     for line in lines:
         if line.startswith('[') and line.endswith(']'):
-            if option_name in parse_option_line(line)[0]:
+            # The search term must be exactly equal to the name of the option.
+            if option_name == parse_option_line(line)[0]:
                 yield line #}}}
 
 
@@ -136,7 +137,8 @@ def insert_option_line(inits, option_name, new_option_line): #{{{
     """ Insert the modified line into the file. """
 
     for line in inits:
-        if line.startswith('[') and line.endswith(']') and option_name in line:
+        if (line.startswith('[') and line.endswith(']') and
+                option_name == parse_option_line(line)[0]):
             yield new_option_line
         else:
             yield line #}}}
@@ -152,7 +154,7 @@ def search_inits(inits_path, search_term): #{{{
         for result in search_results:
             yield result
     else:
-        yield "Found no option containing '{option}'!".format(
+        yield "Found no option '{option}'!".format(
                 option=search_term) #}}}
 
 
@@ -168,17 +170,10 @@ def set_option(option, inits_path): #{{{
 
     # Handle bad search results {{{
     if len(search_results) == 0:
-        print "Found no option containing '{option}'!".format(
+        print "Found no option '{option}'!".format(
                 option=option_name)
-        sys.exit()
-
-    elif len(search_results) > 1:
-        print "Multiple options containing '{option_name}'!".format(
-                option_name=option_name)
-        print "Use ONE option from the following:"
-        for result in search_results:
-            print result
         sys.exit() #}}}
+
 
     current_option_line = search_results[0]
     option_list = parse_option_line(current_option_line)
