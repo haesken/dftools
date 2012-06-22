@@ -1,8 +1,7 @@
 Dwarf Fortress Auto
 ===================
 
-A set of scripts to download and install Dwarf Fortress and
-Dwarf Therapist, with a few included utilities.
+A set of scripts to download and install Dwarf Fortress a few utilities.
 
 ## Attribution
 
@@ -19,18 +18,21 @@ were originally authored by
 ## Usage
 ### Download
 
-- Stable version (recommended)
-    - Check the Downloads page for prebuilt binaries (Linux/OSX/Windows)
-- Development version
-    - Clone this repo and run the setup script.
+- Check the Downloads page for prebuilt binaries (Linux/OSX/Windows)
 
 ### Run
 
-- Prebuilt binaries:
-    - Linux/OSX
-        - Run 'df_install' or 'init_options' in a terminal.
-    - Windows
-        - Open a command prompt and run 'df_install.exe' or 'init_options.exe'.
+- Linux/OSX
+    - Run either of these in a terminal.
+
+        ./df_install -h
+        ./init_options -h
+
+- Windows
+    - Open a command prompt in the dwarf_fortress_auto dir and run:
+
+        df_install.exe -h
+        init_options.exe -h
 
 #### df\_install
 
@@ -90,18 +92,17 @@ were originally authored by
     -p,   --path             : Path to the config file to write to.
     -s,   --search           : Search for an option.
 
-        Examples:
-            Search for POPULATION : -s pop
-            Search for BABY_CHILD_CAP : -s child
+        Example:
+            Search for POPULATION_CAP : -s population_cap
 
     -o,   --option           : Option to change.
 
         Examples:
-            Set POPULATION_CAP to 80   : -o population 80
-            Set BABY_CHILD_CAP to 0:10 : -o child 0 10
+            Set POPULATION_CAP to 80   : -o population_cap 80
+            Set BABY_CHILD_CAP to 0:10 : -o baby_child_cap 0 10
 
         This option can be repeated, example:
-            -o population 80 -o child 0 10
+            -o population_cap 80 -o baby_child_cap 0 10
 
     -r,   --restore          : Restore custom options from a file.
 
@@ -114,3 +115,5 @@ were originally authored by
         The format/syntax for the restore file is the same
         as the Dwarf Fortress config file, and two examples
         are included. (custom_d_init.txt, custom_init.txt)
+
+    -l,   --license          : Display the license
