@@ -56,8 +56,8 @@ def get_args(): #{{{
             nargs="*",
             help="Option/value pair to set.\n" +
                  "Examples:\n" +
-                 "    population 80\n" +
-                 "    embark_rectangle 4 4")
+                 "    population_cap 80\n" +
+                 "    baby_child_cap 0 0")
 
     parser.add_argument("-s", "--search",
             type=str,
