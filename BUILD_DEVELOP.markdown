@@ -14,6 +14,7 @@ Building Dwarf Fortress Auto requires these additional dependencies:
 - [pip](http://www.pip-installer.org/)
 - [virtualenv](http://www.virtualenv.org/)
 - [pyinstaller](http://www.pyinstaller.org/) (installed as a submodule)
+- [upx](http://upx.sourceforge.net/)
 
 ## Developing (Linux/OSX)
 
@@ -22,12 +23,15 @@ pyinstaller is only needed for building), then run
 
     source setup.sh
 
-This will clone the git submodules (pyinstaller), then
-create/activate the virtualenv and try to install
-requests/lxml via pip. At this point you should be able to
-run the scripts and start hacking. You will need to activate
-the virtualenv every time you start hacking on it. (Unless
-you install lxml/requests to your global packages.)
+This will:
+    - clone the git submodules (pyinstaller)
+    - create/activate the virtualenv
+    - try to install requests/lxml via pip
+
+At this point you should be able to run the scripts and
+start hacking. You will need to activate the virtualenv
+every time you start hacking on it. (Unless you install
+lxml/requests to your global packages.)
 
 ## Developing (Windows)
 
@@ -40,10 +44,11 @@ Have the virtualenv activated, then run
 
     ./build.sh
 
-This will use pyinstaller to build the binaries,
-copy them and the `custom` directory to the
-`binaries/dwarf_fortress_auto` directory, and finally make a
-tar.gz containing the `dwarf_fortress_auto` folder.
+This will:
+    - use pyinstaller to build the binaries,
+    - copy them and the `custom` directory to the
+      `binaries/dwarf_fortress_auto` directory,
+    - make a tar.gz containing the `dwarf_fortress_auto` folder
 
 ## Building (Windows)
 
@@ -51,7 +56,7 @@ I use a Windows 7 virtual machine dedicated to this, so
 python & its modules are installed globally.
 
 You will need to have all the dependencies installed. First
-install python, then your python directory and the `scripts`
+install python, then add your python directory and the `scripts`
 subdirectory to your path. [More info](http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7)
 
 Install setuptools and pip.
@@ -64,10 +69,13 @@ Use pip to install a static linked version of lxml
 
     pip install http://pypi.python.org/packages/2.7/l/lxml/lxml-2.3.win32-py2.7.exe#md5=9c02aae672870701377750121f5a6f84
 
+Install [upx](http://upx.sourceforge.net/) somewhere and add
+that directory to your path.
+
 Download and install [Github for Windows](http://windows.github.com/).
 This will provide an installation of git/bash/tar etc.
 
-Open a git shell and navigate to the Dwarf Fortress Auto directory.
+Open a git shell and navigate to the `dwarf_fortress_auto` directory.
 
 Run this to clone pyinstaller
 
