@@ -4,8 +4,8 @@
 
 Dwarf Fortress Auto has the following dependencies:
 - [python 2.7](http://www.python.org/)
-- [requests](http://docs.python-requests.org/en/latest/index.html) (python module)
-- [lxml](http://lxml.de/installation.html) (python module)
+- [requests](http://docs.python-requests.org/en/latest/index.html)
+- [lxml](http://lxml.de/installation.html)
     - [libxml](http://xmlsoft.org/)
     - [libxslt](http://xmlsoft.org/)
 
@@ -24,9 +24,10 @@ pyinstaller is only needed for building), then run
     source setup.sh
 
 This will:
-    - clone the git submodules (pyinstaller)
-    - create/activate the virtualenv
-    - try to install requests/lxml via pip
+
+- clone the git submodules (pyinstaller)
+- create/activate the virtualenv
+- try to install requests/lxml via pip
 
 At this point you should be able to run the scripts and
 start hacking. You will need to activate the virtualenv
@@ -45,10 +46,10 @@ Have the virtualenv activated, then run
     ./build.sh
 
 This will:
-    - use pyinstaller to build the binaries,
-    - copy them and the `custom` directory to the
-      `binaries/dwarf_fortress_auto` directory,
-    - make a tar.gz containing the `dwarf_fortress_auto` folder
+- build in the binaries with pyinstaller
+- copy the binaries and the `custom` directory to the
+  `binaries/dwarf_fortress_auto` directory,
+- make a tar.gz containing the `binaries/dwarf_fortress_auto` folder
 
 ## Building (Windows)
 
