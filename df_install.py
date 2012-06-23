@@ -140,6 +140,13 @@ def main(args): #{{{
             'df_main_libs': path.join(path_df_main, 'libs'),
             }
 
+    if args.quick:
+        dfa_df.install_dwarf_fortress(args.platform, df_paths)
+        dfa_tilesets.install_tileset("phoebus", df_paths)
+        dfa_embarks.install_embarks("lnp", path_custom, df_paths)
+        dfa_aquifers.toggle_aquifers("disable", df_paths) #}}}
+        sys.exit(0)
+
     if args.dwarf_fortress:
         dfa_df.install_dwarf_fortress(args.platform, df_paths)
 
@@ -162,11 +169,6 @@ def main(args): #{{{
     if args.version:
         print version
 
-    if args.quick:
-        dfa_df.install_dwarf_fortress(args.platform, df_paths)
-        dfa_tilesets.install_tileset("phoebus", df_paths)
-        dfa_embarks.install_embarks("lnp", path_custom, df_paths)
-        dfa_aquifers.toggle_aquifers("disable", df_paths) #}}}
 
 
 if __name__ == '__main__': #{{{

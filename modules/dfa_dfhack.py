@@ -50,10 +50,10 @@ def install_dfhack(platform, df_paths): #{{{
 
         if platform == 'linux':
             dfhack_link = media_repo_link.format(
-                filename='dfhack/dfhack-0.34.10-r1-Linux.tar.gz?raw=true')
+                filename='dfhack/dfhack-0.34.11-r1-Linux.tar.gz?raw=true')
         elif platform == 'windows':
             dfhack_link = media_repo_link.format(
-                filename='dfhack/dfhack-0.34.10-r1-Windows.tar.gz?raw=true')
+                filename='dfhack/dfhack-0.34.11-r1-Windows.tar.gz?raw=true')
         else:
             print "Your platform is not supported by DFHack!"
 
