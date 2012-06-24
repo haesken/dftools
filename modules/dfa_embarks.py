@@ -53,5 +53,10 @@ def install_embarks(embarks_name, path_custom, df_paths): #{{{
     if embarks_name == "lnp":
         print "Added Lazy Newb Pack embark profiles!"
         append_embarks(
-            path.join(path_embarks_custom, 'embarks_lazy_newb_pack.txt'),
+            path.join(path_embarks_custom, 'lazy_newb_pack.txt'),
+            df_paths['df_main'])
+    if embarks_name == "mayday":
+        print "Added Mayday embark profiles!"
+        append_embarks(
+            path.join(path_embarks_custom, 'mayday.txt'),
             df_paths['df_main']) #}}}

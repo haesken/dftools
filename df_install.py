@@ -82,12 +82,12 @@ def get_args(): #{{{
 
     parser.add_argument("-t", "--tileset",
             type=str,
-            choices=("phoebus", "jolly9", "jolly12", "jollycurses"),
+            choices=("phoebus", "jolly9", "jolly12", "jollycurses", "mayday"),
             help="Install a tileset.")
 
     parser.add_argument("-e", "--embarks",
             type=str,
-            choices=("lnp", ),
+            choices=("lnp", "mayday"),
             help="Install embark profiles.")
 
     parser.add_argument("-aq", "--aquifers",
@@ -144,7 +144,7 @@ def main(args): #{{{
         dfa_df.install_dwarf_fortress(args.platform, df_paths)
         dfa_tilesets.install_tileset("phoebus", df_paths)
         dfa_embarks.install_embarks("lnp", path_custom, df_paths)
-        dfa_aquifers.toggle_aquifers("disable", df_paths) #}}}
+        dfa_aquifers.toggle_aquifers("disable", df_paths)
         sys.exit(0)
 
     if args.dwarf_fortress:
@@ -167,7 +167,7 @@ def main(args): #{{{
         print license
 
     if args.version:
-        print version
+        print version #}}}
 
 
 

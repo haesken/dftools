@@ -26,12 +26,14 @@ were originally authored by
     - Run either of these in a terminal.
 
         `./df_install -h`
+
         `./init_options -h`
 
 - Windows
     - Open a command prompt in the dwarf_fortress_auto dir and run:
 
         `df_install.exe -h`
+
         `init_options.exe -h`
 
 #### df\_install
@@ -60,6 +62,7 @@ were originally authored by
             Jolly Bastion 9x12                     : jolly9
             Jolly Bastion 12x12                    : jolly12
             Jolly Bastion 12x12 (With curses font) : jollycurses
+            Mayday                                 : mayday
 
     -e,   --embarks          : Install embark profiles
 
@@ -68,6 +71,7 @@ were originally authored by
 
         Available embark profiles:
             Lazy Newb Pack   : lnp
+            Mayday           : mayday
 
     -aq,  --aquifers         : Enable/disable aquifers
 
