@@ -34,6 +34,9 @@ start hacking. You will need to activate the virtualenv
 every time you start hacking on it. (Unless you install
 lxml/requests to your global packages.)
 
+On OSX you may need to install the `modulegraph` and
+`altgraph` python packages.
+
 ## Developing (Windows)
 
 You probably shouldn't do this, using a Linux virtual
