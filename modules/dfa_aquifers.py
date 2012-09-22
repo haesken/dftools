@@ -2,7 +2,7 @@
 
 """ Enable/disable aquifers. """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,14 +27,14 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from os import path, listdir
 
 import re
 
 
-def disable_aquifers(df_paths): #{{{
+def disable_aquifers(df_paths):
     """ Delete all instances of '[AQUIFER]' in the raws. """
 
     print "Disabled aquifers!"
@@ -62,10 +62,10 @@ def disable_aquifers(df_paths): #{{{
 
         raw_file = open(raw, 'w')
         raw_file.writelines(output_lines)
-        raw_file.close() #}}}
+        raw_file.close()
 
 
-def toggle_aquifers(toggle, path_df_main): #{{{
+def toggle_aquifers(toggle, path_df_main):
     """ Enable or disable aquifers. """
     if toggle == 'disable':
-        disable_aquifers(path_df_main) #}}}
+        disable_aquifers(path_df_main)

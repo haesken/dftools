@@ -2,7 +2,7 @@
 
 """ Download and install dfhack (https://github.com/peterix/dfhack). """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,7 +27,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from os import path
 
@@ -35,7 +35,7 @@ import dfa_common
 import dfa_archive
 
 
-def install_dfhack(platform, df_paths): #{{{
+def install_dfhack(platform, df_paths):
     """ Download and install dfhack. """
 
     path_dfhack = path.join(df_paths['wrapper'], 'dfhack/')
@@ -66,4 +66,4 @@ def install_dfhack(platform, df_paths): #{{{
         print 'Extracting DFHack.'
         dfa_archive.extract_archive(path_dfhack_archive, df_paths['df_main'])
     else:
-        print 'Found DFHack already extracted here, not overwriting.' #}}}
+        print 'Found DFHack already extracted here, not overwriting.'

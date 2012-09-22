@@ -2,7 +2,7 @@
 
 """ Install tilesets. """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,7 +27,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from distutils.dir_util import copy_tree
 from os import path, remove
@@ -36,24 +36,24 @@ import dfa_common
 import dfa_archive
 
 
-def copy_tree_verbose(path_from, path_to): #{{{
+def copy_tree_verbose(path_from, path_to):
     """ Recursively copy a file or directory. """
     print 'Copying {path_from} to {path_to}'.format(
             path_from=path_from, path_to=path_to)
-    copy_tree(path_from, path_to) #}}}
+    copy_tree(path_from, path_to)
 
 
-def extract_tileset(path_tileset_archive, path_tileset): #{{{
+def extract_tileset(path_tileset_archive, path_tileset):
     """ Try to extract a tileset, don't explode if the archive is corrupt. """
     try:
         dfa_archive.extract_archive(path_tileset_archive, path_tileset)
         return 0
     # If the archive is incomplete, corrupted, etc.
     except IOError:
-        return 1 #}}}
+        return 1
 
 
-def get_tileset_url(tileset_name): #{{{
+def get_tileset_url(tileset_name):
     """ Get the url for the specified tileset,
         return the url and the filename of the archive.
     """
@@ -78,10 +78,10 @@ def get_tileset_url(tileset_name): #{{{
 
     tileset_filename = tileset_url.split('/')[-1][:-9]
 
-    return (tileset_url, tileset_filename) #}}}
+    return (tileset_url, tileset_filename)
 
 
-def define_tileset_paths(tileset_name, tileset_filename, df_paths): #{{{
+def define_tileset_paths(tileset_name, tileset_filename, df_paths):
     """ Define paths for the tileset files. """
     path_tileset_archive = path.join(df_paths['wrapper'], tileset_filename)
     path_tileset = path.join(df_paths['wrapper'], tileset_name)
@@ -97,10 +97,10 @@ def define_tileset_paths(tileset_name, tileset_filename, df_paths): #{{{
         'tileset_data': path_tileset_data,
         'tileset_raw': path_tileset_raw,
         'tileset_inits': path_tileset_inits,
-    } #}}}
+    }
 
 
-def install_tileset(tileset_name, df_paths): #{{{
+def install_tileset(tileset_name, df_paths):
     """ Download and install a tileset. """
 
     # Check for the current version of the tileset
@@ -135,4 +135,4 @@ def install_tileset(tileset_name, df_paths): #{{{
     # These should probably exist but might not.
     if path.exists(tileset_paths['tileset_inits']):
         copy_tree_verbose(
-                tileset_paths['tileset_inits'], df_paths['df_main_inits']) #}}}
+                tileset_paths['tileset_inits'], df_paths['df_main_inits'])

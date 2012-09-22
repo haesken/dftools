@@ -2,7 +2,7 @@
 
 """ Scrape various sites for df/tileset download links. """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,23 +27,23 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from lxml import html
 import requests
 
 
-def download_page(url): #{{{
+def download_page(url):
     """ Download a page with Requests. Will handle https. """
     try:
         page = requests.get(url)
         if page.status_code == 200:
             return page.content
     except requests.ConnectionError:
-        print 'Requests ConnectionError!' #}}}
+        print 'Requests ConnectionError!'
 
 
-def extract_links_from_xpath(url, link_xpath): #{{{
+def extract_links_from_xpath(url, link_xpath):
     """ Parse the html of a given url and extract the links of an xpath. """
 
     page = download_page(url)
@@ -51,10 +51,10 @@ def extract_links_from_xpath(url, link_xpath): #{{{
         tree = html.fromstring(page)
         elems = tree.xpath(link_xpath)
 
-        return [(elem.text, str(elem.values()[0])) for elem in elems] #}}}
+        return [(elem.text, str(elem.values()[0])) for elem in elems]
 
 
-def get_dwarf_fortress_links(): #{{{
+def get_dwarf_fortress_links():
     """ Get the download link to the linux version of Dwarf Fortress. """
 
     bay12_link = 'http://www.bay12games.com/dwarves/'
@@ -64,4 +64,4 @@ def get_dwarf_fortress_links(): #{{{
             'linux': bay12_link + raw_links[0][4][1],
             'osx': bay12_link + raw_links[0][5][1],
             'windows': bay12_link + raw_links[0][0][1],
-    } #}}}
+    }

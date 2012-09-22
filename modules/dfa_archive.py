@@ -4,7 +4,7 @@
     Handles tar and zip.
 """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -29,13 +29,13 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 import tarfile
 import zipfile
 
 
-def find_type(archive_path): #{{{
+def find_type(archive_path):
     """ See if the file is actually an archive. """
 
     extension = archive_path.split(".")[-1].lower()
@@ -46,10 +46,10 @@ def find_type(archive_path): #{{{
 
     elif extension == 'zip':
         if zipfile.is_zipfile(archive_path):
-            return ('zip',) #}}}
+            return ('zip',)
 
 
-def check_for_bad_filenames(names_list): #{{{
+def check_for_bad_filenames(names_list):
     """ Look for Malicious filenames in the archive.
         Throw an exception if we find any.
     """
@@ -59,10 +59,10 @@ def check_for_bad_filenames(names_list): #{{{
             raise ValueError('Malicous filenames in this archive!')
         for level in name.split('/'):
             if '..' in level:
-                raise ValueError('Malicous filenames in this archive!') #}}}
+                raise ValueError('Malicous filenames in this archive!')
 
 
-def extract_tar(archive_path, comp_type, extract_path): #{{{
+def extract_tar(archive_path, comp_type, extract_path):
     """ Extract a tar archive. """
 
     tar_file = tarfile.open(archive_path,
@@ -71,20 +71,20 @@ def extract_tar(archive_path, comp_type, extract_path): #{{{
     check_for_bad_filenames(tar_file.getnames())
 
     tar_file.extractall(extract_path)
-    tar_file.close() #}}}
+    tar_file.close()
 
 
-def extract_zip(archive_path, extract_path): #{{{
+def extract_zip(archive_path, extract_path):
     """ Extract a zip archive_path. """
     zip_file = zipfile.ZipFile(archive_path, 'r')
 
     check_for_bad_filenames(zip_file.namelist())
 
     zip_file.extractall(extract_path)
-    zip_file.close() #}}}
+    zip_file.close()
 
 
-def extract_archive(archive_path, extract_path): #{{{
+def extract_archive(archive_path, extract_path):
     """ Extract an archive to the specified path. """
 
     archive_type = find_type(archive_path)
@@ -97,4 +97,4 @@ def extract_archive(archive_path, extract_path): #{{{
         elif archive_type[0] == 'zip':
             extract_zip(archive_path, extract_path)
     else:
-        raise IOError('Bad archive!') #}}}
+        raise IOError('Bad archive!')

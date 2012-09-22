@@ -5,7 +5,7 @@
     tilesets, and embark profiles.
 """
 
-# License #{{{
+# License
 license = """
 Copyright (c) 2012, haesken
 All rights reserved.
@@ -31,7 +31,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 version = "0.3.8"
 
@@ -48,7 +48,7 @@ import dfa_embarks
 import dfa_tilesets
 
 
-def detect_platform(): #{{{
+def detect_platform():
     """ Detect what platform we are running on. """
     if 'linux' in sys.platform:
         return 'linux'
@@ -56,10 +56,10 @@ def detect_platform(): #{{{
         return 'osx'
     # Includes cygwin
     elif 'win' in sys.platform:
-        return 'windows' #}}}
+        return 'windows'
 
 
-def get_args(): #{{{
+def get_args():
     """ Get arguments from the command line. """
 
     parser = argparse.ArgumentParser(
@@ -112,10 +112,10 @@ def get_args(): #{{{
             action="store_true",
             help="Display the version.")
 
-    return parser.parse_args() #}}}
+    return parser.parse_args()
 
 
-def main(args): #{{{
+def main(args):
     """ Run selected options. """
 
     # Wrapper directory where downloaded/extracted archives,
@@ -167,12 +167,12 @@ def main(args): #{{{
         print license
 
     if args.version:
-        print version #}}}
+        print version
 
 
 
-if __name__ == '__main__': #{{{
+if __name__ == '__main__':
     try:
         main(get_args())
     except KeyboardInterrupt:
-        sys.exit() #}}}
+        sys.exit()

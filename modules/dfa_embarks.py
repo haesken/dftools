@@ -2,7 +2,7 @@
 
 """ Install the embark profiles. """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,12 +27,12 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from os import path
 
 
-def append_embarks(path_embarks_custom, path_df_main): #{{{
+def append_embarks(path_embarks_custom, path_df_main):
     """ Append custom embark profiles to the current ones. """
     path_embarks_current = path.join(
         path_df_main, 'data/init/embark_profiles.txt')
@@ -44,10 +44,10 @@ def append_embarks(path_embarks_custom, path_df_main): #{{{
     else:
         new_embarks = open(path_embarks_custom, "r").read()
 
-    open(path_embarks_current, "w").write(new_embarks) #}}}
+    open(path_embarks_current, "w").write(new_embarks)
 
 
-def install_embarks(embarks_name, path_custom, df_paths): #{{{
+def install_embarks(embarks_name, path_custom, df_paths):
     """ Install selected embark profiles. """
     path_embarks_custom = path.join(path_custom, 'embarks/')
     if embarks_name == "lnp":
@@ -59,4 +59,4 @@ def install_embarks(embarks_name, path_custom, df_paths): #{{{
         print "Added Mayday embark profiles!"
         append_embarks(
             path.join(path_embarks_custom, 'mayday.txt'),
-            df_paths['df_main']) #}}}
+            df_paths['df_main'])

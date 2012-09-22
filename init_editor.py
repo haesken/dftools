@@ -3,7 +3,7 @@
 
 """ Edit/backup/restore Dwarf Fortress init configs. """
 
-# License #{{{
+# License
 license = """
 Copyright (c) 2012, haesken
 All rights reserved.
@@ -29,7 +29,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 import argparse
 import collections
@@ -37,7 +37,7 @@ import os
 import sys
 
 
-def get_args(): #{{{
+def get_args():
     """ Get arguments from the command line. """
 
     parser = argparse.ArgumentParser(
@@ -73,10 +73,10 @@ def get_args(): #{{{
             action="store_true",
             help="Display the license.")
 
-    return parser.parse_args() #}}}
+    return parser.parse_args()
 
 
-def read_lines(path): #{{{
+def read_lines(path):
     """ Read the contents of a file.
         Return the contents.
     """
@@ -85,26 +85,26 @@ def read_lines(path): #{{{
     lines = f.readlines()
     f.close()
 
-    return [line.strip('\n').strip('\r') for line in lines] #}}}
+    return [line.strip('\n').strip('\r') for line in lines]
 
 
-def write_lines(new_contents, file_path): #{{{
+def write_lines(new_contents, file_path):
     """ Write text to a file. """
 
     f = open(file_path, 'w')
     f.writelines([line + os.linesep for line in new_contents])
-    f.close() #}}}
+    f.close()
 
 
-def parse_option_line(line): #{{{
+def parse_option_line(line):
     """ Parse the option line.
         Returns a tuple with the option and a list of argument values.
     """
 
-    return line.strip('[').strip(']').split(':') #}}}
+    return line.strip('[').strip(']').split(':')
 
 
-def find_option_line(option_name, lines): #{{{
+def find_option_line(option_name, lines):
     """ Find a line containing the option.
         Return the line.
     """
@@ -113,10 +113,10 @@ def find_option_line(option_name, lines): #{{{
         if line.startswith('[') and line.endswith(']'):
             # The search term must be exactly equal to the name of the option.
             if option_name == parse_option_line(line)[0]:
-                yield line #}}}
+                yield line
 
 
-def make_option_line(option_list): #{{{
+def make_option_line(option_list):
     """ Generate a valid option line for the init file.
         Example: '[Population:70]'
     """
@@ -130,10 +130,10 @@ def make_option_line(option_list): #{{{
         new_values = option_values[0]
 
     return '[{option}:{values}]'.format(
-            option=option_name, values=new_values.upper()) #}}}
+            option=option_name, values=new_values.upper())
 
 
-def insert_option_line(inits, option_name, new_option_line): #{{{
+def insert_option_line(inits, option_name, new_option_line):
     """ Insert the modified line into the file. """
 
     for line in inits:
@@ -141,10 +141,10 @@ def insert_option_line(inits, option_name, new_option_line): #{{{
                 option_name == parse_option_line(line)[0]):
             yield new_option_line
         else:
-            yield line #}}}
+            yield line
 
 
-def search_inits(inits_path, search_term): #{{{
+def search_inits(inits_path, search_term):
     """ Search for an option in a config file. """
 
     inits = read_lines(inits_path)
@@ -155,10 +155,10 @@ def search_inits(inits_path, search_term): #{{{
             yield result
     else:
         yield "Found no option '{option}'!".format(
-                option=search_term) #}}}
+                option=search_term)
 
 
-def set_option(option, inits_path): #{{{
+def set_option(option, inits_path):
     """ Read a file and look for a line containing the selected option,
         then set the new value for that option and write it to the file.
     """
@@ -172,7 +172,7 @@ def set_option(option, inits_path): #{{{
     if len(search_results) == 0:
         print "Found no option '{option}'!".format(
                 option=option_name)
-        sys.exit() #}}}
+        sys.exit()
 
 
     current_option_line = search_results[0]
@@ -183,20 +183,20 @@ def set_option(option, inits_path): #{{{
 
     new_inits = insert_option_line(inits, option_name, new_option_line)
 
-    write_lines(new_inits, inits_path) #}}}
+    write_lines(new_inits, inits_path)
 
 
-def restore_options(restore_inits_path, inits_path): #{{{
+def restore_options(restore_inits_path, inits_path):
     """ Restore custom options from a file. """
 
     restore_file_options = [parse_option_line(option)
             for option in read_lines(restore_inits_path)]
 
     for option in restore_file_options:
-        set_option(process_option(option), inits_path) #}}}
+        set_option(process_option(option), inits_path)
 
 
-def flatten_iterable(an_iterable): #{{{
+def flatten_iterable(an_iterable):
     """ Flatten a nested iterable. """
 
     for element in an_iterable:
@@ -206,22 +206,22 @@ def flatten_iterable(an_iterable): #{{{
             for sub_element in flatten_iterable(element):
                 yield sub_element
         else:
-            yield element #}}}
+            yield element
 
 
-def uppercase_args(option): #{{{
+def uppercase_args(option):
     """ Uppercase each item in a list. """
 
-    return [arg.upper() for arg in option] #}}}
+    return [arg.upper() for arg in option]
 
 
-def process_option(option): #{{{
+def process_option(option):
     """ Flatten a list and uppercase each element. """
 
-    return list(uppercase_args(flatten_iterable(option))) #}}}
+    return list(uppercase_args(flatten_iterable(option)))
 
 
-def main(args): #{{{
+def main(args):
     """ Run selected functions. """
 
     if args.search_term:
@@ -238,14 +238,14 @@ def main(args): #{{{
             set_option(process_option(option), args.inits_path)
 
     if args.restore_inits_path:
-        restore_options(args.restore_inits_path, args.inits_path) #}}}
+        restore_options(args.restore_inits_path, args.inits_path)
 
     if args.license:
         print license
 
 
-if __name__ == '__main__': #{{{
+if __name__ == '__main__':
     try:
         main(get_args())
     except KeyboardInterrupt:
-        sys.exit() #}}}
+        sys.exit()

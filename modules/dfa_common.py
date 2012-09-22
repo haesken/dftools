@@ -2,7 +2,7 @@
 
 """ Common DFA functions """
 
-""" #{{{
+"""
 Copyright (c) 2012, haesken
 All rights reserved.
 
@@ -27,7 +27,7 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-""" #}}}
+"""
 
 from os import path, walk, mkdir
 import fnmatch
@@ -35,20 +35,20 @@ import hashlib
 import requests
 
 
-def find_recursive(search_path, term): #{{{
+def find_recursive(search_path, term):
     """ Search a directory recursively for a file. """
     for root, dirnames, filenames in walk(search_path):
         for filename in fnmatch.filter(filenames, term):
-            yield path.join(root, filename) #}}}
+            yield path.join(root, filename)
 
 
-def ensure_dir(directory): #{{{
+def ensure_dir(directory):
     """ Make sure a directory exists, if not create it. """
     if not path.exists(directory):
-        mkdir(directory) #}}}
+        mkdir(directory)
 
 
-def download_file(url, filename): #{{{
+def download_file(url, filename):
     """ Download a file. """
     print "Downloading: {url}".format(url=url)
     headers = {
