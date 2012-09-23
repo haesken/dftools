@@ -50,26 +50,26 @@ def ensure_dir(directory):
 
 def download_file(url, filename):
     """ Download a file. """
-    print "Downloading: {url}".format(url=url)
+    print("Downloading: {url}".format(url=url))
     headers = {
-        'User-Agent': 'Dwarf Fortress Auto'
+        "User-Agent": "Dwarf Fortress Auto"
         }
     response = requests.get(url, headers=headers, verify=False)
     raw_file = response.content
-    print 'Remote filesize: {size}B'.format(
-            size=response.headers['content-length'])
-    print 'Downloaded filesize: {size}B'.format(
-            size=len(raw_file))
-    print 'SHA1 for {filename}: {sha1}'.format(
+    print("Remote filesize: {size}B".format(
+            size=response.headers["content-length"]))
+    print("Downloaded filesize: {size}B".format(
+            size=len(raw_file)))
+    print("SHA1 for {filename}: {sha1}".format(
             filename=filename.split(path.sep)[-1],
-            sha1=hashlib.sha1(raw_file).hexdigest())
+            sha1=hashlib.sha1(raw_file).hexdigest()))
 
     if response.ok:
-        archive = open(filename, 'wb')
+        archive = open(filename, "wb")
         archive.write(raw_file)
         archive.close()
-        archive = open(filename, 'rb')
-        print 'SHA1 for {filename} on disk: {sha1}'.format(
+        archive = open(filename, "rb")
+        print("SHA1 for {filename} on disk: {sha1}".format(
                 filename=filename.split(path.sep)[-1],
-                sha1=hashlib.sha1(archive.read()).hexdigest())
+                sha1=hashlib.sha1(archive.read()).hexdigest()))
         archive.close()

@@ -43,30 +43,30 @@ def copy_libgl(path_df_libs):
     libgl_canidates = []
 
     lib_matches = list(
-        dfa_common.find_recursive('/usr/lib/', 'libGL.so.1'))
-    if lib_matches != None:
+        dfa_common.find_recursive("/usr/lib/", "libGL.so.1"))
+    if not lib_matches == None:
         for item in lib_matches:
             libgl_canidates.append(item)
 
     lib_matches_32 = list(
-        dfa_common.find_recursive('/usr/lib32/', 'libGL.so.1'))
+        dfa_common.find_recursive("/usr/lib32/", "libGL.so.1"))
     if lib_matches != None:
         for item in lib_matches_32:
             libgl_canidates.append(item)
 
     libgl_path = [canidate for canidate in libgl_canidates
-        if 'nvidia' not in canidate and '64' not in canidate][0]
+        if "nvidia" not in canidate and "64" not in canidate][0]
 
-    copy_file(libgl_path, path.join(path_df_libs, 'libGL.so.1'))
+    copy_file(libgl_path, path.join(path_df_libs, "libGL.so.1"))
 
-    print "Copied: {libgl_path} to {path_df_libs}".format(
-            libgl_path=libgl_path, path_df_libs=path_df_libs)
+    print("Copied: {libgl_path} to {path_df_libs}".format(
+            libgl_path=libgl_path, path_df_libs=path_df_libs))
 
 
 def download_df(archive_url, archive_filename, path_df_archive):
     """ Download Dwarf Fortress. """
 
-    print ('{filename} not present, downloading...'.format(
+    print("{filename} not present, downloading...".format(
         filename=archive_filename))
     dfa_common.download_file(archive_url, path_df_archive)
 
@@ -74,26 +74,26 @@ def download_df(archive_url, archive_filename, path_df_archive):
 def install_dwarf_fortress(platform, df_paths):
     """ Download and install Dwarf Fortress. """
 
-    dfa_common.ensure_dir(df_paths['wrapper'])
+    dfa_common.ensure_dir(df_paths["wrapper"])
     archive_urls = dfa_links.get_dwarf_fortress_links()
-    archive_url = archive_urls['{platform}'.format(platform=platform)]
-    archive_filename = archive_url.split('/')[-1]
-    path_df_archive = path.join(df_paths['wrapper'], archive_filename)
+    archive_url = archive_urls["{platform}".format(platform=platform)]
+    archive_filename = archive_url.split("/")[-1]
+    path_df_archive = path.join(df_paths["wrapper"], archive_filename)
 
     if not path.exists(path_df_archive):
         download_df(archive_url, archive_filename, path_df_archive)
 
-    if not path.exists(df_paths['df_main']):
+    if not path.exists(df_paths["df_main"]):
         # The Linux & OSX versions of DF are packaged within folders
-        # ('df_linux' and 'df_osx') so we extract them to the wrapper dir.
-        if platform == 'linux' or platform == 'osx':
-            dfa_archive.extract_archive(path_df_archive, df_paths['wrapper'])
+        # ("df_linux" and "df_osx") so we extract them to the wrapper dir.
+        if platform == "linux" or platform == "osx":
+            dfa_archive.extract_archive(path_df_archive, df_paths["wrapper"])
         # The Windows version of DF is packaged with no folder,
-        # so we make one ('df_windows') and then extract to it.
-        elif platform == 'windows':
-            dfa_archive.extract_archive(path_df_archive, df_paths['df_main'])
+        # so we make one ("df_windows") and then extract to it.
+        elif platform == "windows":
+            dfa_archive.extract_archive(path_df_archive, df_paths["df_main"])
 
-    if platform == 'linux':
-        if not path.exists(path.join(df_paths['df_main_libs'], 'libgl.so.1')):
-            print 'Installing libgl library'
-            copy_libgl(df_paths['df_main_libs'])
+    if platform == "linux":
+        if not path.exists(path.join(df_paths["df_main_libs"], "libgl.so.1")):
+            print("Installing libgl library")
+            copy_libgl(df_paths["df_main_libs"])

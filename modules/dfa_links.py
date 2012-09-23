@@ -40,7 +40,7 @@ def download_page(url):
         if page.status_code == 200:
             return page.content
     except requests.ConnectionError:
-        print 'Requests ConnectionError!'
+        print("Requests ConnectionError!")
 
 
 def extract_links_from_xpath(url, link_xpath):
@@ -57,11 +57,11 @@ def extract_links_from_xpath(url, link_xpath):
 def get_dwarf_fortress_links():
     """ Get the download link to the linux version of Dwarf Fortress. """
 
-    bay12_link = 'http://www.bay12games.com/dwarves/'
+    bay12_link = "http://www.bay12games.com/dwarves/"
     raw_links = extract_links_from_xpath(bay12_link, "//p/a[@href]"),
 
     return {
-            'linux': bay12_link + raw_links[0][4][1],
-            'osx': bay12_link + raw_links[0][5][1],
-            'windows': bay12_link + raw_links[0][0][1],
+            "linux": bay12_link + raw_links[0][4][1],
+            "osx": bay12_link + raw_links[0][5][1],
+            "windows": bay12_link + raw_links[0][0][1],
     }

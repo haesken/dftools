@@ -35,7 +35,7 @@ from os import path
 def append_embarks(path_embarks_custom, path_df_main):
     """ Append custom embark profiles to the current ones. """
     path_embarks_current = path.join(
-        path_df_main, 'data/init/embark_profiles.txt')
+        path_df_main, "data/init/embark_profiles.txt")
 
     # If there is already a set of embark profiles, then append the new ones.
     if path.exists(path_embarks_current):
@@ -49,14 +49,17 @@ def append_embarks(path_embarks_custom, path_df_main):
 
 def install_embarks(embarks_name, path_custom, df_paths):
     """ Install selected embark profiles. """
-    path_embarks_custom = path.join(path_custom, 'embarks/')
+
+    path_embarks_custom = path.join(path_custom, "embarks/")
+
     if embarks_name == "lnp":
-        print "Added Lazy Newb Pack embark profiles!"
+        print("Added Lazy Newb Pack embark profiles!")
         append_embarks(
-            path.join(path_embarks_custom, 'lazy_newb_pack.txt'),
-            df_paths['df_main'])
+            path.join(path_embarks_custom, "lazy_newb_pack.txt"),
+            df_paths["df_main"])
+
     if embarks_name == "mayday":
-        print "Added Mayday embark profiles!"
+        print("Added Mayday embark profiles!")
         append_embarks(
-            path.join(path_embarks_custom, 'mayday.txt'),
-            df_paths['df_main'])
+            path.join(path_embarks_custom, "mayday.txt"),
+            df_paths["df_main"])

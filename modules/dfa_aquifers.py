@@ -30,42 +30,44 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from os import path, listdir
-
 import re
 
 
-def disable_aquifers(df_paths):
-    """ Delete all instances of '[AQUIFER]' in the raws. """
+def sub_all_in_file(somefile, regex, replacement):
+    for line in raw_lines:
+        if line != None and line != "\n":
+            yield re.sub(regex, replacement, line)
+        elif line == "\n":
+            yield line
 
-    print "Disabled aquifers!"
+
+def disable_aquifers(df_paths):
+    """ Delete all instances of "[AQUIFER]" in the raws. """
+
+    print("Disabled aquifers!")
 
     # Make the paths of items in path_df_main_objects absolute
-    objects = [path.join(df_paths['df_main_objects'], item) for item in
-            listdir(df_paths['df_main_objects'])]
+    objects = [path.join(df_paths["df_main_objects"], item)
+            for item in listdir(df_paths["df_main_objects"])]
 
     # Only pay attention of the inorganic_stone files
     objects_aquifers = [entry for entry in objects
-            if 'inorganic_stone' in entry]
+            if "inorganic_stone" in entry]
 
     for raw in objects_aquifers:
-        raw_file = open(raw, 'r')
+        raw_file = open(raw, "r")
         raw_lines = raw_file.readlines()
         raw_file.close()
 
-        output_lines = []
-        # Delete '[AQUIFER]' from every non-blank line.
-        for line in raw_lines:
-            if line != None and line != '\n':
-                output_lines.append(re.sub('\[AQUIFER\]', '', line))
-            elif line == '\n':
-                output_lines.append(line)
+        # Delete "[AQUIFER]" from every non-blank line.
+        sub_all_in_file(raw_lines, "\[AQUIFER\]", "")
 
-        raw_file = open(raw, 'w')
+        raw_file = open(raw, "w")
         raw_file.writelines(output_lines)
         raw_file.close()
 
 
 def toggle_aquifers(toggle, path_df_main):
     """ Enable or disable aquifers. """
-    if toggle == 'disable':
+    if toggle == "disable":
         disable_aquifers(path_df_main)

@@ -85,13 +85,13 @@ def read_lines(path):
     lines = f.readlines()
     f.close()
 
-    return [line.strip('\n').strip('\r') for line in lines]
+    return [line.strip("\n").strip("\r") for line in lines]
 
 
 def write_lines(new_contents, file_path):
     """ Write text to a file. """
 
-    f = open(file_path, 'w')
+    f = open(file_path, "w")
     f.writelines([line + os.linesep for line in new_contents])
     f.close()
 
@@ -101,7 +101,7 @@ def parse_option_line(line):
         Returns a tuple with the option and a list of argument values.
     """
 
-    return line.strip('[').strip(']').split(':')
+    return line.strip("[").strip("]").split(":")
 
 
 def find_option_line(option_name, lines):
@@ -110,7 +110,7 @@ def find_option_line(option_name, lines):
     """
 
     for line in lines:
-        if line.startswith('[') and line.endswith(']'):
+        if line.startswith("[") and line.endswith("]"):
             # The search term must be exactly equal to the name of the option.
             if option_name == parse_option_line(line)[0]:
                 yield line
@@ -118,18 +118,18 @@ def find_option_line(option_name, lines):
 
 def make_option_line(option_list):
     """ Generate a valid option line for the init file.
-        Example: '[Population:70]'
+        Example: "[Population:70]"
     """
 
     option_name, option_values = option_list[0], option_list[1:]
 
     # If we have multiple arguments join them with a :
     if len(option_values) > 1:
-        new_values = ':'.join(option_values)
+        new_values = ":".join(option_values)
     else:
         new_values = option_values[0]
 
-    return '[{option}:{values}]'.format(
+    return "[{option}:{values}]".format(
             option=option_name, values=new_values.upper())
 
 
@@ -137,7 +137,7 @@ def insert_option_line(inits, option_name, new_option_line):
     """ Insert the modified line into the file. """
 
     for line in inits:
-        if (line.startswith('[') and line.endswith(']') and
+        if (line.startswith("[") and line.endswith("]") and
                 option_name == parse_option_line(line)[0]):
             yield new_option_line
         else:
@@ -154,7 +154,7 @@ def search_inits(inits_path, search_term):
         for result in search_results:
             yield result
     else:
-        yield "Found no option '{option}'!".format(
+        yield "Found no option "{option}"!".format(
                 option=search_term)
 
 
@@ -170,7 +170,7 @@ def set_option(option, inits_path):
 
     # Handle bad search results {{{
     if len(search_results) == 0:
-        print "Found no option '{option}'!".format(
+        print "Found no option "{option}"!".format(
                 option=option_name)
         sys.exit()
 
@@ -231,7 +231,7 @@ def main(args):
 
     if args.options_list:
         """ Read/write the inits file on each iteration so
-            the current change doesn't discard the previous
+            the current change doesn"t discard the previous
             change.
         """
         for option in args.options_list:

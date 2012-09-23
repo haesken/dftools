@@ -38,32 +38,32 @@ import dfa_archive
 def install_dfhack(platform, df_paths):
     """ Download and install dfhack. """
 
-    path_dfhack = path.join(df_paths['wrapper'], 'dfhack/')
-    path_dfhack_archive = path.join(path_dfhack, 'dfhack.tar.gz')
+    path_dfhack = path.join(df_paths["wrapper"], "dfhack/")
+    path_dfhack_archive = path.join(path_dfhack, "dfhack.tar.gz")
 
     if not path.exists(path_dfhack_archive):
-        print 'dfhack archive not found, downloading.'
+        print("dfhack archive not found, downloading.")
         dfa_common.ensure_dir(path_dfhack)
 
-        media_repo_link = ('https://github.com/haesken/'
-            + 'dfa_media/blob/master/{filename}')
+        media_repo_link = ("https://github.com/haesken/"
+            + "dfa_media/blob/master/{filename}")
 
-        if platform == 'linux':
+        if platform == "linux":
             dfhack_link = media_repo_link.format(
-                filename='dfhack/dfhack-0.34.11-r1-Linux.tar.gz?raw=true')
-        elif platform == 'windows':
+                filename="dfhack/dfhack-0.34.11-r1-Linux.tar.gz?raw=true")
+        elif platform == "windows":
             dfhack_link = media_repo_link.format(
-                filename='dfhack/dfhack-0.34.11-r1-Windows.tar.gz?raw=true')
+                filename="dfhack/dfhack-0.34.11-r1-Windows.tar.gz?raw=true")
         else:
-            print "Your platform is not supported by DFHack!"
+            print("Your platform is not supported by DFHack!")
 
         dfa_common.download_file(dfhack_link, path_dfhack_archive)
     else:
-        print 'Found dfhack archive here, not downloading.'
+        print("Found dfhack archive here, not downloading.")
 
     # Extract the archive contents to a separate folder first.
-    if not path.exists(path.join(df_paths['df_main'], 'dfhack.init-example')):
-        print 'Extracting DFHack.'
-        dfa_archive.extract_archive(path_dfhack_archive, df_paths['df_main'])
+    if not path.exists(path.join(df_paths["df_main"], "dfhack.init-example")):
+        print("Extracting DFHack.")
+        dfa_archive.extract_archive(path_dfhack_archive, df_paths["df_main"])
     else:
-        print 'Found DFHack already extracted here, not overwriting.'
+        print("Found DFHack already extracted here, not overwriting.")

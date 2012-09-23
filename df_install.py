@@ -39,7 +39,7 @@ from os import path, getcwd
 import argparse
 import sys
 
-sys.path.append('modules/')
+sys.path.append("modules/")
 import dfa_common
 import dfa_aquifers
 import dfa_df
@@ -50,13 +50,13 @@ import dfa_tilesets
 
 def detect_platform():
     """ Detect what platform we are running on. """
-    if 'linux' in sys.platform:
-        return 'linux'
-    elif 'darwin' in sys.platform:
-        return 'osx'
+    if "linux" in sys.platform:
+        return "linux"
+    elif "darwin" in sys.platform:
+        return "osx"
     # Includes cygwin
-    elif 'win' in sys.platform:
-        return 'windows'
+    elif "win" in sys.platform:
+        return "windows"
 
 
 def get_args():
@@ -67,7 +67,7 @@ def get_args():
 
     parser.add_argument("-d", "--directory",
             type=str,
-            default=path.join(getcwd(), 'dwarffortress'),
+            default=path.join(getcwd(), "dwarffortress"),
             help="Directory to install Dwarf Fortress to.")
 
     parser.add_argument("-p", "--platform",
@@ -92,7 +92,7 @@ def get_args():
 
     parser.add_argument("-aq", "--aquifers",
             type=str,
-            choices=('disable', 'enable'),
+            choices=("disable", "enable"),
             help="Enable or disable aquifers.")
 
     parser.add_argument("-dfh", "--dfhack",
@@ -124,20 +124,20 @@ def main(args):
     dfa_common.ensure_dir(path_wrapper_dir)
 
     # Actual Dwarf Fortress install directory.
-    name_df_main = 'df_{platform}'.format(platform=args.platform)
+    name_df_main = "df_{platform}".format(platform=args.platform)
     path_df_main = path.join(path_wrapper_dir, name_df_main)
 
     # Directory for custom files such as embark profiles and init restores.
-    path_custom = path.join(getcwd(), 'custom')
+    path_custom = path.join(getcwd(), "custom")
 
     df_paths = {
-            'wrapper': path_wrapper_dir,
-            'df_main': path_df_main,
-            'df_main_data': path.join(path_df_main, 'data/'),
-            'df_main_inits': path.join(path_df_main, 'data/init'),
-            'df_main_raw': path.join(path_df_main, 'raw/'),
-            'df_main_objects': path.join(path_df_main, 'raw/objects'),
-            'df_main_libs': path.join(path_df_main, 'libs'),
+            "wrapper": path_wrapper_dir,
+            "df_main": path_df_main,
+            "df_main_data": path.join(path_df_main, "data/"),
+            "df_main_inits": path.join(path_df_main, "data/init"),
+            "df_main_raw": path.join(path_df_main, "raw/"),
+            "df_main_objects": path.join(path_df_main, "raw/objects"),
+            "df_main_libs": path.join(path_df_main, "libs"),
             }
 
     if args.quick:
