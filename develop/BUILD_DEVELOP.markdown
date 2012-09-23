@@ -4,7 +4,7 @@
 
 Dwarf Fortress Auto has the following dependencies:
 - [python 2.7](http://www.python.org/)
-- [requests](http://docs.python-requests.org/en/latest/index.html)
+- [requests](http://docs.python-requests.org/)
 - [lxml](http://lxml.de/installation.html)
     - [libxml](http://xmlsoft.org/)
     - [libxslt](http://xmlsoft.org/)
@@ -25,9 +25,9 @@ pyinstaller is only needed for building), then run
 
 This will:
 
-- clone the git submodules (pyinstaller)
-- create/activate the virtualenv
-- try to install requests/lxml via pip
+- Clone the git submodules (pyinstaller).
+- Create/activate the virtualenv.
+- Try to install requests/lxml in the virtualenv via pip.
 
 At this point you should be able to run the scripts and
 start hacking. You will need to activate the virtualenv
@@ -65,11 +65,11 @@ subdirectory to your path. [More info](http://stackoverflow.com/questions/631815
 
 Install setuptools and pip.
 
-Use pip to install requests normally.
+Use pip to install requests.
 
     pip install requests
 
-Use pip to install a static linked version of lxml
+Use pip to install a static linked version of lxml.
 
     pip install http://pypi.python.org/packages/2.7/l/lxml/lxml-2.3.win32-py2.7.exe#md5=9c02aae672870701377750121f5a6f84
 
@@ -81,11 +81,11 @@ This will provide an installation of git/bash/tar etc.
 
 Open a git shell and navigate to the `dwarf_fortress_auto` directory.
 
-Run this to clone pyinstaller
+Clone pyinstaller.
 
     git submodule update --init
 
-Now run
+Run the build script.
 
     bash build_windows.sh
 

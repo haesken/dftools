@@ -33,8 +33,8 @@ from os import path, listdir
 import re
 
 
-def sub_all_in_file(somefile, regex, replacement):
-    for line in raw_lines:
+def sub_all_in_file(lines, regex, replacement):
+    for line in lines:
         if line != None and line != "\n":
             yield re.sub(regex, replacement, line)
         elif line == "\n":
@@ -43,8 +43,6 @@ def sub_all_in_file(somefile, regex, replacement):
 
 def disable_aquifers(df_paths):
     """ Delete all instances of "[AQUIFER]" in the raws. """
-
-    print("Disabled aquifers!")
 
     # Make the paths of items in path_df_main_objects absolute
     objects = [path.join(df_paths["df_main_objects"], item)
@@ -60,11 +58,13 @@ def disable_aquifers(df_paths):
         raw_file.close()
 
         # Delete "[AQUIFER]" from every non-blank line.
-        sub_all_in_file(raw_lines, "\[AQUIFER\]", "")
+        output_lines = list(sub_all_in_file(raw_lines, "\[AQUIFER\]", ""))
 
         raw_file = open(raw, "w")
         raw_file.writelines(output_lines)
         raw_file.close()
+
+    print("Disabled aquifers!")
 
 
 def toggle_aquifers(toggle, path_df_main):
