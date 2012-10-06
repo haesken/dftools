@@ -154,7 +154,7 @@ def search_inits(inits_path, search_term):
         for result in search_results:
             yield result
     else:
-        yield "Found no option "{option}"!".format(
+        yield "Found no option {option}!".format(
                 option=search_term)
 
 
@@ -170,7 +170,7 @@ def set_option(option, inits_path):
 
     # Handle bad search results {{{
     if len(search_results) == 0:
-        print "Found no option "{option}"!".format(
+        print "Found no option {option}!".format(
                 option=option_name)
         sys.exit()
 
