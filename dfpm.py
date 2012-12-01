@@ -1,11 +1,66 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-""" A set of scripts to download and install Dwarf Fortress,
-    tilesets, and embark profiles.
+""" dfpm
+
+Usage:
+    dfpm [--directory DIR] [--platform PLATFORM] update
+    dfpm [--directory DIR] [--platform PLATFORM] install <package>...
+    dfpm [--directory DIR] [--platform PLATFORM] remove <package>...
+    dfpm [--directory DIR] [--platform PLATFORM] upgrade [<package>...]
+    dfpm [--directory DIR] [--platform PLATFORM] show [<package>...]
+    dfpm -h | --help
+    dfpm -l | --license
+    dfpm -v | --version
+
+Options:
+    -d --directory DIR      Directory to install packages to. [default: ./]
+    -p --platform PLATFORM  Override platform. [default: detect]
+                            Valid values: linux / osx / windows
+
+    -h --help               Display the help text.
+    -l --license            Display the license
+    -v --version            Disaply the version
+
+Examples:
+    dfpm install dwarffortress
+        Install Dwarf Fortress.
+
+    dfpm install dwarffortress phoebus lazynewbpack
+        Install Dwarf Fortress, Phoebus tileset, and Lazy Newb Pack embark
+        profiles.
+
+    dfpm install phoebus
+        Install Phoebus tileset, will install Dwarf Fortress if it
+        isn't present.
+
+    dfpm --directory ~/foobar/ install dwarffortress
+        Install Dwarf Fortress in "~/foobar/".
+
+    dfpm --platform windows install dwarffortress
+        Install the Windows version of Dwarf Fortress, even if the current
+        OS is different.
+
+    dfpm update
+        Check for updates to packages.
+
+    dfpm upgrade
+        Upgrade all packages.
+
+    dfpm upgrade dwarffortress
+        Upgrade only Dwarf Fortress.
+
+    dfpm upgrade dwarffortress phoebus
+        Upgrade Dwarf Fortress and Phoebus packages.
+
+    dfpm show
+        Show package information for all installed packages.
+
+    dfpm show dwarffortress
+        Show package information for package "dwarffortress"
+
 """
 
-# License
 license = """
 Copyright (c) 2012, haesken
 All rights reserved.
@@ -33,19 +88,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-version = "0.3.8"
+version = "0.4.0"
 
 from os import path, getcwd
-import argparse
+from docopt import docopt
 import sys
 
 sys.path.append("modules/")
-import dfa_common
-import dfa_aquifers
-import dfa_df
-import dfa_dfhack
-import dfa_embarks
-import dfa_tilesets
+import dfpm_interface
 
 
 def detect_platform():
@@ -59,120 +109,56 @@ def detect_platform():
         return "windows"
 
 
-def get_args():
-    """ Get arguments from the command line. """
-
-    parser = argparse.ArgumentParser(
-            description="Install Dwarf Fortress and utilities.")
-
-    parser.add_argument("-d", "--directory",
-            type=str,
-            default=path.join(getcwd(), "dwarffortress"),
-            help="Directory to install Dwarf Fortress to.")
-
-    parser.add_argument("-p", "--platform",
-            type=str,
-            choices=("linux", "osx", "windows"),
-            default=detect_platform(),
-            help="Override platform detection.")
-
-    parser.add_argument("-df", "--dwarf_fortress",
-            action="store_true",
-            help="Install Dwarf Fortress.")
-
-    parser.add_argument("-t", "--tileset",
-            type=str,
-            choices=("phoebus", "jolly9", "jolly12", "jollycurses", "mayday"),
-            help="Install a tileset.")
-
-    parser.add_argument("-e", "--embarks",
-            type=str,
-            choices=("lnp", "mayday"),
-            help="Install embark profiles.")
-
-    parser.add_argument("-aq", "--aquifers",
-            type=str,
-            choices=("disable", "enable"),
-            help="Enable or disable aquifers.")
-
-    parser.add_argument("-dfh", "--dfhack",
-            action="store_true",
-            help="Install DFHack.")
-
-    parser.add_argument("-q", "--quick",
-            action="store_true",
-            help="Quick install of some sensible defaults.\n" +
-                 "Equivalent to '-df -t phoebus -e lnp -aq disable'")
-
-    parser.add_argument("-l", "--license",
-            action="store_true",
-            help="Display the license.")
-
-    parser.add_argument("-v", "--version",
-            action="store_true",
-            help="Display the version.")
-
-    return parser.parse_args()
-
-
 def main(args):
     """ Run selected options. """
 
-    # Wrapper directory where downloaded/extracted archives,
-    # and the main df directory go.
-    path_wrapper_dir = args.directory
-    dfa_common.ensure_dir(path_wrapper_dir)
+    if args["--platform"] == "detect":
+        platform = detect_platform()
+    else:
+        platform = args["--platform"]
+
+    if args["--directory"]:
+        path_root_dir = args["--directory"]
+    else:
+        path_root_dir = getcwd()
 
     # Actual Dwarf Fortress install directory.
-    name_df_main = "df_{platform}".format(platform=args.platform)
-    path_df_main = path.join(path_wrapper_dir, name_df_main)
-
-    # Directory for custom files such as embark profiles and init restores.
-    path_custom = path.join(getcwd(), "custom")
+    name_df_main = "df_{platform}".format(platform=platform)
+    path_df_main = path.join(path_root_dir, name_df_main)
 
     df_paths = {
-            "wrapper": path_wrapper_dir,
+            "df_root": path_root_dir,
             "df_main": path_df_main,
-            "df_main_data": path.join(path_df_main, "data/"),
-            "df_main_inits": path.join(path_df_main, "data/init"),
-            "df_main_raw": path.join(path_df_main, "raw/"),
-            "df_main_objects": path.join(path_df_main, "raw/objects"),
-            "df_main_libs": path.join(path_df_main, "libs"),
+            "df_data": path.join(path_df_main, "data/"),
+            "df_inits": path.join(path_df_main, "data/init"),
+            "df_raw": path.join(path_df_main, "raw/"),
+            "df_objects": path.join(path_df_main, "raw/objects"),
+            "df_libs": path.join(path_df_main, "libs"),
             }
 
-    if args.quick:
-        dfa_df.install_dwarf_fortress(args.platform, df_paths)
-        dfa_tilesets.install_tileset("phoebus", df_paths)
-        dfa_embarks.install_embarks("lnp", path_custom, df_paths)
-        dfa_aquifers.toggle_aquifers("disable", df_paths)
-        sys.exit(0)
+    if args["install"]:
+        dfpm_interface.install(platform, df_paths, args["<package>"])
 
-    if args.dwarf_fortress:
-        dfa_df.install_dwarf_fortress(args.platform, df_paths)
+    if args["remove"]:
+        dfpm_interface.remove(platform, df_paths, args["<package>"])
 
-    if args.tileset:
-        dfa_tilesets.install_tileset(args.tileset, df_paths)
+    if args["update"]:
+        dfpm_interface.update(platform, df_paths)
 
-    if args.embarks:
-        dfa_embarks.install_embarks(
-                args.embarks, path_custom, df_paths)
+    if args["upgrade"]:
+        dfpm_interface.upgrade(platform, df_paths, args["<package>"])
 
-    if args.aquifers:
-        dfa_aquifers.toggle_aquifers(args.aquifers, df_paths)
+    if args["show"]:
+        dfpm_interface.show(platform, df_paths, args["<package>"])
 
-    if args.dfhack:
-        dfa_dfhack.install_dfhack(args.platform, df_paths)
+    if args["--license"]:
+        print(license)
 
-    if args.license:
-        print license
-
-    if args.version:
-        print version
-
-
+    if args["--version"]:
+        print(version)
 
 if __name__ == '__main__':
     try:
-        main(get_args())
+        main(docopt(__doc__))
     except KeyboardInterrupt:
         sys.exit()

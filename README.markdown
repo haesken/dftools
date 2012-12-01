@@ -12,47 +12,60 @@ Check the downloads page for prebuilt binaries (Linux / Windows)
 #### dfpm - Dwarf Fortress Package Manager
 
     Usage:
-        dfpm [--directory] [--platform] install <package> <package>...
-        dfpm [--directory] [--platform] remove <package> <package>...
-        dfpm [--directory] [--platform] update
-        dfpm [--directory] [--platform] upgrade
-        dfpm [--directory] show
+        dfpm [--directory DIR] [--platform PLATFORM] update
+        dfpm [--directory DIR] [--platform PLATFORM] install <package>...
+        dfpm [--directory DIR] [--platform PLATFORM] remove <package>...
+        dfpm [--directory DIR] [--platform PLATFORM] upgrade [<package>...]
+        dfpm [--directory DIR] [--platform PLATFORM] show [<package>...]
         dfpm -h | --help
         dfpm -l | --license
         dfpm -v | --version
 
     Options:
-        -d --directory  Directory to install packages to.
-        -p --platform   Manually set OS for OS dependent packages.
+        -d --directory DIR      Directory to install packages to. [default: ./]
+        -p --platform PLATFORM  Override platform. [default: detect]
+                                Valid values: linux / osx / windows
 
-        -h --help       Display the help text.
-        -l --license    Display the license
-        -v --version    Disaply the version
+        -h --help               Display the help text.
+        -l --license            Display the license
+        -v --version            Disaply the version
 
     Examples:
         dfpm install dwarffortress
-            Install Dwarf Fortress
+            Install Dwarf Fortress.
 
-        dfpm install dwarffortress ts-phoebus emb-lazynewbpack
+        dfpm install dwarffortress phoebus lazynewbpack
             Install Dwarf Fortress, Phoebus tileset, and Lazy Newb Pack embark
             profiles.
 
-        dfpm install ts-phoebus
+        dfpm install phoebus
             Install Phoebus tileset, will install Dwarf Fortress if it
             isn't present.
 
         dfpm --directory ~/foobar/ install dwarffortress
-            Install Dwarf Fortress in "~/foobar/"
+            Install Dwarf Fortress in "~/foobar/".
 
         dfpm --platform windows install dwarffortress
             Install the Windows version of Dwarf Fortress, even if the current
             OS is different.
 
         dfpm update
-            Update package information.
+            Check for updates to packages.
 
         dfpm upgrade
-            Upgrade packages.
+            Upgrade all packages.
+
+        dfpm upgrade dwarffortress
+            Upgrade only Dwarf Fortress.
+
+        dfpm upgrade dwarffortress phoebus
+            Upgrade Dwarf Fortress and Phoebus packages.
+
+        dfpm show
+            Show package information for all installed packages.
+
+        dfpm show dwarffortress
+            Show package information for package "dwarffortress"
 
 #### dfopt - Dwarf Fortress Options
 
@@ -135,3 +148,6 @@ It also includes embark profiles, which were originally authored by
 [LucasUP](http://www.funkybomp.com/),
 [captnduck](https://www.youtube.com/user/captnduck), and
 [Mike Mayday](http://mayday.w.staszic.waw.pl/df.php).
+
+
+
