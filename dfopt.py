@@ -1,9 +1,43 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-""" Edit/backup/restore Dwarf Fortress init configs. """
+""" dfopt - Dwarf Fortress Options
 
-# License
+Usage:
+    dfopt [--directory DIR] set (<opt> <value>)...
+    dfopt [--directory DIR] search (<opt>)
+    dfopt [--directory DIR] defaults
+    dfopt [--directory DIR] backup OPTSFILE
+    dfopt [--directory DIR] restore OPTSFILE
+    dfopt -h | --help
+    dfopt -l | --license
+    dfopt -v | --version
+
+Options:
+    -d --directory DIR  Path to Dwarf Fortress install.
+
+    -h --help           Display the help text.
+    -l --license        Display the license
+    -v --version        Disaply the version
+
+Examples:
+    dfopt search population
+        Search the configs for variables containing "population".
+
+    dfopt set population_cap 80
+        Set POPULATION_CAP to 80
+
+    dfopt set baby_child_cap 0:10
+        Set BABY_CHILD_CAP to 0:10
+
+    dfopt set population_cap 80 baby_child_cap 0:10
+        Set multiple values at once.
+
+    dfopt restore file.json
+        Read a json file containing saved options and values,
+        then set the game's options to those values.
+"""
+
 license = """
 Copyright (c) 2012, haesken
 All rights reserved.
@@ -31,49 +65,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import argparse
 import collections
 import os
 import sys
-
-
-def get_args():
-    """ Get arguments from the command line. """
-
-    parser = argparse.ArgumentParser(
-            description="Set options in a Dwarf Fortress init file.",
-            formatter_class=argparse.RawTextHelpFormatter)
-
-    parser.add_argument("-p", "--path",
-            type=str,
-            dest="inits_path",
-            help="Path to the Dwarf Fortress init.txt/d_init.txt file")
-
-    parser.add_argument("-o", "--option",
-            type=str,
-            action="append",
-            dest="options_list",
-            nargs="*",
-            help="Option/value pair to set.\n" +
-                 "Examples:\n" +
-                 "    population_cap 80\n" +
-                 "    baby_child_cap 0 0")
-
-    parser.add_argument("-s", "--search",
-            type=str,
-            dest="search_term",
-            help="Search for an option.")
-
-    parser.add_argument("-r", "--restore",
-            type=str,
-            dest="restore_inits_path",
-            help="Path to file to load options from.")
-
-    parser.add_argument("-l", "--license",
-            action="store_true",
-            help="Display the license.")
-
-    return parser.parse_args()
+from docopt import docopt
 
 
 def read_lines(path):
@@ -240,12 +235,15 @@ def main(args):
     if args.restore_inits_path:
         restore_options(args.restore_inits_path, args.inits_path)
 
-    if args.license:
-        print license
+    if args["--license"]:
+        print(license)
+
+    if args["--version"]:
+        print(version)
 
 
 if __name__ == '__main__':
     try:
-        main(get_args())
+        main(docopt(__doc__))
     except KeyboardInterrupt:
         sys.exit()
