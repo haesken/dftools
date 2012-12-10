@@ -65,9 +65,11 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+version = "0.4.0"
+
 import collections
-import os
 import sys
+from os import path, getcwd
 from docopt import docopt
 
 
@@ -203,13 +205,6 @@ def flatten_iterable(an_iterable):
         else:
             yield element
 
-
-def uppercase_args(option):
-    """ Uppercase each item in a list. """
-
-    return [arg.upper() for arg in option]
-
-
 def process_option(option):
     """ Flatten a list and uppercase each element. """
 
@@ -219,21 +214,27 @@ def process_option(option):
 def main(args):
     """ Run selected functions. """
 
-    if args.search_term:
-        for result in list(
-                search_inits(args.inits_path, args.search_term.upper())):
-            print result
+    if not args["--directory"] == None:
+        path_root_dir = args["--directory"]
+    else:
+        path_root_dir = getcwd()
 
-    if args.options_list:
-        """ Read/write the inits file on each iteration so
-            the current change doesn"t discard the previous
-            change.
-        """
-        for option in args.options_list:
-            set_option(process_option(option), args.inits_path)
+    if args["search"]:
+        search_inits(path_root_dir, args["<opt>"].upper())
 
-    if args.restore_inits_path:
-        restore_options(args.restore_inits_path, args.inits_path)
+    if args["set"]:
+        # Set one option at a time.
+        for option in args["<opt>"]:
+            set_option(path_root_dir, args["<value>"][args["opt"].index(option)])
+
+    if args["defaults"]:
+        restore_options(path_root_dir, path_opts_defaults)
+
+    if args["backup"]:
+        backup_options(path_root_dir, args["OPTSFILE"])
+
+    if args["restore"]:
+        restore_options(path_root_dir, args["OPTSFILE"])
 
     if args["--license"]:
         print(license)
