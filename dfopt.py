@@ -4,8 +4,8 @@
 """ dfopt - Dwarf Fortress Options
 
 Usage:
-    dfopt [--directory DIR] set (<opt> <value>)...
     dfopt [--directory DIR] search (<opt>)
+    dfopt [--directory DIR] set (<opt> <value>)...
     dfopt [--directory DIR] defaults
     dfopt [--directory DIR] backup OPTSFILE
     dfopt [--directory DIR] restore OPTSFILE
@@ -87,10 +87,17 @@ class optionsManager(object):
     def _parse_option(self, option):
         return option.split(":")[0], option.split(":")[1:]
 
-    def setopt(self, option, value):
-        print option, value
+    def _make_option(self, option, values):
+        if len(values) > 1:
+            value = ":".join(values)
+        else:
+            value = values
+
+        return "[{option}:{value}]".format(option=option, value=value)
 
     def search(self, option):
+        """ Search for an option. """
+
         for item in [self.inits, self.d_inits]:
             for line in item:
                 if line.startswith("[") and option in line:
@@ -98,6 +105,18 @@ class optionsManager(object):
                         yield ("inits", line)
                     elif line in self.d_inits:
                         yield ("d_inits", line)
+
+    def setopt(self, option, values):
+        """ Set a new value for an option. """
+
+        self.results = list(self.search(option))
+
+        if len(self.results) == 0:
+            print("Option not found!")
+        elif len(self.results) > 2:
+            print("Too many options containing that query!")
+        elif len(self.results) == 1:
+            self.option_line_new = self._make_option(option, values)
 
     def backup(self, path_optsfile):
         pass
@@ -126,7 +145,9 @@ def main(args):
         for option in args["<opt>"]:
             # Unpack the pairs by using the option name's index
             # as the value's index.
-            options.setopt(option, args["<value>"][args["<opt>"].index(option)])
+            options.setopt(
+                    option.upper(),
+                    args["<value>"][args["<opt>"].index(option)].upper())
 
     if args["defaults"]:
         options.restore("default")
