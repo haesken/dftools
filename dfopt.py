@@ -67,148 +67,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 version = "0.4.0"
 
-import collections
 import sys
 from os import path, getcwd
 from docopt import docopt
 
-
-def read_lines(path):
-    """ Read the contents of a file.
-        Return the contents.
-    """
-
-    f = open(path)
-    lines = f.readlines()
-    f.close()
-
-    return [line.strip("\n").strip("\r") for line in lines]
+sys.path.append("modules")
+import dftlib
 
 
-def write_lines(new_contents, file_path):
-    """ Write text to a file. """
+class optionsManager(object):
+    def __init__(self, path_root_dir):
+        self.df_paths = dftlib.make_df_paths(path_root_dir, "linux")
 
-    f = open(file_path, "w")
-    f.writelines([line + os.linesep for line in new_contents])
-    f.close()
+        self.inits = dftlib.read_lines(
+                path.join(self.df_paths["init"], "init.txt"))
+        self.d_inits = dftlib.read_lines(
+                path.join(self.df_paths["init"], "d_init.txt"))
 
+    def __parse_option__(self, option):
+        return option.split(":")[0], option.split(":")[1:]
 
-def parse_option_line(line):
-    """ Parse the option line.
-        Returns a tuple with the option and a list of argument values.
-    """
+    def setopt(self, option, value):
+        print option, value
 
-    return line.strip("[").strip("]").split(":")
+    def search(self, option):
+        for item in [self.inits, self.d_inits]:
+            for line in item:
+                if line.startswith("[") and option in line:
+                    print(line)
 
+    def backup(self, path_optsfile):
+        pass
 
-def find_option_line(option_name, lines):
-    """ Find a line containing the option.
-        Return the line.
-    """
-
-    for line in lines:
-        if line.startswith("[") and line.endswith("]"):
-            # The search term must be exactly equal to the name of the option.
-            if option_name == parse_option_line(line)[0]:
-                yield line
-
-
-def make_option_line(option_list):
-    """ Generate a valid option line for the init file.
-        Example: "[Population:70]"
-    """
-
-    option_name, option_values = option_list[0], option_list[1:]
-
-    # If we have multiple arguments join them with a :
-    if len(option_values) > 1:
-        new_values = ":".join(option_values)
-    else:
-        new_values = option_values[0]
-
-    return "[{option}:{values}]".format(
-            option=option_name, values=new_values.upper())
-
-
-def insert_option_line(inits, option_name, new_option_line):
-    """ Insert the modified line into the file. """
-
-    for line in inits:
-        if (line.startswith("[") and line.endswith("]") and
-                option_name == parse_option_line(line)[0]):
-            yield new_option_line
-        else:
-            yield line
-
-
-def search_inits(inits_path, search_term):
-    """ Search for an option in a config file. """
-
-    inits = read_lines(inits_path)
-    search_results = list(find_option_line(search_term, inits))
-
-    if len(search_results) != 0:
-        for result in search_results:
-            yield result
-    else:
-        yield "Found no option {option}!".format(
-                option=search_term)
-
-
-def set_option(option, inits_path):
-    """ Read a file and look for a line containing the selected option,
-        then set the new value for that option and write it to the file.
-    """
-
-    inits = read_lines(inits_path)
-
-    option_name = option[0]
-    search_results = list(find_option_line(option_name, inits))
-
-    # Handle bad search results {{{
-    if len(search_results) == 0:
-        print "Found no option {option}!".format(
-                option=option_name)
-        sys.exit()
-
-
-    current_option_line = search_results[0]
-    option_list = parse_option_line(current_option_line)
-
-    new_option_list = list(flatten_iterable((option_list[0], option[1:])))
-    new_option_line = make_option_line(new_option_list)
-
-    new_inits = insert_option_line(inits, option_name, new_option_line)
-
-    write_lines(new_inits, inits_path)
-
-
-def restore_options(restore_inits_path, inits_path):
-    """ Restore custom options from a file. """
-
-    restore_file_options = [parse_option_line(option)
-            for option in read_lines(restore_inits_path)]
-
-    for option in restore_file_options:
-        set_option(process_option(option), inits_path)
-
-
-def flatten_iterable(an_iterable):
-    """ Flatten a nested iterable. """
-
-    for element in an_iterable:
-        if (isinstance(element, collections.Iterable) and not
-                isinstance(element, basestring)):
-
-            for sub_element in flatten_iterable(element):
-                yield sub_element
-        else:
-            yield element
-
-def process_option(option):
-    """ Flatten a list and uppercase each element. """
-
-    return list(uppercase_args(flatten_iterable(option)))
+    def restore(self, path_optsfile):
+        pass
 
 
 def main(args):
@@ -219,22 +111,27 @@ def main(args):
     else:
         path_root_dir = getcwd()
 
+    options = optionsManager(path_root_dir)
+
     if args["search"]:
-        search_inits(path_root_dir, args["<opt>"].upper())
+        for term in args["<opt>"]:
+            options.search(term.upper())
 
     if args["set"]:
         # Set one option at a time.
         for option in args["<opt>"]:
-            set_option(path_root_dir, args["<value>"][args["opt"].index(option)])
+            # Unpack the pairs by using the option name's index
+            # as the value's index.
+            options.setopt(option, args["<value>"][args["<opt>"].index(option)])
 
     if args["defaults"]:
-        restore_options(path_root_dir, path_opts_defaults)
+        options.restore("default")
 
     if args["backup"]:
-        backup_options(path_root_dir, args["OPTSFILE"])
+        options.backup(args["OPTSFILE"])
 
     if args["restore"]:
-        restore_options(path_root_dir, args["OPTSFILE"])
+        options.restore(args["OPTSFILE"])
 
     if args["--license"]:
         print(license)

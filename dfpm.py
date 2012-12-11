@@ -95,25 +95,31 @@ from docopt import docopt
 import sys
 
 sys.path.append("modules/")
-import dfpm_interface
+import dftlib
 
 
-def detect_platform():
-    """ Detect what platform we are running on. """
-    if "linux" in sys.platform:
-        return "linux"
-    elif "darwin" in sys.platform:
-        return "osx"
-    # Includes cygwin
-    elif "win" in sys.platform:
-        return "windows"
+class manage(object):
+    def install(platform, df_paths, package_name):
+        pass
+
+    def remove(platform, df_paths, package_name):
+        pass
+
+    def update(platform, df_paths, package_name):
+        pass
+
+    def upgrade(platform, df_paths, package_name):
+        pass
+
+    def show(platform, df_paths, package_name):
+        pass
 
 
 def main(args):
     """ Run selected options. """
 
     if args["--platform"] == "detect":
-        platform = detect_platform()
+        platform = dftlib.detect_platform()
     else:
         platform = args["--platform"]
 
@@ -122,34 +128,22 @@ def main(args):
     else:
         path_root_dir = getcwd()
 
-    # Actual Dwarf Fortress install directory.
-    name_df_main = "df_{platform}".format(platform=platform)
-    path_df_main = path.join(path_root_dir, name_df_main)
-
-    df_paths = {
-            "df_root": path_root_dir,
-            "df_main": path_df_main,
-            "df_data": path.join(path_df_main, "data/"),
-            "df_inits": path.join(path_df_main, "data/init"),
-            "df_raw": path.join(path_df_main, "raw/"),
-            "df_objects": path.join(path_df_main, "raw/objects"),
-            "df_libs": path.join(path_df_main, "libs"),
-            }
+    df_paths = dftlib.make_df_paths(path_root_dir, platform)
 
     if args["install"]:
-        dfpm_interface.install(platform, df_paths, args["<package>"])
+        manage.install(platform, df_paths, args["<package>"])
 
     if args["remove"]:
-        dfpm_interface.remove(platform, df_paths, args["<package>"])
+        manage.remove(platform, df_paths, args["<package>"])
 
     if args["update"]:
-        dfpm_interface.update(platform, df_paths)
+        manage.update(platform, df_paths)
 
     if args["upgrade"]:
-        dfpm_interface.upgrade(platform, df_paths, args["<package>"])
+        manage.upgrade(platform, df_paths, args["<package>"])
 
     if args["show"]:
-        dfpm_interface.show(platform, df_paths, args["<package>"])
+        manage.show(platform, df_paths, args["<package>"])
 
     if args["--license"]:
         print(license)

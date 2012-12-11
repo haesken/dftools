@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-""" Common DFA functions """
+""" Common dftools functions """
 
 """
 Copyright (c) 2012, haesken
@@ -29,10 +29,55 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from os import path, walk, mkdir
+from os import path, walk, mkdir, linesep
 import fnmatch
 import hashlib
 import requests
+import sys
+
+
+def detect_platform():
+    """ Detect what platform we are running on. """
+    if "linux" in sys.platform:
+        return "linux"
+    elif "darwin" in sys.platform:
+        return "osx"
+    # Includes cygwin
+    elif "win" in sys.platform:
+        return "windows"
+
+
+def make_df_paths(path_root, platform):
+    """ Set up paths for convenience. """
+
+    # Actual Dwarf Fortress install directory.
+    # df_linux, df_osx, df_windows
+    name_main = "df_{platform}".format(platform=platform)
+    path_main = path.join(path_root, name_main)
+
+    return {
+        "root":    path_root,
+        "main":    path_main,
+        "data":    path.join(path_main, "data/"),
+        "init":    path.join(path_main, "data/init"),
+        "raw":     path.join(path_main, "raw/"),
+        "objects": path.join(path_main, "raw/objects"),
+        "libs":    path.join(path_main, "libs"),
+        }
+
+
+def read_lines(file_path):
+    """ Read the contents of a file.  """
+
+    with open(file_path, "rb") as f:
+        return [line.strip("\n").strip("\r") for line in f.readlines()]
+
+
+def write_lines(file_path, new_contents):
+    """ Write text to a file. """
+
+    with open(file_path, "wb") as f:
+        f.writelines([line + linesep for line in new_contents])
 
 
 def find_recursive(search_path, term):
@@ -51,11 +96,11 @@ def ensure_dir(directory):
 def download_file(url, filename):
     """ Download a file. """
     print("Downloading: {url}".format(url=url))
-    headers = {
-        "User-Agent": "Dwarf Fortress Auto"
-        }
+
+    headers = {"User-Agent": "dftools"}
     response = requests.get(url, headers=headers, verify=False)
     raw_file = response.content
+
     print("Remote filesize: {size}B".format(
             size=response.headers["content-length"]))
     print("Downloaded filesize: {size}B".format(
