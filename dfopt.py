@@ -130,17 +130,25 @@ class optionsManager(object):
                 if fuzzy:
                     if line.startswith("[") and option in line:
                         if line in self.inits:
-                            yield ("inits.txt", line)
+                            yield ("inits.txt",
+                                    self.inits.index(line),
+                                    line)
                         elif line in self.d_inits:
-                            yield ("d_inits.txt", line)
+                            yield ("d_inits.txt",
+                                    self.inits.index(line),
+                                    line)
                 elif not fuzzy:
                     if line.startswith("[") and option in line:
                         # Only accept exact matches.
                         if self._parse_option(line)[0] == option:
                             if line in self.inits:
-                                yield ("inits.txt", line)
+                                yield ("inits.txt",
+                                        self.inits.index(line),
+                                        line)
                             elif line in self.d_inits:
-                                yield ("d_inits.txt", line)
+                                yield ("d_inits.txt",
+                                        self.inits.index(line),
+                                        line)
 
     def setopt(self, option, values):
         """ Set a new value for an option. """
@@ -153,7 +161,7 @@ class optionsManager(object):
             print("Too many options containing that query!")
         elif len(self.results) == 1:
             dftlib.write_lines(
-                    path.join(self.df_paths["inits"], self.results[0][0]),
+                    path.join(self.df_paths["init"], self.results[0][0]),
                     self._replace_option(option, values))
 
     def backup(self, path_optsfile):
@@ -176,7 +184,7 @@ def main(args):
     if args["search"]:
         for term in args["<opt>"]:
             for result in options.search(term.upper(), True):
-                print(result[1])
+                print(result[2])
 
     if args["set"]:
         # Set one option at a time.
