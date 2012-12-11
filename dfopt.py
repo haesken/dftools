@@ -77,17 +77,29 @@ import dftlib
 
 class optionsManager(object):
     def __init__(self, path_root_dir):
+        """ Set up paths and file objects to use. """
+
         self.df_paths = dftlib.make_df_paths(path_root_dir, "linux")
+        self.path_inits = path.join(self.df_paths["init"], "init.txt")
+        self.path_d_inits = path.join(self.df_paths["init"], "d_init.txt")
 
-        self.inits = dftlib.read_lines(
-                path.join(self.df_paths["init"], "init.txt"))
-        self.d_inits = dftlib.read_lines(
-                path.join(self.df_paths["init"], "d_init.txt"))
+        self.inits = dftlib.read_lines(self.path_inits)
+        self.d_inits = dftlib.read_lines(self.path_d_inits)
 
-    def _parse_option(self, option):
-        return option.split(":")[0], option.split(":")[1:]
+    def _parse_option(self, line):
+        """ Parse an option line.
+            Return the option's name as a str,
+            and the values as a list of strings.
+        """
+
+        line_bare = line.lstrip("[").rstrip("]")
+        return line_bare.split(":")[0], line_bare.split(":")[1:]
 
     def _make_option(self, option, values):
+        """ Format an option and its new values for use in the inits file.
+            Uses the format: [OPTION:VALUE], or [OPTION:VALUE:VALUE]
+        """
+
         if len(values) > 1:
             value = ":".join(values)
         else:
@@ -95,28 +107,54 @@ class optionsManager(object):
 
         return "[{option}:{value}]".format(option=option, value=value)
 
-    def search(self, option):
-        """ Search for an option. """
+    def _replace_option(self, option, values, lines):
+        pass
+        # Search through lines for option
+        # If a match is found get the line's index.
+            # Pop the old line.
+            # Insert the new line.
+            # Return the new list of lines.
+
+    def search(self, option, fuzzy):
+        """ Search for an option.
+
+            If fuzzy is True, will return any option that
+            contains the search string.
+
+            If fuzzy is False, will only return exact
+            matches for the search term.
+        """
 
         for item in [self.inits, self.d_inits]:
             for line in item:
-                if line.startswith("[") and option in line:
-                    if line in self.inits:
-                        yield ("inits", line)
-                    elif line in self.d_inits:
-                        yield ("d_inits", line)
+                if fuzzy:
+                    if line.startswith("[") and option in line:
+                        if line in self.inits:
+                            yield ("inits.txt", line)
+                        elif line in self.d_inits:
+                            yield ("d_inits.txt", line)
+                elif not fuzzy:
+                    if line.startswith("[") and option in line:
+                        # Only accept exact matches.
+                        if self._parse_option(line)[0] == option:
+                            if line in self.inits:
+                                yield ("inits.txt", line)
+                            elif line in self.d_inits:
+                                yield ("d_inits.txt", line)
 
     def setopt(self, option, values):
         """ Set a new value for an option. """
 
-        self.results = list(self.search(option))
+        self.results = list(self.search(option, False))
 
         if len(self.results) == 0:
             print("Option not found!")
         elif len(self.results) > 2:
             print("Too many options containing that query!")
         elif len(self.results) == 1:
-            self.option_line_new = self._make_option(option, values)
+            dftlib.write_lines(
+                    path.join(self.df_paths["inits"], self.results[0][0]),
+                    self._replace_option(option, values))
 
     def backup(self, path_optsfile):
         pass
@@ -137,16 +175,16 @@ def main(args):
 
     if args["search"]:
         for term in args["<opt>"]:
-            for result in options.search(term.upper()):
+            for result in options.search(term.upper(), True):
                 print(result[1])
 
     if args["set"]:
         # Set one option at a time.
         for option in args["<opt>"]:
-            # Unpack the pairs by using the option name's index
-            # as the value's index.
             options.setopt(
                     option.upper(),
+                    # Unpack in pairs by using the option name's index
+                    # as the value's index.
                     args["<value>"][args["<opt>"].index(option)].upper())
 
     if args["defaults"]:
