@@ -84,7 +84,7 @@ class optionsManager(object):
         self.d_inits = dftlib.read_lines(
                 path.join(self.df_paths["init"], "d_init.txt"))
 
-    def __parse_option__(self, option):
+    def _parse_option(self, option):
         return option.split(":")[0], option.split(":")[1:]
 
     def setopt(self, option, value):
@@ -94,7 +94,10 @@ class optionsManager(object):
         for item in [self.inits, self.d_inits]:
             for line in item:
                 if line.startswith("[") and option in line:
-                    print(line)
+                    if line in self.inits:
+                        yield ("inits", line)
+                    elif line in self.d_inits:
+                        yield ("d_inits", line)
 
     def backup(self, path_optsfile):
         pass
@@ -115,7 +118,8 @@ def main(args):
 
     if args["search"]:
         for term in args["<opt>"]:
-            options.search(term.upper())
+            for result in options.search(term.upper()):
+                print(result[1])
 
     if args["set"]:
         # Set one option at a time.
