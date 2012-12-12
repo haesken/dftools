@@ -157,15 +157,12 @@ class optionsManager(object):
             print("Too many options containing that query!")
         elif len(self.results) == 1:
             if self.results[0][0] == "inits.txt":
-                dftlib.write_lines(
-                        path.join(self.df_paths["init"], self.results[0][0]),
-                        self._replace_option(
-                            option, values, self.inits, self.results[0][1]))
+                dftlib.write_lines(self.path_inits, self._replace_option(
+                        option, values, self.inits, self.results[0][1]))
+
             elif self.results[0][0] == "d_inits.txt":
-                dftlib.write_lines(
-                        path.join(self.df_paths["init"], self.results[0][0]),
-                        self._replace_option(
-                            option, values, self.d_inits, self.results[0][1]))
+                dftlib.write_lines(self.path_d_inits, self._replace_option(
+                        option, values, self.d_inits, self.results[0][1]))
 
     def backup(self, path_optsfile):
         pass
