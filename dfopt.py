@@ -100,20 +100,16 @@ class optionsManager(object):
             Uses the format: [OPTION:VALUE], or [OPTION:VALUE:VALUE]
         """
 
-        if len(values) > 1:
+        if type(values) == list:
             value = ":".join(values)
         else:
             value = values
 
         return "[{option}:{value}]".format(option=option, value=value)
 
-    def _replace_option(self, option, values, lines):
-        pass
-        # Search through lines for option
-        # If a match is found get the line's index.
-            # Pop the old line.
-            # Insert the new line.
-            # Return the new list of lines.
+    def _replace_option(self, option, values, lines, line_number):
+        lines[line_number] = self._make_option(option, values)
+        return lines
 
     def search(self, option, fuzzy):
         """ Search for an option.
@@ -160,9 +156,16 @@ class optionsManager(object):
         elif len(self.results) > 2:
             print("Too many options containing that query!")
         elif len(self.results) == 1:
-            dftlib.write_lines(
-                    path.join(self.df_paths["init"], self.results[0][0]),
-                    self._replace_option(option, values))
+            if self.results[0][0] == "inits.txt":
+                dftlib.write_lines(
+                        path.join(self.df_paths["init"], self.results[0][0]),
+                        self._replace_option(
+                            option, values, self.inits, self.results[0][1]))
+            elif self.results[0][0] == "d_inits.txt":
+                dftlib.write_lines(
+                        path.join(self.df_paths["init"], self.results[0][0]),
+                        self._replace_option(
+                            option, values, self.d_inits, self.results[0][1]))
 
     def backup(self, path_optsfile):
         pass
