@@ -186,7 +186,7 @@ class optionsManager(object):
 def main(args):
     """ Run selected functions. """
 
-    if not args["--directory"] == None:
+    if args["--directory"] is not None:
         path_root_dir = args["--directory"]
     else:
         path_root_dir = getcwd()
