@@ -123,10 +123,18 @@ def main(args):
     else:
         platform = args["--platform"]
 
-    if args["--directory"]:
+    if args["--directory"] is not None:
         path_root_dir = args["--directory"]
     else:
         path_root_dir = getcwd()
+
+    if args["--license"]:
+        print(license)
+        sys.exit()
+
+    if args["--version"]:
+        print(version)
+        sys.exit()
 
     df_paths = dftlib.make_df_paths(path_root_dir, platform)
 
@@ -144,12 +152,6 @@ def main(args):
 
     if args["show"]:
         manage.show(platform, df_paths, args["<package>"])
-
-    if args["--license"]:
-        print(license)
-
-    if args["--version"]:
-        print(version)
 
 if __name__ == '__main__':
     try:
