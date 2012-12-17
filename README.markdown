@@ -70,20 +70,21 @@ Check the downloads page for prebuilt binaries (Linux / Windows)
 #### dfopt - Dwarf Fortress Options
 
     Usage:
-        dfopt [--directory] set <opt> <value>...
-        dfopt [--directory] search <opt>
-        dfopt [--directory] defaults
-        dfopt [--directory] restore OPTSFILE
+        dfopt [--directory DIR] search (<opt>)
+        dfopt [--directory DIR] set (<opt> <value>)...
+        dfopt [--directory DIR] defaults
+        dfopt [--directory DIR] backup OPTSFILE
+        dfopt [--directory DIR] restore OPTSFILE
         dfopt -h | --help
         dfopt -l | --license
         dfopt -v | --version
 
     Options:
-        -d --directory  Path to Dwarf Fortress install.
+        -d --directory DIR  Path to Dwarf Fortress install.
 
-        -h --help       Display the help text.
-        -l --license    Display the license
-        -v --version    Disaply the version
+        -h --help           Display the help text.
+        -l --license        Display the license
+        -v --version        Disaply the version
 
     Examples:
         dfopt search population
@@ -98,9 +99,12 @@ Check the downloads page for prebuilt binaries (Linux / Windows)
         dfopt set population_cap 80 baby_child_cap 0:10
             Set multiple values at once.
 
-        dfopt restore file.json
-            Read a json file containing saved options and values,
+        dfopt restore OPTSFILE
+            Read a file containing saved options and values,
             then set the game's options to those values.
+
+            This uses the same format as Dwarf Fortress's init files, eg:
+            "[OPTION:VALUE]" or "[OPTION:VALUE:VALUE]"
 
 #### dfsg - Dwarf Fortress Save Game (tool)
 

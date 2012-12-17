@@ -33,9 +33,12 @@ Examples:
     dfopt set population_cap 80 baby_child_cap 0:10
         Set multiple values at once.
 
-    dfopt restore file.json
-        Read a json file containing saved options and values,
+    dfopt restore OPTSFILE
+        Read a file containing saved options and values,
         then set the game's options to those values.
+
+        This uses the same format as Dwarf Fortress's init files, eg:
+        "[OPTION:VALUE]" or "[OPTION:VALUE:VALUE]"
 """
 
 license = """
