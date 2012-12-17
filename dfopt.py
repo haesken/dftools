@@ -172,7 +172,12 @@ class optionsManager(object):
         pass
 
     def restore(self, path_optsfile):
-        pass
+        self.optsfile = dftlib.read_lines(path_optsfile)
+        for line in self.optsfile:
+            if line.startswith("["):
+                self.setopt(
+                        self._parse_option(line)[0],
+                        self._parse_option(line)[1])
 
 
 def main(args):
