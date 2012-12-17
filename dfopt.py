@@ -113,6 +113,19 @@ class optionsManager(object):
         lines[line_number] = self._make_option(option, values)
         return lines
 
+    def _get_inits_name_and_line_num(self, line):
+        """ If the provide line is in one of the inits file,
+            return the name of that inits file and the line number.
+
+            This is to make these two files appear as one "set" of options
+            to the user.
+        """
+
+        if line in self.inits:
+            return "inits.txt", self.inits.index(line), line
+        elif line in self.d_inits:
+            return "d_inits.txt", self.inits.index(line), line
+
     def search(self, option, fuzzy):
         """ Search for an option.
 
@@ -127,26 +140,12 @@ class optionsManager(object):
             for line in item:
                 if fuzzy:
                     if line.startswith("[") and option in line:
-                        if line in self.inits:
-                            yield ("inits.txt",
-                                    self.inits.index(line),
-                                    line)
-                        elif line in self.d_inits:
-                            yield ("d_inits.txt",
-                                    self.inits.index(line),
-                                    line)
+                        yield self._get_inits_name_and_line_num(line)
                 elif not fuzzy:
                     if line.startswith("[") and option in line:
                         # Only accept exact matches.
                         if self._parse_option(line)[0] == option:
-                            if line in self.inits:
-                                yield ("inits.txt",
-                                        self.inits.index(line),
-                                        line)
-                            elif line in self.d_inits:
-                                yield ("d_inits.txt",
-                                        self.inits.index(line),
-                                        line)
+                            yield self._get_inits_name_and_line_num(line)
 
     def setopt(self, option, values):
         """ Set a new value for an option. """
