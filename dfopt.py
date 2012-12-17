@@ -191,6 +191,14 @@ def main(args):
     else:
         path_root_dir = getcwd()
 
+    if args["--license"]:
+        print(license)
+        sys.exit()
+
+    if args["--version"]:
+        print(version)
+        sys.exit()
+
     options = optionsManager(path_root_dir)
 
     if args["search"]:
@@ -215,12 +223,6 @@ def main(args):
 
     if args["restore"]:
         options.restore(args["OPTSFILE"])
-
-    if args["--license"]:
-        print(license)
-
-    if args["--version"]:
-        print(version)
 
 
 if __name__ == '__main__':
