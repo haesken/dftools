@@ -108,6 +108,8 @@ class optionsManager(object):
         return "[{option}:{value}]".format(option=option, value=value)
 
     def _replace_option(self, option, values, lines, line_number):
+        """ Overwrite the selected line with one containing the new value. """
+
         lines[line_number] = self._make_option(option, values)
         return lines
 
