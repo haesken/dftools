@@ -1,0 +1,8 @@
+{
+    "urls": {
+        "pkg_list": "https://raw.github.com/haesken/dfa_media/master/packages.json?raw=true"
+    },
+    "files": {
+        "pkg_list": "packages.json"
+    }
+}
