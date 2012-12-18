@@ -17,6 +17,7 @@ Options:
     -d --directory DIR      Directory to install packages to.
     -p --platform PLATFORM  Override platform detection.
                             Valid values: linux / osx / windows
+    -c --config CONFIGFILE  Use a different config file.
 
     -h --help               Display the help text.
     -l --license            Display the license
@@ -92,6 +93,7 @@ version = "0.4.0"
 
 from os import path, getcwd
 from docopt import docopt
+import json
 import sys
 
 sys.path.append("modules/")
@@ -99,11 +101,14 @@ import dftlib
 
 
 class packageManager(object):
-    def __init__(self, path_root_dir, platform):
+    def __init__(self, path_root_dir, platform, path_config):
         """ Set up paths and file objects to use. """
 
         self.df_paths = dftlib.make_df_paths(path_root_dir, platform)
         self.platform = platform
+        self.config = json.loads(open(path_config, "r").read())
+        self.pkg_list_url = self.config["urls"]["pkg_list"]
+        self.pkg_list_cur_path = self.config["files"]["pkg_list"]
 
     def install(package_name):
         pass
@@ -114,7 +119,28 @@ class packageManager(object):
     def update():
         pass
 
-    def upgrade(package_name):
+    def update(self):
+        """ If packages.json doesn't exist, download it.
+
+            If it does exist download a fresh copy, and if the
+            checksums differ, write the contents of the new file
+            to the old one.
+        """
+
+        if not path.exists(self.pkg_list_cur_path):
+            self.resp = requests.get(self.pkg_list_url)
+            if self.resp.status_code == requests.codes.ok:
+                dftlib.write(self.pkg_list_cur_path, self.resp.content)
+
+        else:
+            self.pkg_list_cur = dftlib.read(self.pkg_list_cur_path)
+            self.pkg_list_cur_sha = hashlib.sha1(self.pkg_list_cur).hexdigest()
+
+            self.resp = requests.get(self.pkg_list_url)
+            if self.resp.status_code == requests.codes.ok:
+                if hashlib.sha1(self.resp.content).hexdigest() != self.pkg_list_cur_sha:
+                    dftlib.write(self.pkg_list_cur_path, self.resp.content)
+
         pass
 
     def show(package_name):
@@ -142,7 +168,12 @@ def main(args):
     else:
         path_root_dir = getcwd()
 
-    manage = packageManager(path_root_dir, platform)
+    if args["--config"] is not None:
+        path_config = args["--config"]
+    else:
+        path_config = "dfpm_config.json"
+
+    manage = packageManager(path_root_dir, platform, path_config)
 
     if args["install"]:
         manage.install(args["<package>"])
