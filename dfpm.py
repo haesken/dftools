@@ -91,9 +91,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 version = "0.4.0"
 
-from os import path, getcwd
+from os import getcwd, path
 from docopt import docopt
+import hashlib
 import json
+import requests
 import sys
 
 sys.path.append("modules/")
@@ -110,13 +112,13 @@ class packageManager(object):
         self.pkg_list_url = self.config["urls"]["pkg_list"]
         self.pkg_list_cur_path = self.config["files"]["pkg_list"]
 
-    def install(package_name):
+    def _parse_manifest(self, manifest_json):
         pass
 
-    def remove(package_name):
+    def install(self, package_name):
         pass
 
-    def update():
+    def remove(self, package_name):
         pass
 
     def update(self):
@@ -141,9 +143,10 @@ class packageManager(object):
                 if hashlib.sha1(self.resp.content).hexdigest() != self.pkg_list_cur_sha:
                     dftlib.write(self.pkg_list_cur_path, self.resp.content)
 
+    def upgrade(self, package_name):
         pass
 
-    def show(package_name):
+    def show(self, package_name):
         pass
 
 
