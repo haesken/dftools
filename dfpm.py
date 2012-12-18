@@ -14,8 +14,8 @@ Usage:
     dfpm -v | --version
 
 Options:
-    -d --directory DIR      Directory to install packages to. [default: ./]
-    -p --platform PLATFORM  Override platform. [default: detect]
+    -d --directory DIR      Directory to install packages to.
+    -p --platform PLATFORM  Override platform detection.
                             Valid values: linux / osx / windows
 
     -h --help               Display the help text.
@@ -98,35 +98,31 @@ sys.path.append("modules/")
 import dftlib
 
 
-class manage(object):
-    def install(platform, df_paths, package_name):
+class packageManager(object):
+    def __init__(self, path_root_dir, platform):
+        """ Set up paths and file objects to use. """
+
+        self.df_paths = dftlib.make_df_paths(path_root_dir, platform)
+        self.platform = platform
+
+    def install(package_name):
         pass
 
-    def remove(platform, df_paths, package_name):
+    def remove(package_name):
         pass
 
-    def update(platform, df_paths, package_name):
+    def update():
         pass
 
-    def upgrade(platform, df_paths, package_name):
+    def upgrade(package_name):
         pass
 
-    def show(platform, df_paths, package_name):
+    def show(package_name):
         pass
 
 
 def main(args):
     """ Run selected options. """
-
-    if args["--platform"] == "detect":
-        platform = dftlib.detect_platform()
-    else:
-        platform = args["--platform"]
-
-    if args["--directory"] is not None:
-        path_root_dir = args["--directory"]
-    else:
-        path_root_dir = getcwd()
 
     if args["--license"]:
         print(license)
@@ -136,22 +132,32 @@ def main(args):
         print(version)
         sys.exit()
 
-    df_paths = dftlib.make_df_paths(path_root_dir, platform)
+    if args["--platform"] is not None:
+        platform = args["--platform"]
+    else:
+        platform = dftlib.detect_platform()
+
+    if args["--directory"] is not None:
+        path_root_dir = args["--directory"]
+    else:
+        path_root_dir = getcwd()
+
+    manage = packageManager(path_root_dir, platform)
 
     if args["install"]:
-        manage.install(platform, df_paths, args["<package>"])
+        manage.install(args["<package>"])
 
     if args["remove"]:
-        manage.remove(platform, df_paths, args["<package>"])
+        manage.remove(args["<package>"])
 
     if args["update"]:
-        manage.update(platform, df_paths)
+        manage.update()
 
     if args["upgrade"]:
-        manage.upgrade(platform, df_paths, args["<package>"])
+        manage.upgrade(args["<package>"])
 
     if args["show"]:
-        manage.show(platform, df_paths, args["<package>"])
+        manage.show(args["<package>"])
 
 if __name__ == '__main__':
     try:

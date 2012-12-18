@@ -184,12 +184,7 @@ class optionsManager(object):
 
 
 def main(args):
-    """ Run selected functions. """
-
-    if args["--directory"] is not None:
-        path_root_dir = args["--directory"]
-    else:
-        path_root_dir = getcwd()
+    """ Run selected options. """
 
     if args["--license"]:
         print(license)
@@ -198,6 +193,11 @@ def main(args):
     if args["--version"]:
         print(version)
         sys.exit()
+
+    if args["--directory"] is not None:
+        path_root_dir = args["--directory"]
+    else:
+        path_root_dir = getcwd()
 
     options = optionsManager(path_root_dir)
 
