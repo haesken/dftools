@@ -3,3 +3,4 @@ dwarffortress/
 develop/build/
 develop/dist/
 binaries/
+packages.json
