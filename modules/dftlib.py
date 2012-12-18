@@ -67,10 +67,17 @@ def make_df_paths(path_root, platform):
 
 
 def read_lines(file_path):
-    """ Read the contents of a file.  """
+    """ Read the contents of a file into a list of lines. """
 
     with open(file_path, "rb") as f:
         return [line.strip("\n").strip("\r") for line in f.readlines()]
+
+
+def read(file_path):
+    """ Read the contents of a file.  """
+
+    with open(file_path, "rb") as f:
+        return f.read()
 
 
 def write_lines(file_path, new_contents):
@@ -78,6 +85,13 @@ def write_lines(file_path, new_contents):
 
     with open(file_path, "wb") as f:
         f.writelines([line + linesep for line in new_contents])
+
+
+def write(file_path, new_contents):
+    """ Write the contents of a file.  """
+
+    with open(file_path, "wb") as f:
+        return f.write(new_contents)
 
 
 def find_recursive(search_path, term):
