@@ -109,36 +109,71 @@ class packageManager(object):
         self.platform = platform
         self.config = json.loads(open(path_config, "r").read())
 
-    def _parse_manifest(self, manifest_json):
-        pass
+    def _download_url(self, url):
+        resp = requests.get(url)
+        if resp.status_code == requests.codes.ok:
+            return resp.content
+
+    def _pkgs_download_available(self):
+        """ Download the list of available packages. """
+        return self._download_url(self.config["urls"]["pkg_list"])
+
+    def _pkgs_update_available(self):
+        """ If avilable packages.json doesn't exist, download it.
+
+            If it does exist download a fresh copy, and if the
+            versions differ, write the contents of the new file
+            to the old one.
+        """
+
+        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
+            dftlib.write(self.config["paths"]["files"]["pkg_list"],
+                         self._pkgs_download_available())
+        else:
+            pkgs_new = json.dumps(self._pkgs_download_available())
+            pkgs_cur = json.dumps(dftlib.read(
+                    self.config["paths"]["files"]["pkg_list"]))
+
+            if int(pkgs_new["version"]) > int(pkgs_cur["version"]):
+                dftlib.write(self.pkgs_cur_path, pkgs_new)
+
+    def _pkgs_get_available(self):
+        """ If there is no package list in the working dir, download one."""
+
+        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
+            self._pkgs_update_available()
+
+        return json.dumps(dftlib.read(
+            self.config["paths"]["files"]["pkg_list"]))
 
     def install(self, package_name):
+        pkgs_avail = self._pkgs_get_available()
+
+        dftlib.ensure_dir(self.config["paths"]["dirs"]["tmp"])
+
         pass
+        """
+        If the package manifest is not present, download it.
+        If the package tar is not present, download it.
+        Read package manifest.
+        Verify the checksum provided in the manifest.
+
+        if the checksum is correct:
+            Extract the archive.
+            Symlink the extracted files.
+
+            if symlinking succeeded:
+                read init options from manifest
+
+        else:
+            raise checksum exception
+        """
 
     def remove(self, package_name):
         pass
 
     def update(self):
-        """ If packages.json doesn't exist, download it.
-
-            If it does exist download a fresh copy, and if the
-            checksums differ, write the contents of the new file
-            to the old one.
-        """
-
-        if not path.exists(self.pkg_list_cur_path):
-            self.resp = requests.get(self.pkg_list_url)
-            if self.resp.status_code == requests.codes.ok:
-                dftlib.write(self.pkg_list_cur_path, self.resp.content)
-
-        else:
-            self.pkg_list_cur = dftlib.read(self.pkg_list_cur_path)
-            self.pkg_list_cur_sha = hashlib.sha1(self.pkg_list_cur).hexdigest()
-
-            self.resp = requests.get(self.pkg_list_url)
-            if self.resp.status_code == requests.codes.ok:
-                if hashlib.sha1(self.resp.content).hexdigest() != self.pkg_list_cur_sha:
-                    dftlib.write(self.pkg_list_cur_path, self.resp.content)
+        self._pkgs_update_available()
 
     def upgrade(self, package_name):
         pass
