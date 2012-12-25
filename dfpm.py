@@ -93,7 +93,6 @@ version = "0.4.0"
 
 from os import getcwd, path
 from docopt import docopt
-import hashlib
 import json
 import requests
 import sys

@@ -94,6 +94,12 @@ def write(file_path, new_contents):
         return f.write(new_contents)
 
 
+def mksha(object_to_sum):
+    """ Take a file object and return its sha1. """
+
+    return hashlib.sha1(object_to_sum).hexdigest()
+
+
 def find_recursive(search_path, term):
     """ Search a directory recursively for a file. """
     for root, dirnames, filenames in walk(search_path):
