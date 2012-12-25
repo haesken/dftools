@@ -14,9 +14,10 @@ Usage:
     dfpm -v | --version
 
 Options:
-    -d --directory DIR      Directory to install packages to. [default: ./]
-    -p --platform PLATFORM  Override platform. [default: detect]
+    -d --directory DIR      Directory to install packages to.
+    -p --platform PLATFORM  Override platform detection.
                             Valid values: linux / osx / windows
+    -c --config CONFIGFILE  Use a different config file.
 
     -h --help               Display the help text.
     -l --license            Display the license
@@ -90,66 +91,139 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 version = "0.4.0"
 
-from os import path, getcwd
+from os import getcwd, path
 from docopt import docopt
+import json
+import requests
 import sys
 
 sys.path.append("modules/")
 import dftlib
 
 
-class manage(object):
-    def install(platform, df_paths, package_name):
+class packageManager(object):
+    def __init__(self, path_root_dir, platform, path_config):
+        """ Set up paths and file objects to use. """
+
+        self.df_paths = dftlib.make_df_paths(path_root_dir, platform)
+        self.platform = platform
+        self.config = json.loads(open(path_config, "r").read())
+
+    def _download_url(self, url):
+        resp = requests.get(url)
+        if resp.status_code == requests.codes.ok:
+            return resp.content
+
+    def _pkgs_download_available(self):
+        """ Download the list of available packages. """
+        return self._download_url(self.config["urls"]["pkg_list"])
+
+    def _pkgs_update_available(self):
+        """ If avilable packages.json doesn't exist, download it.
+
+            If it does exist download a fresh copy, and if the
+            versions differ, write the contents of the new file
+            to the old one.
+        """
+
+        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
+            dftlib.write(self.config["paths"]["files"]["pkg_list"],
+                         self._pkgs_download_available())
+        else:
+            pkgs_new = json.dumps(self._pkgs_download_available())
+            pkgs_cur = json.dumps(dftlib.read(
+                    self.config["paths"]["files"]["pkg_list"]))
+
+            if int(pkgs_new["version"]) > int(pkgs_cur["version"]):
+                dftlib.write(self.pkgs_cur_path, pkgs_new)
+
+    def _pkgs_get_available(self):
+        """ If there is no package list in the working dir, download one."""
+
+        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
+            self._pkgs_update_available()
+
+        return json.dumps(dftlib.read(
+            self.config["paths"]["files"]["pkg_list"]))
+
+    def install(self, package_name):
+        pkgs_avail = self._pkgs_get_available()
+
+        dftlib.ensure_dir(self.config["paths"]["dirs"]["tmp"])
+
+        pass
+        """
+        If the package manifest is not present, download it.
+        If the package tar is not present, download it.
+        Read package manifest.
+        Verify the checksum provided in the manifest.
+
+        if the checksum is correct:
+            Extract the archive.
+            Symlink the extracted files.
+
+            if symlinking succeeded:
+                read init options from manifest
+
+        else:
+            raise checksum exception
+        """
+
+    def remove(self, package_name):
         pass
 
-    def remove(platform, df_paths, package_name):
+    def update(self):
+        self._pkgs_update_available()
+
+    def upgrade(self, package_name):
         pass
 
-    def update(platform, df_paths, package_name):
-        pass
-
-    def upgrade(platform, df_paths, package_name):
-        pass
-
-    def show(platform, df_paths, package_name):
+    def show(self, package_name):
         pass
 
 
 def main(args):
     """ Run selected options. """
 
-    if args["--platform"] == "detect":
-        platform = dftlib.detect_platform()
-    else:
-        platform = args["--platform"]
+    if args["--license"]:
+        print(license)
+        sys.exit()
 
-    if args["--directory"]:
+    if args["--version"]:
+        print(version)
+        sys.exit()
+
+    if args["--platform"] is not None:
+        platform = args["--platform"]
+    else:
+        platform = dftlib.detect_platform()
+
+    if args["--directory"] is not None:
         path_root_dir = args["--directory"]
     else:
         path_root_dir = getcwd()
 
-    df_paths = dftlib.make_df_paths(path_root_dir, platform)
+    if args["--config"] is not None:
+        path_config = args["--config"]
+    else:
+        path_config = "dfpm_config.json"
+
+    manage = packageManager(path_root_dir, platform, path_config)
 
     if args["install"]:
-        manage.install(platform, df_paths, args["<package>"])
+        manage.install(args["<package>"])
 
     if args["remove"]:
-        manage.remove(platform, df_paths, args["<package>"])
+        manage.remove(args["<package>"])
 
     if args["update"]:
-        manage.update(platform, df_paths)
+        manage.update()
 
     if args["upgrade"]:
-        manage.upgrade(platform, df_paths, args["<package>"])
+        manage.upgrade(args["<package>"])
 
     if args["show"]:
-        manage.show(platform, df_paths, args["<package>"])
-
-    if args["--license"]:
-        print(license)
-
-    if args["--version"]:
-        print(version)
+        manage.show(args["<package>"])
 
 if __name__ == '__main__':
     try:

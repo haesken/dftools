@@ -33,9 +33,12 @@ Examples:
     dfopt set population_cap 80 baby_child_cap 0:10
         Set multiple values at once.
 
-    dfopt restore file.json
-        Read a json file containing saved options and values,
+    dfopt restore OPTSFILE
+        Read a file containing saved options and values,
         then set the game's options to those values.
+
+        This uses the same format as Dwarf Fortress's init files, eg:
+        "[OPTION:VALUE]" or "[OPTION:VALUE:VALUE]"
 """
 
 license = """
@@ -108,8 +111,23 @@ class optionsManager(object):
         return "[{option}:{value}]".format(option=option, value=value)
 
     def _replace_option(self, option, values, lines, line_number):
+        """ Overwrite the selected line with one containing the new value. """
+
         lines[line_number] = self._make_option(option, values)
         return lines
+
+    def _get_inits_name_and_line_num(self, line):
+        """ If the provide line is in one of the inits file,
+            return the name of that inits file and the line number.
+
+            This is to make these two files appear as one "set" of options
+            to the user.
+        """
+
+        if line in self.inits:
+            return "inits.txt", self.inits.index(line), line
+        elif line in self.d_inits:
+            return "d_inits.txt", self.inits.index(line), line
 
     def search(self, option, fuzzy):
         """ Search for an option.
@@ -125,26 +143,12 @@ class optionsManager(object):
             for line in item:
                 if fuzzy:
                     if line.startswith("[") and option in line:
-                        if line in self.inits:
-                            yield ("inits.txt",
-                                    self.inits.index(line),
-                                    line)
-                        elif line in self.d_inits:
-                            yield ("d_inits.txt",
-                                    self.inits.index(line),
-                                    line)
+                        yield self._get_inits_name_and_line_num(line)
                 elif not fuzzy:
                     if line.startswith("[") and option in line:
                         # Only accept exact matches.
                         if self._parse_option(line)[0] == option:
-                            if line in self.inits:
-                                yield ("inits.txt",
-                                        self.inits.index(line),
-                                        line)
-                            elif line in self.d_inits:
-                                yield ("d_inits.txt",
-                                        self.inits.index(line),
-                                        line)
+                            yield self._get_inits_name_and_line_num(line)
 
     def setopt(self, option, values):
         """ Set a new value for an option. """
@@ -168,13 +172,26 @@ class optionsManager(object):
         pass
 
     def restore(self, path_optsfile):
-        pass
+        self.optsfile = dftlib.read_lines(path_optsfile)
+        for line in self.optsfile:
+            if line.startswith("["):
+                self.setopt(
+                        self._parse_option(line)[0],
+                        self._parse_option(line)[1])
 
 
 def main(args):
-    """ Run selected functions. """
+    """ Run selected options. """
 
-    if not args["--directory"] == None:
+    if args["--license"]:
+        print(license)
+        sys.exit()
+
+    if args["--version"]:
+        print(version)
+        sys.exit()
+
+    if args["--directory"] is not None:
         path_root_dir = args["--directory"]
     else:
         path_root_dir = getcwd()
@@ -203,12 +220,6 @@ def main(args):
 
     if args["restore"]:
         options.restore(args["OPTSFILE"])
-
-    if args["--license"]:
-        print(license)
-
-    if args["--version"]:
-        print(version)
 
 
 if __name__ == '__main__':
