@@ -109,8 +109,6 @@ class packageManager(object):
         self.df_paths = dftlib.make_df_paths(path_root_dir, platform)
         self.platform = platform
         self.config = json.loads(open(path_config, "r").read())
-        self.pkg_list_url = self.config["urls"]["pkg_list"]
-        self.pkg_list_cur_path = self.config["files"]["pkg_list"]
 
     def _parse_manifest(self, manifest_json):
         pass
