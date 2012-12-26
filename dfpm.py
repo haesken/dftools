@@ -159,6 +159,7 @@ class packageManager(object):
 
             if symlinking succeeded:
                 read init options from manifest
+                set options/values listed in manifest
 
         else:
             raise checksum exception
