@@ -133,7 +133,7 @@ class packageManager(object):
         if not path.exists(self.config["paths"]["files"]["pkg_list"]):
             self._pkgs_update_available()
 
-        return json.dumps(dftlib.read(
+        return json.loads(dftlib.read(
             self.config["paths"]["files"]["pkg_list"]))
 
     def install(self, package_name):
