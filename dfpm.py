@@ -102,6 +102,9 @@ class packageManager(object):
         self.df_paths = dftlib.make_df_paths(path_root_dir, platform)
         self.platform = platform
         self.config = json.loads(open(path_config, "r").read())
+        self.workdir = self.config["paths"]["dirs"]["work"]
+        self.pkg_list = path.join(self.workdir,
+                self.config["paths"]["files"]["pkg_list"])
 
     def _pkgs_download_available(self):
         """ Download the list of available packages. """
