@@ -36,22 +36,11 @@ import requests
 import sys
 
 
-def detect_platform():
-    """ Detect what platform we are running on. """
-    if "linux" in sys.platform:
-        return "linux"
-    elif "darwin" in sys.platform:
-        return "osx"
-    # Includes cygwin
-    elif "win" in sys.platform:
-        return "windows"
-
-
 def make_df_paths(path_root, platform):
     """ Set up paths for convenience. """
 
     # Actual Dwarf Fortress install directory.
-    # df_linux, df_osx, df_windows
+    # Ex: df_linux, df_osx, df_windows
     name_main = "df_{platform}".format(platform=platform)
     path_main = path.join(path_root, name_main)
 
@@ -64,6 +53,25 @@ def make_df_paths(path_root, platform):
         "objects": path.join(path_main, "raw/objects"),
         "libs":    path.join(path_main, "libs"),
         }
+
+
+def detect_platform():
+    """ Detect what platform we are running on. """
+
+    if "linux" in sys.platform:
+        return "linux"
+    elif "darwin" in sys.platform:
+        return "osx"
+    # Includes cygwin
+    elif "win" in sys.platform:
+        return "windows"
+
+
+def ensure_dir(directory):
+    """ Make sure a directory exists, if not create it. """
+
+    if not path.exists(directory):
+        mkdir(directory)
 
 
 def read_lines(file_path):
@@ -94,53 +102,48 @@ def write(file_path, new_contents):
         return f.write(new_contents)
 
 
-def download_url(url):
-    resp = requests.get(url)
-    if resp.status_code == requests.codes.ok:
-        return resp.content
-
-
 def mksha(object_to_sum):
     """ Take a file object and return its sha1. """
 
     return hashlib.sha1(object_to_sum).hexdigest()
 
 
+def is_same_file(path_file_a, path_file_b):
+    """ Sha two files to see if they are the same. """
+
+    sha_file_a = mksha(read(path_file_a))
+    sha_file_b = mksha(read(path_file_b))
+
+    if sha_file_a == sha_file_b:
+        return True
+    else:
+        return False
+
+
 def find_recursive(search_path, term):
     """ Search a directory recursively for a file. """
+
     for root, dirnames, filenames in walk(search_path):
         for filename in fnmatch.filter(filenames, term):
             yield path.join(root, filename)
 
 
-def ensure_dir(directory):
-    """ Make sure a directory exists, if not create it. """
-    if not path.exists(directory):
-        mkdir(directory)
-
-
-def download_file(url, filename):
-    """ Download a file. """
-    print("Downloading: {url}".format(url=url))
+def get_url(url):
+    """ Get a url, return it's contents. """
 
     headers = {"User-Agent": "dftools"}
-    response = requests.get(url, headers=headers, verify=False)
-    raw_file = response.content
+    resp = requests.get(url, headers=headers)
+    if resp.status_code == requests.codes.ok:
+        return resp.content, resp.status_code
+    else:
+        return None, resp.status_code
 
-    print("Remote filesize: {size}B".format(
-            size=response.headers["content-length"]))
-    print("Downloaded filesize: {size}B".format(
-            size=len(raw_file)))
-    print("SHA1 for {filename}: {sha1}".format(
-            filename=filename.split(path.sep)[-1],
-            sha1=hashlib.sha1(raw_file).hexdigest()))
 
-    if response.ok:
-        archive = open(filename, "wb")
-        archive.write(raw_file)
-        archive.close()
-        archive = open(filename, "rb")
-        print("SHA1 for {filename} on disk: {sha1}".format(
-                filename=filename.split(path.sep)[-1],
-                sha1=hashlib.sha1(archive.read()).hexdigest()))
-        archive.close()
+def download_file(url, path_file):
+    """ Download a file. """
+
+    raw_file, status_code = get_url(url)
+
+    if status_code == requests.codes.ok:
+        with open(path_file, "wb") as archive:
+            archive.write(raw_file)
