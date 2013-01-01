@@ -94,7 +94,6 @@ version = "0.4.0"
 from os import getcwd, path
 from docopt import docopt
 import json
-import requests
 import sys
 
 sys.path.append("lib")
@@ -109,14 +108,10 @@ class packageManager(object):
         self.platform = platform
         self.config = json.loads(open(path_config, "r").read())
 
-    def _download_url(self, url):
-        resp = requests.get(url)
-        if resp.status_code == requests.codes.ok:
-            return resp.content
-
     def _pkgs_download_available(self):
         """ Download the list of available packages. """
-        return self._download_url(self.config["urls"]["pkg_list"])
+
+        return dftlib.download_url(self.config["urls"]["pkg_list"])
 
     def _pkgs_update_available(self):
         """ If avilable packages.json doesn't exist, download it.
@@ -164,6 +159,7 @@ class packageManager(object):
 
             if symlinking succeeded:
                 read init options from manifest
+                set options/values listed in manifest
 
         else:
             raise checksum exception

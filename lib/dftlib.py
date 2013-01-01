@@ -94,6 +94,12 @@ def write(file_path, new_contents):
         return f.write(new_contents)
 
 
+def download_url(self, url):
+    resp = requests.get(url)
+    if resp.status_code == requests.codes.ok:
+        return resp.content
+
+
 def mksha(object_to_sum):
     """ Take a file object and return its sha1. """
 
