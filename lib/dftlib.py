@@ -94,7 +94,7 @@ def write(file_path, new_contents):
         return f.write(new_contents)
 
 
-def download_url(self, url):
+def download_url(url):
     resp = requests.get(url)
     if resp.status_code == requests.codes.ok:
         return resp.content
