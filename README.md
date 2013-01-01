@@ -5,6 +5,10 @@ A set of command line tools for [Dwarf Fortress](http://www.bay12games.com/dwarv
 
 ## Usage
 
+The current git branch is a work in progress, but you can find the legacy
+Dwarf Fortress Auto source at [the tags page](https://github.com/haesken/dftools/tags).
+You can also download legacy binaries from [the downloads page](https://github.com/haesken/dftools/downloads).
+
 #### dfpm - Dwarf Fortress Package Manager
 
     Usage:
