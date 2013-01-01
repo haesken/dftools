@@ -18,7 +18,8 @@ were originally authored by
 ## Usage
 ### Download
 
-- Check the Downloads page for prebuilt binaries (Linux/OSX/Windows)
+- Github has disabled new downloads, so I'm currently looking for a host for
+  the prebuilt binaries.
 
 ### Run
 
