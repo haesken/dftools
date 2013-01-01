@@ -131,11 +131,6 @@ class packageManager(object):
         self.pkg_list = path.join(self.workdir,
                 self.config["paths"]["files"]["pkg_list"])
 
-    def _pkgs_download_available(self):
-        """ Download the list of available packages. """
-
-        return dftlib.download_url(self.config["urls"]["pkg_list"])
-
     def _pkgs_update_available(self):
         """ If avilable packages.json doesn't exist, download it.
 
@@ -144,38 +139,39 @@ class packageManager(object):
             to the old one.
         """
 
-        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
-            dftlib.write(self.config["paths"]["files"]["pkg_list"],
-                         self._pkgs_download_available())
+        dftlib.ensure_dir(self.workdir)
+        pkgs_web = dftlib.get_url(self.config["urls"]["pkg_list"])
+
+        if not path.exists(path.join(self.workdir, self.pkg_list)):
+            dftlib.write(self.pkg_list, pkgs_web)
         else:
-            pkgs_new = json.dumps(self._pkgs_download_available())
-            pkgs_cur = json.dumps(dftlib.read(path.join(
-                    self.config["paths"]["dirs"]["work"],
-                    self.config["paths"]["files"]["pkg_list"])))
+            pkgs_new = json.loads(pkgs_web)
+            pkgs_cur = json.loads(dftlib.read(
+                path.join(self.workdir, self.pkg_list)))
 
             if int(pkgs_new["version"]) > int(pkgs_cur["version"]):
-                dftlib.write(path.join(
-                    self.config["paths"]["dirs"]["work"],
-                    self.config["paths"]["files"]["pkg_list"]),
-                    pkgs_new)
+                dftlib.write(self.pkg_list, json.dumps(pkgs_new))
 
     def _pkgs_get_available(self):
         """ If there is no package list in the working dir, download one."""
 
-        if not path.exists(self.config["paths"]["files"]["pkg_list"]):
+        if not path.exists(self.pkg_list):
             self._pkgs_update_available()
 
-        return json.loads(dftlib.read(
-            self.config["paths"]["files"]["pkg_list"]))
+        return json.loads(dftlib.read(self.pkg_list))
 
-    def install(self, package_name):
+    def install(self, package_names):
+        dftlib.ensure_dir(self.workdir)
         pkgs_avail = self._pkgs_get_available()
 
-        dftlib.ensure_dir(self.config["paths"]["dirs"]["tmp"])
+        for package_name in package_names:
+            if package_name in pkgs_avail:
+                pkg = package(package_name)
+                if package.status() == "installed":
+                    pass
 
-        pass
+
         """
-        If the package manifest is not present, download it.
         If the package tar is not present, download it.
         Read package manifest.
         Verify the checksum provided in the manifest.
