@@ -164,16 +164,16 @@ class packageManager(object):
             raise checksum exception
         """
 
-    def remove(self, package_name):
+    def remove(self, package_names):
         pass
 
     def update(self):
         self._pkgs_update_available()
 
-    def upgrade(self, package_name):
+    def upgrade(self, package_names):
         pass
 
-    def show(self, package_name):
+    def show(self, package_names):
         pass
 
 
