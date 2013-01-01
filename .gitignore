@@ -1,6 +1,2 @@
-dwarffortress/
 .virtualenv/
-develop/build/
-develop/dist/
-binaries/
 packages.json
