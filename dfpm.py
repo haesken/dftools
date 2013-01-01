@@ -95,6 +95,31 @@ import sys
 import lib.dftlib as dftlib
 
 
+class package(object):
+    """ """
+
+    def __init__():
+        pass
+
+    def get_manifest():
+        pass
+
+    def status():
+        pass
+
+    def verify():
+        pass
+
+    def extract():
+        pass
+
+    def symlink():
+        pass
+
+    def install():
+        pass
+
+
 class packageManager(object):
     def __init__(self, path_root_dir, platform, path_config):
         """ Set up paths and file objects to use. """
