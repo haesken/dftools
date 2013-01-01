@@ -121,11 +121,15 @@ class packageManager(object):
                          self._pkgs_download_available())
         else:
             pkgs_new = json.dumps(self._pkgs_download_available())
-            pkgs_cur = json.dumps(dftlib.read(
-                    self.config["paths"]["files"]["pkg_list"]))
+            pkgs_cur = json.dumps(dftlib.read(path.join(
+                    self.config["paths"]["dirs"]["work"],
+                    self.config["paths"]["files"]["pkg_list"])))
 
             if int(pkgs_new["version"]) > int(pkgs_cur["version"]):
-                dftlib.write(self.pkgs_cur_path, pkgs_new)
+                dftlib.write(path.join(
+                    self.config["paths"]["dirs"]["work"],
+                    self.config["paths"]["files"]["pkg_list"]),
+                    pkgs_new)
 
     def _pkgs_get_available(self):
         """ If there is no package list in the working dir, download one."""
