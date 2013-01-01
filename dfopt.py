@@ -74,7 +74,7 @@ import sys
 from os import path, getcwd
 from docopt import docopt
 
-sys.path.append("modules")
+sys.path.append("lib")
 import dftlib
 
 

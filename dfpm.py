@@ -97,7 +97,7 @@ import json
 import requests
 import sys
 
-sys.path.append("modules/")
+sys.path.append("lib")
 import dftlib
 
 
@@ -206,7 +206,7 @@ def main(args):
     if args["--config"] is not None:
         path_config = args["--config"]
     else:
-        path_config = "dfpm_config.json"
+        path_config = "dfpm.conf"
 
     manage = packageManager(path_root_dir, platform, path_config)
 

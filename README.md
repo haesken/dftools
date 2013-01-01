@@ -3,10 +3,6 @@ dftools
 
 A set of command line tools for [Dwarf Fortress](http://www.bay12games.com/dwarves/).
 
-## Download
-
-Check the downloads page for prebuilt binaries (Linux / Windows)
-
 ## Usage
 
 #### dfpm - Dwarf Fortress Package Manager
