@@ -74,8 +74,7 @@ import sys
 from os import path, getcwd
 from docopt import docopt
 
-sys.path.append("lib")
-import dftlib
+import lib.dftlib as dftlib
 
 
 class optionsManager(object):

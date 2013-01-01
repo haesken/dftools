@@ -96,8 +96,7 @@ from docopt import docopt
 import json
 import sys
 
-sys.path.append("lib")
-import dftlib
+import lib.dftlib as dftlib
 
 
 class packageManager(object):
