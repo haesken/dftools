@@ -102,7 +102,7 @@ class package(object):
         pass
 
     def get_manifest():
-        pass
+        manifest = json.loads(dftlib.get_url())
 
     def status():
         pass
@@ -167,7 +167,7 @@ class packageManager(object):
         for package_name in package_names:
             if package_name in pkgs_avail:
                 pkg = package(package_name)
-                if package.status() == "installed":
+                if pkg.status() == "installed":
                     pass
 
 
