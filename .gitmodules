@@ -1,3 +1,0 @@
-[submodule "develop/pyinstaller"]
-	path = develop/pyinstaller
-	url = https://github.com/pyinstaller/pyinstaller.git
