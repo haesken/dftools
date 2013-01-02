@@ -66,6 +66,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 version = "0.4.0"
 
+import json
 import sys
 from os import path, getcwd
 from docopt import docopt
@@ -74,8 +75,11 @@ import lib.dftlib as dftlib
 
 
 class optionsManager(object):
-    def __init__(self, path_root_dir):
+    def __init__(self, path_root_dir, path_config):
         """ Set up paths and file objects to use. """
+
+        self.config = json.loads(dftlib.read(path_config))
+        self.path_defaults = self.config["paths"]["dirs"]["defaults"]
 
         self.df_paths = dftlib.make_df_paths(path_root_dir, "linux")
         self.path_inits = path.join(self.df_paths["init"], "init.txt")
@@ -93,17 +97,22 @@ class optionsManager(object):
         line_bare = line.lstrip("[").rstrip("]")
         return line_bare.split(":")[0], line_bare.split(":")[1:]
 
+    def _join_option_values(self, values):
+        """ If values is a list of values, join then with a ":".
+            Else if values is a str, just return it.
+        """
+        if type(values) == list:
+            return ":".join(values)
+        elif type(values) == str:
+            return values
+
     def _make_option(self, option, values):
         """ Format an option and its new values for use in the inits file.
             Uses the format: [OPTION:VALUE], or [OPTION:VALUE:VALUE]
         """
 
-        if type(values) == list:
-            value = ":".join(values)
-        else:
-            value = values
-
-        return "[{option}:{value}]".format(option=option, value=value)
+        return "[{option}:{value}]".format(
+                option=option, value=self._join_option_values(values))
 
     def _replace_option(self, option, values, lines, line_number):
         """ Overwrite the selected line with one containing the new value. """
@@ -124,6 +133,19 @@ class optionsManager(object):
         elif line in self.d_inits:
             return "d_inits.txt", self.inits.index(line), line
 
+    def _prep_json_option(self, option, values):
+        return list(option, self._join_option_values(values))
+
+    def _get_opts_from_file(self, path_optsfile):
+        return json.loads(dftlib.read(path_optsfile))
+
+    def _set_opts_from_json(self, opts_json):
+        for key in opts_json.iterkeys():
+            self.setopt(key, opts_json[key])
+
+    def defaults(self):
+        self._set_opts_from_json(self._get_opts_from_file(self.path_defaults))
+
     def search(self, option, fuzzy):
         """ Search for an option.
 
@@ -140,10 +162,9 @@ class optionsManager(object):
                     if line.startswith("[") and option in line:
                         yield self._get_inits_name_and_line_num(line)
                 elif not fuzzy:
-                    if line.startswith("[") and option in line:
-                        # Only accept exact matches.
-                        if self._parse_option(line)[0] == option:
-                            yield self._get_inits_name_and_line_num(line)
+                    # Only accept exact matches.
+                    if self._parse_option(line)[0] == option:
+                        yield self._get_inits_name_and_line_num(line)
 
     def setopt(self, option, values):
         """ Set a new value for an option. """
@@ -166,14 +187,6 @@ class optionsManager(object):
     def backup(self, path_optsfile):
         pass
 
-    def restore(self, path_optsfile):
-        self.optsfile = dftlib.read_lines(path_optsfile)
-        for line in self.optsfile:
-            if line.startswith("["):
-                self.setopt(
-                        self._parse_option(line)[0],
-                        self._parse_option(line)[1])
-
 
 def main(args):
     """ Run selected options. """
@@ -191,7 +204,12 @@ def main(args):
     else:
         path_root_dir = getcwd()
 
-    options = optionsManager(path_root_dir)
+    if args["--config"] is not None:
+        path_config = args["--config"]
+    else:
+        path_config = "dfopt.conf"
+
+    options = optionsManager(path_root_dir, path_config)
 
     if args["search"]:
         for term in args["<opt>"]:
@@ -208,7 +226,7 @@ def main(args):
                     args["<value>"][args["<opt>"].index(option)].upper())
 
     if args["defaults"]:
-        options.restore("default")
+        options.defaults()
 
     if args["backup"]:
         options.backup(args["OPTSFILE"])
